@@ -106,7 +106,47 @@
             </button>
         </div>
 
-        <!-- حاوية المنشورات والإعلانات -->
+        <!-- قسم الإعلانات المميزة المثبتة -->
+        <div class="mb-4">
+            <div class="flex items-center justify-between mb-2 px-1">
+                <span class="text-xs font-black text-amber-600 flex items-center gap-1">
+                    <i class="fa-solid fa-star text-amber-500"></i> إعلانات مميزة (مُثبتة)
+                </span>
+                <button onclick="openPromoteModal()" class="text-[11px] font-bold text-blue-600 hover:underline">ثبّت إعلانك هنا</button>
+            </div>
+            
+            <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-none">
+                <!-- إعلان مميز 1 -->
+                <div class="min-w-[240px] max-w-[240px] bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-300/80 rounded-2xl p-3 shadow-sm relative flex-shrink-0">
+                    <span class="absolute top-2 left-2 bg-amber-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm">مميز</span>
+                    <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=400&q=80" class="w-full h-28 object-cover rounded-xl mb-2">
+                    <h4 class="font-bold text-xs text-gray-900 truncate">هارلي ديفيدسون 2021 بلاد</h4>
+                    <p class="text-[10px] text-gray-500 mb-1">بغداد - المنصور</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-black text-amber-600">4,500,000 د.ع</span>
+                        <button onclick="showSellerProfile('سعد البغدادي', 'بغداد - المنصور', '07701112233')" class="bg-amber-500 hover:bg-amber-600 text-white p-1.5 rounded-lg text-xs btn-tap">
+                            <i class="fa-solid fa-phone"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- إعلان مميز 2 -->
+                <div class="min-w-[240px] max-w-[240px] bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-300/80 rounded-2xl p-3 shadow-sm relative flex-shrink-0">
+                    <span class="absolute top-2 left-2 bg-amber-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-sm">مميز</span>
+                    <img src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=400&q=80" class="w-full h-28 object-cover rounded-xl mb-2">
+                    <h4 class="font-bold text-xs text-gray-900 truncate">سكوتر كهربائي شحن سريع</h4>
+                    <p class="text-[10px] text-gray-500 mb-1">أربيل - عينكاوة</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm font-black text-amber-600">350,000 د.ع</span>
+                        <button onclick="showSellerProfile('كوران الأربيلي', 'أربيل - عينكاوة', '07504445566')" class="bg-amber-500 hover:bg-amber-600 text-white p-1.5 rounded-lg text-xs btn-tap">
+                            <i class="fa-solid fa-phone"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- حاوية المنشورات والإعلانات الرئيسية -->
         <div id="posts-container" class="space-y-4">
             <!-- منشور نموذجي 1 -->
             <div class="post-card bg-white rounded-2xl shadow-sm border border-gray-200/70 overflow-hidden card-hover" data-category="دراجات نارية" data-city="بغداد">
@@ -132,7 +172,14 @@
                     <div class="bg-gray-50/80 p-2.5 rounded-xl border border-gray-100">
                         <p class="text-xs text-gray-600 font-semibold leading-relaxed">دراجة نظيفة جداً بشرط الفحص الكامل، محرك ما مفتوح، كشر وبدن بلاد، تبريد وشمعدانات كفالة.</p>
                     </div>
-                    <div class="text-xl font-black text-green-600">850,000 د.ع</div>
+                    
+                    <!-- صور المنشور -->
+                    <div class="grid grid-cols-2 gap-2 pt-1">
+                        <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=500&q=80" class="w-full h-40 object-cover rounded-xl shadow-sm border border-gray-100">
+                        <img src="https://images.unsplash.com/photo-1558980864-39db23326162?auto=format&fit=crop&w=500&q=80" class="w-full h-40 object-cover rounded-xl shadow-sm border border-gray-100">
+                    </div>
+
+                    <div class="text-xl font-black text-green-600 pt-1">850,000 د.ع</div>
                 </div>
 
                 <!-- أزرار التفاعل المصغرة على اليمين وأيقونة الحفظ على اليسار -->
@@ -167,6 +214,75 @@
                         <div class="bg-white p-2 rounded-xl shadow-sm border">
                             <span class="font-bold text-blue-600">أحمد الكرخي:</span>
                             <span class="text-gray-700">بيها مجال بالسعر شراي اليوم؟</span>
+                        </div>
+                        <div class="bg-white p-2 rounded-xl shadow-sm border">
+                            <span class="font-bold text-emerald-600">علي العراقي (البائع):</span>
+                            <span class="text-gray-700">اتصل بي وما نختلف إن شاء الله.</span>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 pt-1">
+                        <input type="text" placeholder="اكتب تعليقاً..." class="flex-1 bg-white border p-2 rounded-xl text-xs outline-none">
+                        <button onclick="alert('تم إضافة التعليق!')" class="bg-blue-600 text-white px-3 rounded-xl font-bold btn-tap">إرسال</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- منشور نموذجي 2 (أدوات احتياطية) -->
+            <div class="post-card bg-white rounded-2xl shadow-sm border border-gray-200/70 overflow-hidden card-hover" data-category="أدوات نارية" data-city="البصرة">
+                <div class="p-3.5 flex items-center justify-between border-b border-gray-100">
+                    <div class="flex items-center space-x-3 space-x-reverse cursor-pointer" onclick="showSellerProfile('حسين البصري', 'البصرة - العشار', '07800000000')">
+                        <div class="w-10 h-10 bg-gradient-to-tr from-emerald-600 to-teal-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-sm">ح</div>
+                        <div>
+                            <h4 class="font-bold text-sm text-gray-900 flex items-center gap-1">
+                                حسين البصري
+                            </h4>
+                            <p class="text-[11px] text-gray-400">قبل 5 ساعات</p>
+                        </div>
+                    </div>
+
+                    <span class="bg-blue-50 text-blue-700 border border-blue-200/60 text-[11px] px-2.5 py-0.5 rounded-full font-bold flex items-center gap-1">
+                        <i class="fa-solid fa-location-dot text-blue-500"></i> البصرة
+                    </span>
+                </div>
+
+                <div class="p-3.5 space-y-2">
+                    <h3 class="post-title text-base font-black text-gray-900 leading-snug">ويلات ودبلات دراجة بطحة ياباني</h3>
+                    <div class="bg-gray-50/80 p-2.5 rounded-xl border border-gray-100">
+                        <p class="text-xs text-gray-600 font-semibold leading-relaxed">أدوات احتياطية تفسيك درجة أولى، ويلات بلاد ودبلات هيدروليك نظيفة جدًا جاهزة للشد.</p>
+                    </div>
+
+                    <div class="text-xl font-black text-green-600 pt-1">120,000 د.ع</div>
+                </div>
+
+                <div class="px-3.5 py-2.5 border-t border-gray-100 bg-gray-50/50 flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-3">
+                        <button onclick="toggleLike(this)" class="flex items-center gap-1 text-gray-600 hover:text-red-500 font-bold transition btn-tap">
+                            <i class="fa-regular fa-heart text-sm"></i>
+                            <span>إعجاب</span>
+                        </button>
+                        
+                        <button onclick="toggleComments('comments-2')" class="flex items-center gap-1.5 text-gray-600 hover:text-blue-600 font-bold transition btn-tap">
+                            <i class="fa-regular fa-comment text-sm"></i>
+                            <span>التعليقات</span>
+                            <span class="bg-blue-100 text-blue-700 text-[10px] px-1.5 py-0.2 rounded-full font-bold">3</span>
+                        </button>
+
+                        <button onclick="sharePost()" class="flex items-center gap-1 text-gray-600 hover:text-green-600 font-bold transition btn-tap">
+                            <i class="fa-solid fa-share text-sm"></i>
+                            <span>مشاركة</span>
+                        </button>
+                    </div>
+
+                    <button onclick="toggleBookmark(this)" class="text-gray-400 hover:text-amber-500 font-bold text-base transition btn-tap p-1" title="حفظ المنشور">
+                        <i class="fa-regular fa-bookmark"></i>
+                    </button>
+                </div>
+
+                <div id="comments-2" class="hidden bg-gray-50 p-3 border-t space-y-2 text-xs">
+                    <div class="space-y-2 max-h-40 overflow-y-auto">
+                        <div class="bg-white p-2 rounded-xl shadow-sm border">
+                            <span class="font-bold text-blue-600">مرتضى:</span>
+                            <span class="text-gray-700">ترهم على محرك 125؟</span>
                         </div>
                     </div>
                     <div class="flex gap-2 pt-1">
@@ -253,13 +369,13 @@
             <form onsubmit="handleAddPost(event)" class="space-y-3 text-xs font-bold">
                 <div>
                     <label class="block mb-1 text-gray-700">عنوان الإعلان:</label>
-                    <input type="text" required placeholder="مثال: دايون 2022 نظيفة" class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50 focus:bg-white focus:border-blue-500">
+                    <input type="text" id="post-title-input" required placeholder="مثال: دايون 2022 نظيفة" class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50 focus:bg-white focus:border-blue-500">
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block mb-1 text-gray-700">الفئة:</label>
-                        <select required class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50 focus:bg-white focus:border-blue-500">
+                        <select id="post-category-input" required class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50 focus:bg-white focus:border-blue-500">
                             <option value="دراجات نارية">دراجات نارية</option>
                             <option value="دراجات هوائية">دراجات هوائية</option>
                             <option value="دراجات الشحن">دراجات الشحن</option>
@@ -271,7 +387,7 @@
 
                     <div>
                         <label class="block mb-1 text-gray-700">المحافظة:</label>
-                        <select required class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50 focus:bg-white focus:border-blue-500">
+                        <select id="post-city-input" required class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50 focus:bg-white focus:border-blue-500">
                             <option value="بغداد">بغداد</option>
                             <option value="البصرة">البصرة</option>
                             <option value="أربيل">أربيل</option>
@@ -285,17 +401,17 @@
 
                 <div>
                     <label class="block mb-1 text-gray-700">السعر (بالدينار العراقي):</label>
-                    <input type="number" required placeholder="مثال: 750000" class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50 focus:bg-white focus:border-blue-500">
+                    <input type="number" id="post-price-input" required placeholder="مثال: 750000" class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50 focus:bg-white focus:border-blue-500">
                 </div>
 
                 <div>
                     <label class="block mb-1 text-gray-700">تفاصيل الإعلان:</label>
-                    <textarea rows="3" required placeholder="اشرح حالة الدراجة، المحرك، الكشر..." class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50 focus:bg-white focus:border-blue-500"></textarea>
+                    <textarea id="post-desc-input" rows="3" required placeholder="اشرح حالة الدراجة، المحرك، الكشر..." class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50 focus:bg-white focus:border-blue-500"></textarea>
                 </div>
 
                 <div>
-                    <label class="block mb-1 text-gray-700">صور الدراجة:</label>
-                    <input type="file" multiple accept="image/*" class="w-full text-xs font-normal">
+                    <label class="block mb-1 text-gray-700">صور الدراجة (حتى 4 صور):</label>
+                    <input type="file" id="post-images-input" multiple accept="image/*" class="w-full text-xs font-normal">
                 </div>
 
                 <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow btn-tap transition">
@@ -305,7 +421,42 @@
         </div>
     </div>
 
-    <!-- 5. البروفايل الشخصي (إضافة قسم المنشورات المحفوظة) -->
+    <!-- 5. نافذة التثبيت والتمويل والدفع الإلكتروني (زين كاش / فاست باي) -->
+    <div id="promote-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
+        <div class="bg-white w-full max-w-sm rounded-2xl p-5 shadow-2xl space-y-4 slide-up">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="font-black text-sm text-gray-800 flex items-center gap-2">
+                    <i class="fa-solid fa-rocket text-amber-500"></i> تثبيت وتثبيت إعلانك
+                </h3>
+                <button onclick="toggleModal('promote-modal')" class="text-xl font-bold p-1 text-gray-400 hover:text-gray-700">&times;</button>
+            </div>
+
+            <div class="space-y-3 text-xs font-bold">
+                <p class="text-gray-600 font-normal">احصل على آلاف المشاهدات اليومية واجعل إعلانك يظهر في أعلى القائمة الرئيسية!</p>
+                
+                <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl space-y-1">
+                    <div class="flex justify-between text-amber-900">
+                        <span>تثبيت لمدة 7 أيام:</span>
+                        <span class="font-black">5,000 د.ع</span>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-gray-700">اختر طريقة الدفع الإلكتروني:</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="processPayment('زين كاش')" class="border border-red-500/40 bg-red-50 hover:bg-red-100 p-3 rounded-xl flex items-center justify-center gap-2 text-red-700 font-bold btn-tap">
+                            <i class="fa-solid fa-wallet"></i> ZainCash
+                        </button>
+                        <button onclick="processPayment('فاست باي')" class="border border-blue-500/40 bg-blue-50 hover:bg-blue-100 p-3 rounded-xl flex items-center justify-center gap-2 text-blue-700 font-bold btn-tap">
+                            <i class="fa-solid fa-mobile-screen"></i> FastPay
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. البروفايل الشخصي (إضافة قسم المنشورات المحفوظة) -->
     <div id="profile-view" class="hidden min-h-screen bg-gray-100 pb-12">
         <header class="bg-white border-b sticky top-0 z-40 px-3 h-12 flex items-center justify-between shadow-sm">
             <button onclick="hideAllViews(); showMainView();" class="text-blue-600 font-bold text-xs flex items-center gap-1 btn-tap">
@@ -357,7 +508,7 @@
         </div>
     </div>
 
-    <!-- 6. بروفايل البائع -->
+    <!-- 7. بروفايل البائع -->
     <div id="seller-profile-view" class="hidden min-h-screen bg-gray-100 pb-12">
         <header class="bg-white border-b sticky top-0 z-40 px-3 h-12 flex items-center justify-between shadow-sm">
             <button onclick="hideAllViews(); showMainView();" class="text-blue-600 font-bold text-xs flex items-center gap-1 btn-tap">
@@ -383,7 +534,7 @@
         </div>
     </div>
 
-    <!-- 7. نافذة الإعدادات العامة (المعدلة) -->
+    <!-- 8. نافذة الإعدادات العامة (المعدلة) -->
     <div id="settings-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
         <div class="bg-white w-full max-w-md rounded-2xl p-5 shadow-2xl space-y-4 slide-up">
             <div class="flex justify-between items-center border-b pb-3">
@@ -435,7 +586,7 @@
         </div>
     </div>
 
-    <!-- 8. نافذة اختيار المحافظات -->
+    <!-- 9. نافذة اختيار المحافظات -->
     <div id="city-picker-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
         <div class="bg-white w-full max-w-sm rounded-2xl p-4 shadow-2xl space-y-3 slide-up">
             <div class="flex justify-between items-center border-b pb-2">
@@ -455,7 +606,7 @@
         </div>
     </div>
 
-    <!-- 9. نافذة تسجيل الدخول -->
+    <!-- 10. نافذة تسجيل الدخول -->
     <div id="auth-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
         <div class="bg-white w-full max-w-sm rounded-2xl p-5 shadow-2xl space-y-3 slide-up">
             <div class="flex justify-between items-center mb-1 border-b pb-2">
@@ -616,6 +767,15 @@
             e.preventDefault();
             alert('تم نشر الإعلان بنجاح!');
             toggleModal('add-post-modal');
+        }
+
+        function openPromoteModal() {
+            checkAuthAndAction(() => toggleModal('promote-modal'));
+        }
+
+        function processPayment(gateway) {
+            alert('جاري توجيهك إلى بوابة ' + gateway + ' لإتمام عملية التثبيت الدفع...');
+            toggleModal('promote-modal');
         }
     </script>
 </body>
