@@ -45,7 +45,7 @@
         }
 
         .slide-up {
-            animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
         @keyframes slideUp {
             from { transform: translateY(100%); opacity: 0; }
@@ -86,6 +86,16 @@
             position: absolute;
             pointer-events: none;
             animation: floatLike 0.75s ease-out forwards;
+        }
+
+        /* تأثير طيران أيقونة المراسلة السريع */
+        @keyframes flyPlane {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+            50% { transform: translate(-30px, -30px) rotate(-20deg) scale(1.3); opacity: 0.8; }
+            100% { transform: translate(-60px, -60px) rotate(-40deg) scale(0.2); opacity: 0; }
+        }
+        .plane-flying {
+            animation: flyPlane 0.25s ease-in forwards !important;
         }
     </style>
 </head>
@@ -173,8 +183,9 @@
                         <p class="text-[11px] text-gray-400">بغداد • قبل ساعتين</p>
                     </div>
                 </div>
+                <!-- استبدال العبارة بـ "أكو توصيل" باللهجة العراقية -->
                 <span class="bg-emerald-50 text-emerald-600 border border-emerald-200/60 text-[11px] px-2.5 py-1 rounded-full font-bold flex items-center gap-1">
-                    <i class="fa-solid fa-truck-fast"></i> إمكانية التوصيل
+                    <i class="fa-solid fa-truck-fast"></i> أكو توصيل
                 </span>
             </div>
 
@@ -186,13 +197,16 @@
                 </div>
             </div>
 
-            <!-- أزرار التفاعل (زر الإعجاب تم استبداله بأيقونة اللايك فقط + تأثير التطاير) -->
+            <!-- أزرار التفاعل (زر الإعجاب المطور بتصميم كبسولة متناسق + بدون أقواس للعداد) -->
             <div class="px-2 py-1 flex justify-between items-center text-gray-600 border-t border-gray-100 text-xs font-bold relative">
-                <!-- زر اللايك (أيقونة فقط) مع التأثير -->
-                <button onclick="checkAuthAndAction(() => triggerLikeEffect(this))" class="flex-1 py-2 flex items-center justify-center space-x-1 space-x-reverse hover:bg-gray-50 rounded-xl btn-tap relative overflow-visible group">
-                    <i class="like-icon fa-regular fa-thumbs-up text-lg transition-transform group-active:scale-125"></i>
-                    <span class="like-count text-xs text-gray-500 mr-1 font-bold">(12)</span>
-                </button>
+                
+                <!-- زر الإعجاب بالتصميم الكبسولي المميز -->
+                <div class="flex-1 flex justify-center">
+                    <button onclick="checkAuthAndAction(() => triggerLikeEffect(this))" class="like-container bg-gray-100/80 hover:bg-gray-200/70 px-4 py-1.5 rounded-full flex items-center gap-1.5 btn-tap relative overflow-visible transition-all">
+                        <i class="like-icon fa-regular fa-thumbs-up text-base text-gray-600 transition-all"></i>
+                        <span class="like-count text-xs font-black text-gray-700">12</span>
+                    </button>
+                </div>
                 
                 <button onclick="toggleComments('comments-1')" class="flex-1 py-2 flex items-center justify-center space-x-1 space-x-reverse hover:bg-gray-50 rounded-xl btn-tap">
                     <i class="fa-regular fa-comment text-base"></i>
@@ -204,8 +218,9 @@
                     <span>مشاركة</span>
                 </button>
 
-                <button onclick="openChat('علي العراقي', '07700000000')" class="flex-1 py-2 text-blue-600 flex items-center justify-center space-x-1 space-x-reverse hover:bg-blue-50 rounded-xl font-bold btn-tap">
-                    <i class="fa-solid fa-paper-plane text-base"></i>
+                <!-- زر المراسلة السريع مع تأثير طيران أيقونة الطائرة الورقية -->
+                <button onclick="animateAndOpenChat(this, 'علي العراقي', '07700000000')" class="flex-1 py-2 text-blue-600 flex items-center justify-center space-x-1 space-x-reverse hover:bg-blue-50 rounded-xl font-bold btn-tap">
+                    <i class="chat-plane-icon fa-solid fa-paper-plane text-base"></i>
                     <span>مراسلة</span>
                 </button>
             </div>
@@ -224,7 +239,6 @@
                             <button onclick="toggleReplyBox('reply-box-1')" class="text-blue-600 font-bold hover:underline btn-tap">
                                 <i class="fa-solid fa-reply ml-1"></i>رد
                             </button>
-                            <!-- الإيموجي المختار أسفل التعليق مباشرة -->
                             <div class="active-reaction-badge hidden bg-gray-100 px-2 py-0.5 rounded-full border text-[11px] flex items-center gap-1 shadow-xs">
                                 <span class="reaction-emoji"></span>
                                 <span class="reaction-count font-bold text-gray-600 text-[10px]">1</span>
@@ -370,9 +384,10 @@
                     </div>
                 </div>
 
+                <!-- خيار التوصيل باللهجة العراقية داخل استمارة الإعلان -->
                 <div class="bg-gray-50 p-3 rounded-xl border border-gray-200 flex items-center justify-between">
                     <span class="text-gray-700 font-bold flex items-center gap-1.5">
-                        <i class="fa-solid fa-truck-fast text-blue-600"></i> عندك توصيل للمشتري؟
+                        <i class="fa-solid fa-truck-fast text-blue-600"></i> أكو توصيل للمشتري؟
                     </span>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" class="sr-only peer">
@@ -450,7 +465,18 @@
             }
         }
 
-        // 1. تأثير انتشار وتطاير اللايكات مثل فيسبوك
+        // 1. حركة طيران أيقونة المراسلة السريعة وفتح النافذة مباشرةً
+        function animateAndOpenChat(btn, sellerName, phone) {
+            const planeIcon = btn.querySelector('.chat-plane-icon');
+            planeIcon.classList.add('plane-flying');
+
+            setTimeout(() => {
+                planeIcon.classList.remove('plane-flying');
+                openChat(sellerName, phone);
+            }, 200); // طيران سريع جداً بظرف 0.2 ثانية لتجنب أي إعاقة للخدمة
+        }
+
+        // 2. تصميم وتفاعلات زر الإعجاب الجديد (بدون أقواس للرقم + شكل كبسولي جذاب)
         function triggerLikeEffect(btn) {
             const icon = btn.querySelector('.like-icon');
             const countSpan = btn.querySelector('.like-count');
@@ -458,9 +484,14 @@
 
             if (!isLiked) {
                 // تفعيل الإعجاب
+                btn.classList.remove('bg-gray-100/80', 'hover:bg-gray-200/70');
+                btn.classList.add('bg-blue-50', 'border', 'border-blue-200');
+                
                 icon.classList.remove('fa-regular', 'text-gray-600');
                 icon.classList.add('fa-solid', 'text-blue-600', 'scale-125');
-                countSpan.innerText = "(13)";
+                
+                countSpan.innerText = "13"; // رقم صافي بدون أقواس
+                countSpan.classList.remove('text-gray-700');
                 countSpan.classList.add('text-blue-600');
 
                 // إنشاء تأثير تطاير اللايكات
@@ -484,14 +515,19 @@
                 }
             } else {
                 // إلغاء الإعجاب
+                btn.classList.add('bg-gray-100/80', 'hover:bg-gray-200/70');
+                btn.classList.remove('bg-blue-50', 'border', 'border-blue-200');
+
                 icon.classList.remove('fa-solid', 'text-blue-600', 'scale-125');
                 icon.classList.add('fa-regular', 'text-gray-600');
-                countSpan.innerText = "(12)";
+                
+                countSpan.innerText = "12";
+                countSpan.classList.add('text-gray-700');
                 countSpan.classList.remove('text-blue-600');
             }
         }
 
-        // 2. إظهار وتحديد الإيموجي أسفل التعليق مباشرة
+        // إظهار وتحديد الإيموجي أسفل التعليق
         function selectExclusiveEmoji(clickedBtn, emojiChar) {
             const parentCard = clickedBtn.closest('.bg-white');
             const badge = parentCard.querySelector('.active-reaction-badge');
@@ -515,7 +551,6 @@
             }
         }
 
-        // بقية الوظائف الأساسية
         function selectCategory(cat, btn) {
             document.querySelectorAll('.category-tab').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
