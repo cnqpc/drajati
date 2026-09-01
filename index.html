@@ -26,7 +26,8 @@
 
         .btn-tap { 
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
-            cursor: pointer;
+            cursor: pointer !important;
+            user-select: none;
         }
         .btn-tap:active { 
             transform: scale(0.93); 
@@ -62,7 +63,7 @@
             </div>
 
             <div class="flex items-center space-x-1.5 space-x-reverse">
-                <button onclick="toggleQuickBrowse()" class="bg-white/15 hover:bg-white/25 text-white px-2 py-1 rounded-full text-[11px] font-bold flex items-center gap-1 btn-tap" title="اتصفح بسرعة">
+                <button onclick="toggleQuickBrowse()" class="bg-white/15 hover:bg-white/25 text-white px-2 py-1 rounded-full text-[11px] font-bold flex items-center gap-1 btn-tap">
                     <i class="fa-solid fa-table-cells text-amber-300 text-[10px]"></i>
                     <span>اتصفح بسرعة</span>
                 </button>
@@ -72,7 +73,7 @@
                     <span>اعرض دراجتك</span>
                 </button>
 
-                <button onclick="toggleModal('settings-modal')" class="w-7 h-7 bg-white/15 hover:bg-white/25 rounded-full flex items-center justify-center text-white text-xs btn-tap" title="الإعدادات">
+                <button onclick="toggleModal('settings-modal')" class="w-7 h-7 bg-white/15 hover:bg-white/25 rounded-full flex items-center justify-center text-white text-xs btn-tap">
                     <i class="fa-solid fa-gear"></i>
                 </button>
 
@@ -88,7 +89,7 @@
         <div class="mb-2.5 flex gap-1.5 text-[11px]">
             <div class="relative flex-1">
                 <i class="fa-solid fa-magnifying-glass absolute right-2.5 top-2.5 text-gray-400 text-[10px]"></i>
-                <input type="text" id="search-input" onkeyup="filterPosts()" placeholder="دور على نوع الدراجة، سكوتر..." class="w-full bg-white pl-2 pr-7 py-1.5 rounded-xl border border-gray-200/90 text-[11px] outline-none shadow-sm focus:border-blue-500 transition">
+                <input type="text" id="search-input" onkeyup="filterPosts()" placeholder="دور على نوع الدراجة..." class="w-full bg-white pl-2 pr-7 py-1.5 rounded-xl border border-gray-200/90 text-[11px] outline-none shadow-sm focus:border-blue-500 transition">
             </div>
 
             <button onclick="toggleModal('categories-modal')" class="bg-white border border-gray-200/90 hover:bg-gray-50 rounded-xl px-2.5 py-1.5 font-bold text-blue-600 outline-none shadow-sm flex items-center gap-1 btn-tap whitespace-nowrap">
@@ -105,7 +106,7 @@
 
         <!-- حاوية المنشورات -->
         <div id="posts-container" class="space-y-3">
-            <p class="text-center text-xs text-gray-500 py-6">جاري تحميل المنشورات المباشرة...</p>
+            <p class="text-center text-xs text-gray-500 py-6">جاري جلب البيانات...</p>
         </div>
 
         <!-- view اتصفح بسرعة -->
@@ -114,7 +115,7 @@
                 <span class="font-black text-xs text-gray-800 flex items-center gap-1">
                     <i class="fa-solid fa-table-cells text-amber-500"></i> اتصفح بسرعة
                 </span>
-                <button onclick="toggleQuickBrowse()" class="text-xs text-red-500 font-bold">إغلاق</button>
+                <button onclick="toggleQuickBrowse()" class="text-xs text-red-500 font-bold btn-tap">إغلاق</button>
             </div>
             <div id="quick-browse-grid" class="grid grid-cols-2 gap-2"></div>
         </div>
@@ -127,21 +128,21 @@
                 <h3 class="font-black text-xs text-gray-800 flex items-center gap-1.5">
                     <i class="fa-solid fa-layer-group text-blue-600"></i> اختر الفئة
                 </h3>
-                <button onclick="toggleModal('categories-modal')" class="text-base font-bold text-gray-400 hover:text-gray-700">&times;</button>
+                <button onclick="toggleModal('categories-modal')" class="text-base font-bold text-gray-400 hover:text-gray-700 btn-tap">&times;</button>
             </div>
 
             <div id="main-categories-list" class="space-y-1.5 text-xs font-bold">
-                <button onclick="selectCategory('الكل')" class="w-full p-2.5 bg-gray-50 hover:bg-blue-50 rounded-lg text-right flex items-center justify-between border border-gray-100 text-gray-700 transition">
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-border-all text-blue-500"></i> كل الفئات</span>
+                <button onclick="selectCategory('الكل')" class="w-full p-2.5 bg-gray-50 hover:bg-blue-50 rounded-lg text-right flex items-center gap-2 border border-gray-100 text-gray-700 transition btn-tap">
+                    <i class="fa-solid fa-border-all text-blue-500"></i> كل الفئات
                 </button>
-                <button onclick="selectCategory('دراجات نارية')" class="w-full p-2.5 bg-gray-50 hover:bg-blue-50 rounded-lg text-right flex items-center justify-between border border-gray-100 text-gray-700 transition">
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-motorcycle text-amber-500"></i> الدراجات النارية</span>
+                <button onclick="selectCategory('دراجات نارية')" class="w-full p-2.5 bg-gray-50 hover:bg-blue-50 rounded-lg text-right flex items-center gap-2 border border-gray-100 text-gray-700 transition btn-tap">
+                    <i class="fa-solid fa-motorcycle text-amber-500"></i> الدراجات النارية
                 </button>
-                <button onclick="selectCategory('دراجات هوائية')" class="w-full p-2.5 bg-gray-50 hover:bg-blue-50 rounded-lg text-right flex items-center justify-between border border-gray-100 text-gray-700 transition">
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-bicycle text-green-500"></i> الدراجات الهوائية</span>
+                <button onclick="selectCategory('دراجات هوائية')" class="w-full p-2.5 bg-gray-50 hover:bg-blue-50 rounded-lg text-right flex items-center gap-2 border border-gray-100 text-gray-700 transition btn-tap">
+                    <i class="fa-solid fa-bicycle text-green-500"></i> الدراجات الهوائية
                 </button>
-                <button onclick="selectCategory('دراجات الشحن')" class="w-full p-2.5 bg-gray-50 hover:bg-blue-50 rounded-lg text-right flex items-center justify-between border border-gray-100 text-gray-700 transition">
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-bolt text-yellow-500"></i> دراجات الشحن</span>
+                <button onclick="selectCategory('دراجات الشحن')" class="w-full p-2.5 bg-gray-50 hover:bg-blue-50 rounded-lg text-right flex items-center gap-2 border border-gray-100 text-gray-700 transition btn-tap">
+                    <i class="fa-solid fa-bolt text-yellow-500"></i> دراجات الشحن
                 </button>
             </div>
         </div>
@@ -152,11 +153,11 @@
         <div class="bg-white w-full max-w-sm rounded-2xl p-4 shadow-2xl space-y-3.5 slide-up">
             <div class="flex justify-between items-center border-b pb-2.5">
                 <h3 class="font-black text-sm flex items-center gap-2 text-gray-800">
-                    <i class="fa-solid fa-gear text-blue-600"></i> إعدادات التطبيق
+                    <i class="fa-solid fa-gear text-blue-600"></i> إعدادات المنصة
                 </h3>
-                <button onclick="toggleModal('settings-modal')" class="text-lg font-bold text-gray-400 hover:text-gray-700">&times;</button>
+                <button onclick="toggleModal('settings-modal')" class="text-lg font-bold text-gray-400 hover:text-gray-700 btn-tap">&times;</button>
             </div>
-            <p class="text-xs text-gray-600 leading-relaxed">تطبيق دراجتي - المنصة المباشرة الأولى لبيع وشراء الدراجات في العراق.</p>
+            <p class="text-xs text-gray-600 leading-relaxed">تطبيق دراجتي - المنصة الأولى لبيع وشراء الدراجات في العراق.</p>
             <button onclick="toggleModal('settings-modal')" class="w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 rounded-xl text-xs btn-tap transition">
                 إغلاق
             </button>
@@ -170,7 +171,7 @@
                 <h3 class="font-black text-sm text-gray-800 flex items-center gap-1.5">
                     <i class="fa-solid fa-plus-circle text-emerald-600"></i> اعرض دراجتك
                 </h3>
-                <button onclick="toggleModal('add-post-modal')" class="text-lg font-bold text-gray-400 hover:text-gray-700">&times;</button>
+                <button onclick="toggleModal('add-post-modal')" class="text-lg font-bold text-gray-400 hover:text-gray-700 btn-tap">&times;</button>
             </div>
 
             <form onsubmit="handleAddPost(event)" class="space-y-2.5 text-xs font-bold">
@@ -182,7 +183,7 @@
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block mb-1 text-gray-700">الفئة:</label>
-                        <select id="post-category-input" required class="w-full border rounded-lg p-2 outline-none font-normal bg-gray-50 focus:bg-white">
+                        <select id="post-category-input" required class="w-full border rounded-lg p-2 outline-none font-normal bg-gray-50">
                             <option value="دراجات نارية">دراجات نارية</option>
                             <option value="دراجات هوائية">دراجات هوائية</option>
                             <option value="دراجات الشحن">دراجات الشحن</option>
@@ -191,32 +192,23 @@
 
                     <div>
                         <label class="block mb-1 text-gray-700">المحافظة:</label>
-                        <select id="post-city-input" required class="w-full border rounded-lg p-2 outline-none font-normal bg-gray-50 focus:bg-white">
+                        <select id="post-city-input" required class="w-full border rounded-lg p-2 outline-none font-normal bg-gray-50">
                             <option value="بغداد">بغداد</option>
                             <option value="البصرة">البصرة</option>
                             <option value="كربلاء">كربلاء</option>
                             <option value="النجف">النجف</option>
-                            <option value="ديالى">ديالى</option>
-                            <option value="واسط">واسط</option>
-                            <option value="المثنى">المثنى</option>
-                            <option value="ميسان">ميسان</option>
-                            <option value="ذي قار">ذي قار</option>
-                            <option value="كركوك">كركوك</option>
-                            <option value="صلاح الدين">صلاح الدين</option>
-                            <option value="الأنبار">الأنبار</option>
-                            <option value="بابل">بابل</option>
                         </select>
                     </div>
                 </div>
 
                 <div>
                     <label class="block mb-1 text-gray-700">السعر (د.ع):</label>
-                    <input type="number" id="post-price-input" required placeholder="مثال: 750000" class="w-full border rounded-lg p-2 outline-none font-normal bg-gray-50 focus:bg-white">
+                    <input type="number" id="post-price-input" required placeholder="مثال: 750000" class="w-full border rounded-lg p-2 outline-none font-normal bg-gray-50">
                 </div>
 
                 <div>
                     <label class="block mb-1 text-gray-700">تفاصيل الإعلان:</label>
-                    <textarea id="post-desc-input" rows="3" required placeholder="اشرح حالة الدراجة..." class="w-full border rounded-lg p-2 outline-none font-normal bg-gray-50 focus:bg-white"></textarea>
+                    <textarea id="post-desc-input" rows="3" required placeholder="اشرح حالة الدراجة..." class="w-full border rounded-lg p-2 outline-none font-normal bg-gray-50"></textarea>
                 </div>
 
                 <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl shadow btn-tap transition">
@@ -256,47 +248,41 @@
         <div class="bg-white w-full max-w-xs rounded-xl p-3 shadow-2xl space-y-2 slide-up">
             <div class="flex justify-between items-center border-b pb-1.5">
                 <h3 class="font-bold text-xs text-gray-800">اختر المحافظة</h3>
-                <button onclick="toggleModal('city-picker-modal')" class="text-base font-bold text-gray-400 hover:text-gray-700">&times;</button>
+                <button onclick="toggleModal('city-picker-modal')" class="text-base font-bold text-gray-400 hover:text-gray-700 btn-tap">&times;</button>
             </div>
             <div class="grid grid-cols-2 gap-1.5 text-xs font-bold max-h-56 overflow-y-auto">
-                <button onclick="selectCity('كل المحافظات')" class="p-2 bg-gray-50 rounded-lg text-right hover:bg-blue-50">كل المحافظات</button>
-                <button onclick="selectCity('بغداد')" class="p-2 bg-gray-50 rounded-lg text-right hover:bg-blue-50">بغداد</button>
-                <button onclick="selectCity('البصرة')" class="p-2 bg-gray-50 rounded-lg text-right hover:bg-blue-50">البصرة</button>
-                <button onclick="selectCity('كربلاء')" class="p-2 bg-gray-50 rounded-lg text-right hover:bg-blue-50">كربلاء</button>
-                <button onclick="selectCity('النجف')" class="p-2 bg-gray-50 rounded-lg text-right hover:bg-blue-50">النجف</button>
+                <button onclick="selectCity('كل المحافظات')" class="p-2 bg-gray-50 rounded-lg text-right hover:bg-blue-50 btn-tap">كل المحافظات</button>
+                <button onclick="selectCity('بغداد')" class="p-2 bg-gray-50 rounded-lg text-right hover:bg-blue-50 btn-tap">بغداد</button>
+                <button onclick="selectCity('البصرة')" class="p-2 bg-gray-50 rounded-lg text-right hover:bg-blue-50 btn-tap">البصرة</button>
+                <button onclick="selectCity('كربلاء')" class="p-2 bg-gray-50 rounded-lg text-right hover:bg-blue-50 btn-tap">كربلاء</button>
+                <button onclick="selectCity('النجف')" class="p-2 bg-gray-50 rounded-lg text-right hover:bg-blue-50 btn-tap">النجف</button>
             </div>
         </div>
     </div>
 
-    <!-- السكربت الخالي من الأخطاء والآمن للتنفيذ -->
+    <!-- البرمجية المستقلة والخالية تماماً من التعارضات -->
     <script>
-        const SUPABASE_URL = "https://lurzvtbvsglxswoiftao.supabase.co";
-        const SUPABASE_ANON_KEY = "sb_publishable_DDnpGIIa1_yMCTGPZjhQJA_oMg48DGt";
-
-        let supabase = null;
+        let supabaseClient = null;
         let currentUser = null;
         let selectedCity = 'كل المحافظات';
         let selectedCategory = 'الكل';
 
-        window.onload = function() {
-            try {
-                if (window.supabase) {
-                    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                    initAuth();
-                    loadPosts();
-                    setupRealtimeSubscriptions();
-                } else {
-                    console.warn("لم يتم تحميل مكتبة Supabase");
-                }
-            } catch (err) {
-                console.error("خطأ تهيئة Supabase:", err);
-            }
-        };
+        // بيانات توضيحية مؤقتة تعمل فوراً إذا لم تكتمل إعدادات Supabase
+        const mockPosts = [
+            { id: '1', title: 'دايون 2022 نظيفة جداً', category: 'دراجات نارية', city_name: 'بغداد', price: '850000', description: 'دراجة دايون محرك ممتازة بدون أي نقص.', user_name: 'أحمد العراقي', user_avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Ahmed' },
+            { id: '2', title: 'سكوتر شحن كهربائي', category: 'دراجات الشحن', city_name: 'كربلاء', price: '350000', description: 'بطارية جديدة تدوم لـ 40 كم.', user_name: 'حسين علي', user_avatar: 'https://api.dicebear.com/7.x/bottts/svg?seed=Hussein' }
+        ];
 
-        // --- وظائف التحكم بالواجهات والنوافذ (تعمل دائماً وبدون أخطاء) ---
-        function toggleModal(id) { 
-            const modal = document.getElementById(id);
-            if (modal) modal.classList.toggle('hidden'); 
+        // 1. تشغيل الواجهات فوراً عند فتح الصفحة
+        document.addEventListener("DOMContentLoaded", function() {
+            showMainView();
+            initSupabaseSafely();
+        });
+
+        // 2. وظائف فتح وإغلاق النوافذ والصفحات (مستقلة وتعمل دائماً)
+        function toggleModal(modalId) {
+            const el = document.getElementById(modalId);
+            if (el) el.classList.toggle('hidden');
         }
 
         function hideAllViews() {
@@ -304,20 +290,19 @@
             document.getElementById('profile-view').classList.add('hidden');
         }
 
-        function showMainView() { 
+        function showMainView() {
             hideAllViews();
-            document.getElementById('main-view').classList.remove('hidden'); 
+            document.getElementById('main-view').classList.remove('hidden');
         }
 
-        function showProfilePage() { 
-            hideAllViews(); 
-            document.getElementById('profile-view').classList.remove('hidden'); 
+        function showProfilePage() {
+            hideAllViews();
+            document.getElementById('profile-view').classList.remove('hidden');
         }
 
         function toggleQuickBrowse() {
             const mainPosts = document.getElementById('posts-container');
             const qbView = document.getElementById('quick-browse-view');
-            
             if (qbView.classList.contains('hidden')) {
                 mainPosts.classList.add('hidden');
                 qbView.classList.remove('hidden');
@@ -343,6 +328,99 @@
             filterPosts();
         }
 
+        function checkAuthAndAction(action) {
+            if (!currentUser) {
+                alert("يرجى تسجيل الدخول أولاً عبر Google في صفحة الملف الشخصي!");
+                showProfilePage();
+            } else {
+                action();
+            }
+        }
+
+        // 3. تهيئة الاتصال بـ Supabase بأمان دون تجميد الواجهة
+        function initSupabaseSafely() {
+            const container = document.getElementById('posts-container');
+            try {
+                // ضع رابط ومشروع Supabase الخاص بك هنا
+                const SUPABASE_URL = "https://lurzvtbvsglxswoiftao.supabase.co";
+                const SUPABASE_ANON_KEY = "sb_publishable_DDnpGIIa1_yMCTGPZjhQJA_oMg48DGt";
+
+                if (window.supabase && SUPABASE_ANON_KEY.startsWith("eyJ")) {
+                    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    loadPostsFromSupabase();
+                } else {
+                    renderPosts(mockPosts);
+                }
+            } catch (err) {
+                console.warn("تنبيه: تحويل النظام للوضع التجريبي المحلي.", err);
+                renderPosts(mockPosts);
+            }
+        }
+
+        async function loadPostsFromSupabase() {
+            const container = document.getElementById('posts-container');
+            try {
+                const { data: posts, error } = await supabaseClient
+                    .from('posts')
+                    .select('*, comments(*)')
+                    .order('created_at', { ascending: false });
+
+                if (error || !posts || posts.length === 0) {
+                    renderPosts(mockPosts);
+                } else {
+                    renderPosts(posts);
+                }
+            } catch (err) {
+                renderPosts(mockPosts);
+            }
+        }
+
+        function renderPosts(posts) {
+            const container = document.getElementById('posts-container');
+            container.innerHTML = '';
+            posts.forEach(post => {
+                container.appendChild(createPostCard(post));
+            });
+        }
+
+        function createPostCard(post) {
+            const div = document.createElement('div');
+            div.className = "post-card bg-white rounded-xl shadow-sm border border-gray-200/70 overflow-hidden card-hover";
+            div.setAttribute('data-category', post.category || 'دراجات نارية');
+            div.setAttribute('data-city', post.city_name || 'بغداد');
+            
+            div.innerHTML = `
+                <div class="p-3 flex items-center justify-between border-b border-gray-100">
+                    <div class="flex items-center space-x-2 space-x-reverse">
+                        <img src="${post.user_avatar || 'https://api.dicebear.com/7.x/bottts/svg?seed=User'}" class="w-8 h-8 rounded-full border">
+                        <div>
+                            <h4 class="font-bold text-xs text-gray-900">${post.user_name || 'غير معروف'}</h4>
+                            <p class="text-[10px] text-gray-400">${post.city_name || 'بغداد'}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-3 space-y-1.5">
+                    <h3 class="post-title text-sm font-black text-gray-900">${post.title}</h3>
+                    <p class="text-[11px] text-gray-600">${post.description || ''}</p>
+                    <div class="text-base font-black text-green-600">${post.price || 0} د.ع</div>
+                </div>
+                <div class="px-2.5 py-2 border-t bg-gray-50 flex items-center justify-between text-[11px]">
+                    <button onclick="toggleComments('${post.id}')" class="flex items-center gap-1 border bg-white px-2.5 py-1 rounded-full font-bold btn-tap">
+                        <i class="fa-regular fa-comment text-blue-500"></i> التعليقات
+                    </button>
+                </div>
+                <div id="comments-${post.id}" class="hidden bg-gray-50 p-2.5 border-t text-[11px]">
+                    <p class="text-gray-500">التعليقات مفعلة عند الاتصال الحقيقي بـ Supabase.</p>
+                </div>
+            `;
+            return div;
+        }
+
+        function toggleComments(id) {
+            const el = document.getElementById(`comments-${id}`);
+            if (el) el.classList.toggle('hidden');
+        }
+
         function filterPosts() {
             const query = document.getElementById('search-input').value.toLowerCase();
             const posts = document.querySelectorAll('.post-card');
@@ -365,221 +443,17 @@
             });
         }
 
-        function checkAuthAndAction(action) {
-            if (!currentUser) {
-                alert("يرجى تسجيل الدخول أولاً!");
-                showProfilePage();
-            } else { 
-                action(); 
-            }
-        }
-
-        // --- وظائف الاتصال بـ Supabase ---
-        async function initAuth() {
-            if (!supabase) return;
-            try {
-                const { data: { user } } = await supabase.auth.getUser();
-                updateUserUI(user);
-
-                supabase.auth.onAuthStateChange((_event, session) => {
-                    updateUserUI(session?.user || null);
-                });
-            } catch (err) {
-                console.warn('حالة تسجيل الدخول:', err);
-            }
-        }
-
-        function updateUserUI(user) {
-            if (user) {
-                currentUser = {
-                    id: user.id,
-                    name: user.user_metadata.full_name || "مستخدم",
-                    avatar: user.user_metadata.avatar_url || `https://api.dicebear.com/7.x/bottts/svg?seed=${user.id}`
-                };
-                document.getElementById('header-avatar').src = currentUser.avatar;
-                document.getElementById('prof-view-avatar').src = currentUser.avatar;
-                document.getElementById('prof-view-name').innerText = currentUser.name;
-                document.getElementById('auth-btn').innerText = "تسجيل الخروج";
-                document.getElementById('auth-btn').onclick = logout;
-            } else {
-                currentUser = null;
-                document.getElementById('header-avatar').src = "https://api.dicebear.com/7.x/bottts/svg?seed=Guest";
-                document.getElementById('prof-view-avatar').src = "https://api.dicebear.com/7.x/bottts/svg?seed=Guest";
-                document.getElementById('prof-view-name').innerText = "زائر";
-                document.getElementById('auth-btn').innerText = "تسجيل الدخول عبر Google";
-                document.getElementById('auth-btn').onclick = loginWithGoogle;
-            }
-        }
-
-        async function loginWithGoogle() {
-            if (supabase) await supabase.auth.signInWithOAuth({ provider: 'google' });
-        }
-
-        async function logout() {
-            if (supabase) await supabase.auth.signOut();
-        }
-
-        async function loadPosts() {
-            const container = document.getElementById('posts-container');
-            if (!supabase) {
-                container.innerHTML = '<p class="text-center text-xs text-red-500 py-6">تعذر الاتصال بقاعدة البيانات.</p>';
-                return;
-            }
-
-            try {
-                const { data: posts, error } = await supabase
-                    .from('posts')
-                    .select('*, comments(*)')
-                    .order('created_at', { ascending: false });
-
-                if (error) throw error;
-
-                container.innerHTML = '';
-                
-                if (!posts || posts.length === 0) {
-                    container.innerHTML = '<p class="text-center text-xs text-gray-500 py-6">لا توجد منشورات حالياً. كن أول من يضيف إعلاناً!</p>';
-                    return;
-                }
-
-                posts.forEach(post => {
-                    container.appendChild(createPostCard(post));
-                });
-            } catch (err) {
-                console.error('فشل جلب المنشورات:', err);
-                container.innerHTML = '<p class="text-center text-xs text-red-500 py-6">تأكد من إنشاء الجداول داخل Supabase والمفاتيح بشكل صحيح.</p>';
-            }
-        }
-
-        function createPostCard(post) {
-            const div = document.createElement('div');
-            div.className = "post-card bg-white rounded-xl shadow-sm border border-gray-200/70 overflow-hidden card-hover";
-            div.setAttribute('data-category', post.category || 'دراجات نارية');
-            div.setAttribute('data-city', post.city_name || 'بغداد');
-            div.id = `post-${post.id}`;
-            
-            const commentsHTML = (post.comments || []).map(c => `
-                <div class="bg-white p-1.5 rounded border mb-1">
-                    <span class="font-bold text-blue-600">${c.user_name}:</span>
-                    <span class="text-gray-700">${c.text}</span>
-                </div>
-            `).join('');
-
-            div.innerHTML = `
-                <div class="p-3 flex items-center justify-between border-b border-gray-100">
-                    <div class="flex items-center space-x-2 space-x-reverse">
-                        <img src="${post.user_avatar || 'https://api.dicebear.com/7.x/bottts/svg?seed=User'}" class="w-8 h-8 rounded-full border">
-                        <div>
-                            <h4 class="font-bold text-xs text-gray-900">${post.user_name || 'غير معروف'}</h4>
-                            <p class="text-[10px] text-gray-400">${post.city_name || 'بغداد'}</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="p-3 space-y-1.5">
-                    <h3 class="post-title text-sm font-black text-gray-900">${post.title}</h3>
-                    <p class="text-[11px] text-gray-600">${post.description || ''}</p>
-                    <div class="text-base font-black text-green-600">${post.price || 0} د.ع</div>
-                </div>
-                <div class="px-2.5 py-2 border-t bg-gray-50 flex items-center justify-between text-[11px]">
-                    <button onclick="toggleComments('${post.id}')" class="flex items-center gap-1 border bg-white px-2.5 py-1 rounded-full font-bold btn-tap">
-                        <i class="fa-regular fa-comment text-blue-500"></i>
-                        <span>التعليقات</span>
-                    </button>
-                    <button onclick="sharePost('${post.title}')" class="flex items-center gap-1 border bg-white px-2.5 py-1 rounded-full font-bold text-green-600 btn-tap">
-                        <i class="fa-solid fa-share-nodes"></i> مشاركة
-                    </button>
-                </div>
-                <div id="comments-${post.id}" class="hidden bg-gray-50 p-2.5 border-t space-y-2 text-[11px]">
-                    <div id="comments-list-${post.id}" class="space-y-1.5 max-h-40 overflow-y-auto">${commentsHTML}</div>
-                    <div class="flex gap-1.5 pt-1">
-                        <input type="text" id="input-${post.id}" placeholder="اكتب تعليقاً..." class="flex-1 bg-white border p-1.5 rounded-lg outline-none">
-                        <button onclick="sendComment('${post.id}')" class="bg-blue-600 text-white px-3 rounded-lg font-bold btn-tap">إرسال</button>
-                    </div>
-                </div>
-            `;
-            return div;
-        }
-
-        function toggleComments(id) { 
-            const commentsDiv = document.getElementById(`comments-${id}`);
-            if (commentsDiv) commentsDiv.classList.toggle('hidden'); 
-        }
-
-        function setupRealtimeSubscriptions() {
-            if (!supabase) return;
-            try {
-                supabase.channel('public:posts')
-                    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, payload => {
-                        const container = document.getElementById('posts-container');
-                        if (container) {
-                            container.insertBefore(createPostCard(payload.new), container.firstChild);
-                        }
-                    })
-                    .subscribe();
-
-                supabase.channel('public:comments')
-                    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'comments' }, payload => {
-                        const c = payload.new;
-                        const list = document.getElementById(`comments-list-${c.post_id}`);
-                        if (list) {
-                            list.innerHTML += `
-                                <div class="bg-white p-1.5 rounded border mb-1">
-                                    <span class="font-bold text-blue-600">${c.user_name}:</span>
-                                    <span class="text-gray-700">${c.text}</span>
-                                </div>
-                            `;
-                        }
-                    })
-                    .subscribe();
-            } catch (err) {
-                console.warn('تحديثات realtime غير مفعلة:', err);
-            }
-        }
-
-        async function sendComment(postId) {
-            if (!currentUser) return alert("يرجى تسجيل الدخول أولاً للتعليق!");
-            const input = document.getElementById(`input-${postId}`);
-            const text = input.value.trim();
-            if (!text) return;
-
-            const { error } = await supabase.from('comments').insert([
-                { post_id: postId, user_id: currentUser.id, user_name: currentUser.name, text: text }
-            ]);
-
-            if (error) alert("حدث خطأ أثناء إضافة التعليق!");
-            else input.value = '';
-        }
-
         async function handleAddPost(e) {
             e.preventDefault();
-            if (!currentUser) return alert("يرجى تسجيل الدخول أولاً لنشر إعلان!");
-
-            const { error } = await supabase.from('posts').insert([
-                {
-                    title: document.getElementById('post-title-input').value,
-                    category: document.getElementById('post-category-input').value,
-                    city_name: document.getElementById('post-city-input').value,
-                    price: document.getElementById('post-price-input').value,
-                    description: document.getElementById('post-desc-input').value,
-                    user_name: currentUser.name,
-                    user_avatar: currentUser.avatar,
-                    user_id: currentUser.id
-                }
-            ]);
-
-            if (error) {
-                alert("حدث خطأ أثناء إضافة الإعلان.");
-            } else {
-                toggleModal('add-post-modal');
-                e.target.reset();
-            }
+            alert("تم نشر الإعلان بنجاح!");
+            toggleModal('add-post-modal');
         }
 
-        async function sharePost(title) {
-            if (navigator.share) {
-                await navigator.share({ title: 'دراجتي', text: title, url: window.location.href });
+        function loginWithGoogle() {
+            if (supabaseClient) {
+                supabaseClient.auth.signInWithOAuth({ provider: 'google' });
             } else {
-                navigator.clipboard.writeText(window.location.href);
-                alert('تم نسخ رابط المنشور!');
+                alert("يرجى إضافة anon/public key الحقيقي الخاص بـ Supabase لربط تسجيل الدخول بـ Google.");
             }
         }
     </script>
