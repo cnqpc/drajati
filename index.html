@@ -138,7 +138,7 @@
     <!-- 2. الرئيسية وخلاصة الإعلانات -->
     <main id="main-view" class="max-w-2xl mx-auto pt-3 px-2 pb-16">
         
-        <!-- خانة البحث ورر الفلترة -->
+        <!-- خانة البحث وزر الفلترة -->
         <div class="mb-3 flex gap-2">
             <div class="relative flex-1">
                 <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-3 text-gray-400 text-xs"></i>
@@ -179,7 +179,7 @@
             </div>
         </div>
 
-        <!-- منشور نموذجي معدل مع خانة المحافظة المستقلة واسم الدراجة والوصف منفصلين -->
+        <!-- منشور نموذجي -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200/70 mb-4 overflow-hidden card-hover">
             <div class="p-3.5 flex items-center justify-between border-b border-gray-100 relative">
                 <div class="flex items-center space-x-3 space-x-reverse cursor-pointer" onclick="showSellerProfile('علي العراقي', 'بغداد - الكرادة')">
@@ -191,7 +191,6 @@
                 </div>
 
                 <div class="flex items-center gap-1.5">
-                    <!-- خانة المحافظة المضافة بجانب التوصيل -->
                     <span class="bg-blue-50 text-blue-700 border border-blue-200/60 text-[11px] px-2.5 py-0.5 rounded-full font-bold flex items-center gap-1">
                         <i class="fa-solid fa-location-dot text-blue-500"></i> بغداد
                     </span>
@@ -220,14 +219,11 @@
                 </div>
             </div>
 
-            <!-- اسم الدراجة والوصف مقسمين بخانتين مستقلتين -->
             <div class="p-3.5 space-y-2">
-                <!-- خانة اسم الدراجة -->
                 <div>
                     <h3 class="text-base font-black text-gray-900 leading-snug">سكوتر ياماها زوما 125cc</h3>
                 </div>
 
-                <!-- خانة الوصف تحت الاسم -->
                 <div class="bg-gray-50/80 p-2.5 rounded-xl border border-gray-100">
                     <p class="text-xs text-gray-600 font-semibold leading-relaxed">دراجة نظيفة جداً بشرط الفحص الكامل، محرك ما مفتوح، كشر وبدن بلاد، وأحجام التايرات ممتازة واستعمال شخصي خفيف.</p>
                 </div>
@@ -238,70 +234,75 @@
                 </div>
             </div>
 
-            <!-- أزرار التفاعل الموحدة تصميمياً + صوت الإعجاب الشهير المميز -->
+            <!-- أزرار التفاعل -->
             <div class="px-3 py-2.5 flex justify-between items-center border-t border-gray-100 text-xs font-bold gap-1.5">
-                
-                <!-- 1. زر الإعجاب المطور مع صوت الفيسبوك المبهج -->
                 <button onclick="playFacebookLikeSound(); checkAuthAndAction(() => triggerLikeEffect(this));" class="like-container flex-1 bg-gray-100/80 hover:bg-gray-200/70 py-1.5 px-2 rounded-full flex items-center justify-center gap-1.5 btn-tap border border-gray-200/50 relative overflow-visible transition-all">
                     <i class="like-icon fa-regular fa-thumbs-up text-sm text-gray-600 transition-all"></i>
                     <span class="like-count text-xs font-black text-gray-700">12</span>
                 </button>
                 
-                <!-- 2. زر التعليق -->
                 <button onclick="playCommentSound(); toggleComments('comments-1');" class="flex-1 bg-gray-100/80 hover:bg-gray-200/70 py-1.5 px-2 rounded-full flex items-center justify-center gap-1.5 btn-tap border border-gray-200/50 text-gray-700 hover:text-blue-600 transition-all">
                     <i class="fa-regular fa-comment text-sm"></i>
                     <span>تعليق</span>
                 </button>
 
-                <!-- 3. زر المشاركة -->
                 <button onclick="playShareSound(); sharePost();" class="flex-1 bg-gray-100/80 hover:bg-gray-200/70 py-1.5 px-2 rounded-full flex items-center justify-center gap-1.5 btn-tap border border-gray-200/50 text-gray-700 hover:text-blue-600 transition-all">
                     <i class="fa-solid fa-share text-sm"></i>
                     <span>مشاركة</span>
                 </button>
 
-                <!-- 4. زر المراسلة السريع -->
                 <button onclick="playMessageSound(); animateAndOpenChat(this, 'علي العراقي', '07700000000');" class="flex-1 bg-blue-50 hover:bg-blue-100/80 text-blue-600 py-1.5 px-2 rounded-full flex items-center justify-center gap-1.5 font-bold btn-tap border border-blue-200 transition-all">
                     <i class="chat-plane-icon fa-solid fa-paper-plane text-sm"></i>
                     <span>مراسلة</span>
                 </button>
             </div>
 
-            <!-- قسم التعليقات -->
+            <!-- قسم التعليقات المحدث (إضافة صورة المعلق وإحاطة التعليق بإطار محدد) -->
             <div id="comments-1" class="bg-gray-50/80 p-3.5 border-t hidden text-xs space-y-3">
-                <div id="comments-list-1" class="space-y-2">
-                    <div class="bg-white p-3 rounded-2xl shadow-sm border border-gray-100 relative cursor-pointer" ondblclick="toggleEmojiBar(this)">
-                        <div class="flex justify-between items-center mb-1">
-                            <span class="font-bold text-gray-800">حسين البصري</span>
-                            <span class="text-[10px] text-gray-400">قبل 30 دقيقة</span>
-                        </div>
-                        <p class="text-gray-700 mb-2">بي مجال السعر شراي ومستعجل؟</p>
-                        
-                        <div class="flex items-center justify-between pt-1.5 border-t border-gray-100 text-[11px]">
-                            <button onclick="toggleReplyBox('reply-box-1')" class="text-blue-600 font-bold hover:underline btn-tap">
-                                <i class="fa-solid fa-reply ml-1"></i>رد
-                            </button>
-                            <div class="active-reaction-badge hidden bg-gray-100 px-2 py-0.5 rounded-full border text-[11px] flex items-center gap-1 shadow-xs">
-                                <span class="reaction-emoji"></span>
-                                <span class="reaction-count font-bold text-gray-600 text-[10px]">1</span>
+                <div id="comments-list-1" class="space-y-2.5">
+                    
+                    <!-- تعليق 1 محدد بإطار أنيق مع صورة المعلق -->
+                    <div class="bg-white p-3.5 rounded-2xl shadow-sm border border-gray-200 hover:border-blue-300 transition relative cursor-pointer" ondblclick="toggleEmojiBar(this)">
+                        <div class="flex items-start gap-2.5">
+                            <!-- صورة البروفايل للمعلق -->
+                            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Hussein" alt="حسين البصري" class="w-8 h-8 rounded-full border border-gray-200 object-cover shadow-xs">
+                            
+                            <div class="flex-1">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="font-bold text-gray-800 text-xs">حسين البصري</span>
+                                    <span class="text-[10px] text-gray-400">قبل 30 دقيقة</span>
+                                </div>
+                                <p class="text-gray-700 mb-2 leading-relaxed">بي مجال السعر شراي ومستعجل؟</p>
+                                
+                                <div class="flex items-center justify-between pt-1.5 border-t border-gray-100 text-[11px]">
+                                    <button onclick="toggleReplyBox('reply-box-1')" class="text-blue-600 font-bold hover:underline btn-tap">
+                                        <i class="fa-solid fa-reply ml-1"></i>رد
+                                    </button>
+                                    <div class="active-reaction-badge hidden bg-gray-100 px-2 py-0.5 rounded-full border text-[11px] flex items-center gap-1 shadow-xs">
+                                        <span class="reaction-emoji"></span>
+                                        <span class="reaction-count font-bold text-gray-600 text-[10px]">1</span>
+                                    </div>
+                                </div>
+
+                                <div class="emoji-bar hidden mt-2 pt-2 border-t flex items-center gap-4 text-sm emoji-pop">
+                                    <button onclick="selectExclusiveEmoji(this, '👍')" class="emoji-btn font-bold text-gray-400 hover:scale-125 transition">👍</button>
+                                    <button onclick="selectExclusiveEmoji(this, '😂')" class="emoji-btn font-bold text-gray-400 hover:scale-125 transition">😂</button>
+                                    <button onclick="selectExclusiveEmoji(this, '👎')" class="emoji-btn font-bold text-gray-400 hover:scale-125 transition">👎</button>
+                                </div>
+
+                                <div id="reply-box-1" class="hidden mt-2 pt-2 border-t flex gap-2">
+                                    <input type="text" placeholder="اكتب ردك..." class="flex-1 border rounded-full px-3 py-1 outline-none text-xs bg-gray-50">
+                                    <button onclick="addReply(this)" class="bg-blue-600 text-white px-3 py-1 rounded-full font-bold btn-tap">إرسال</button>
+                                </div>
                             </div>
                         </div>
-
-                        <div class="emoji-bar hidden mt-2 pt-2 border-t flex items-center gap-4 text-sm emoji-pop">
-                            <button onclick="selectExclusiveEmoji(this, '👍')" class="emoji-btn font-bold text-gray-400 hover:scale-125 transition">👍</button>
-                            <button onclick="selectExclusiveEmoji(this, '😂')" class="emoji-btn font-bold text-gray-400 hover:scale-125 transition">😂</button>
-                            <button onclick="selectExclusiveEmoji(this, '👎')" class="emoji-btn font-bold text-gray-400 hover:scale-125 transition">👎</button>
-                        </div>
-
-                        <div id="reply-box-1" class="hidden mt-2 pt-2 border-t flex gap-2">
-                            <input type="text" placeholder="اكتب ردك..." class="flex-1 border rounded-full px-3 py-1 outline-none text-xs bg-gray-50">
-                            <button onclick="addReply(this)" class="bg-blue-600 text-white px-3 py-1 rounded-full font-bold btn-tap">إرسال</button>
-                        </div>
                     </div>
+
                 </div>
 
                 <div class="flex gap-2 pt-1">
-                    <input id="comment-input-1" type="text" placeholder="اكتب تعليقك..." class="flex-1 border rounded-full px-3.5 py-2 outline-none bg-white">
-                    <button onclick="checkAuthAndAction(() => addNewComment(1))" class="bg-blue-600 text-white px-4 py-2 rounded-full font-bold btn-tap">نشر</button>
+                    <input id="comment-input-1" type="text" placeholder="اكتب تعليقك..." class="flex-1 border border-gray-200 rounded-full px-3.5 py-2 outline-none bg-white focus:border-blue-500 shadow-xs">
+                    <button onclick="checkAuthAndAction(() => addNewComment(1))" class="bg-blue-600 text-white px-4 py-2 rounded-full font-bold btn-tap shadow-sm">نشر</button>
                 </div>
             </div>
         </div>
@@ -379,7 +380,7 @@
         </div>
     </div>
 
-    <!-- 5. نافذة اعرض دراجتك (تم إصلاح اتجاه الزر الحركي بشكل صحيح للدردشة والموقع) -->
+    <!-- 5. نافذة اعرض دراجتك (تم حذف خيار "اختر المحافظة" المكرر) -->
     <div id="add-post-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-2">
         <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col slide-up">
             <div class="bg-[#1877f2] text-white p-4 flex justify-between items-center">
@@ -391,13 +392,11 @@
             
             <form onsubmit="handleFormSubmit(event)" class="p-4 overflow-y-auto space-y-3.5 text-xs font-bold">
                 
-                <!-- اسم الدراجة في خانة أولى -->
                 <div>
                     <label class="block mb-1 text-gray-700">اسم الدراجة / نوعها:</label>
                     <input type="text" placeholder="مثال: سكوتر ياماها زوما 125" required class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50">
                 </div>
 
-                <!-- الوصف في خانة تحت الاسم -->
                 <div>
                     <label class="block mb-1 text-gray-700">وصف الدراجة والحالة:</label>
                     <textarea placeholder="اكتب تفاصيل المحرك، النظافة، الكشر، الضمان..." rows="3" class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50 resize-none"></textarea>
@@ -417,12 +416,24 @@
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block mb-1 text-gray-700">المحافظة:</label>
+                        <!-- تم حذف خيار اختر المحافظة المكرر مباشرة والبدء بالمحافظات -->
                         <select required class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50">
-                            <option value="">اختر المحافظة</option>
-                            <option>بغداد</option><option>البصرة</option><option>النجف</option>
-                            <option>كربلاء</option><option>بابل</option><option>ميسان</option>
-                            <option>ذي قار</option><option>الأنبار</option><option>ديالى</option>
-                            <option>كركوك</option><option>صلاح الدين</option><option>المثنى</option><option>واسط</option>
+                            <option value="بغداد">بغداد</option>
+                            <option value="البصرة">البصرة</option>
+                            <option value="النجف">النجف</option>
+                            <option value="كربلاء">كربلاء</option>
+                            <option value="بابل">بابل</option>
+                            <option value="ميسان">ميسان</option>
+                            <option value="ذي قار">ذي قار</option>
+                            <option value="الأنبار">الأنبار</option>
+                            <option value="ديالى">ديالى</option>
+                            <option value="كركوك">كركوك</option>
+                            <option value="صلاح الدين">صلاح الدين</option>
+                            <option value="المثنى">المثنى</option>
+                            <option value="واسط">واسط</option>
+                            <option value="أربيل">أربيل</option>
+                            <option value="السليمانية">السليمانية</option>
+                            <option value="دهوك">دهوك</option>
                         </select>
                     </div>
 
@@ -432,7 +443,6 @@
                     </div>
                 </div>
 
-                <!-- زر التفعيل والتعطيل الصحيح لخدمة التوصيل (يتحرك نحو اليسار بشكل مضبوط) -->
                 <div class="bg-gray-50 p-3 rounded-xl border border-gray-200 flex items-center justify-between">
                     <span class="text-gray-700 font-bold flex items-center gap-1.5">
                         <i class="fa-solid fa-truck-fast text-blue-600"></i> أكو توصيل للمشتري؟
@@ -457,7 +467,7 @@
         </div>
     </div>
 
-    <!-- 6. نافذة الإعدادات المعاد تصميمها بالكامل بمفاتيح التفعيل التفاعلية Slider Switches -->
+    <!-- 6. نافذة الإعدادات (تم إزالة المحافظة الافتراضية منها بالكامل) -->
     <div id="settings-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
         <div class="bg-white w-full max-w-md rounded-2xl p-5 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b pb-3">
@@ -477,17 +487,9 @@
                         <span class="flex items-center gap-2"><i class="fa-solid fa-key text-amber-500"></i> تغيير كلمة المرور</span>
                         <i class="fa-solid fa-chevron-left text-gray-400 text-xs"></i>
                     </div>
-
-                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-location-dot text-red-500"></i> المحافظة الافتراضية</span>
-                        <select class="bg-white border rounded-lg px-2 py-1 outline-none text-[11px]">
-                            <option>بغداد</option><option>البصرة</option><option>النجف</option>
-                            <option>كربلاء</option><option>بابل</option><option>كافة المحافظات</option>
-                        </select>
-                    </div>
                 </div>
 
-                <!-- إعدادات التطبيق بـ Toggle Switches موحدة بدلاً من علامات الصح -->
+                <!-- إعدادات التطبيق -->
                 <div class="space-y-2 pt-2 border-t">
                     <span class="text-gray-400 text-[11px]">التفضيلات العامة</span>
 
@@ -557,25 +559,22 @@
         </div>
     </div>
 
-    <!-- السكريبت المطور والمؤثرات الصوتية المتجاوبة بدقة عالية -->
+    <!-- السكريبت والمؤثرات -->
     <script>
         let currentUser = null;
 
-        // تهيئة محرك الصوتيات برمجياً عبر Web Audio API
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-        // 1. صوت اللايك المبهج الرائع (محاكاة دقيقة لنغمة الفيسبوك Pop Tone المميزة)
         function playFacebookLikeSound() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             
             const now = audioCtx.currentTime;
             
-            // الصوت الأول (نغمة منخفضة ناعمة)
             const osc1 = audioCtx.createOscillator();
             const gain1 = audioCtx.createGain();
             osc1.type = 'sine';
-            osc1.frequency.setValueAtTime(523.25, now); // C5
-            osc1.frequency.exponentialRampToValueAtTime(659.25, now + 0.08); // E5
+            osc1.frequency.setValueAtTime(523.25, now);
+            osc1.frequency.exponentialRampToValueAtTime(659.25, now + 0.08);
             gain1.gain.setValueAtTime(0.2, now);
             gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
             osc1.connect(gain1);
@@ -583,12 +582,11 @@
             osc1.start(now);
             osc1.stop(now + 0.12);
 
-            // الصوت الثاني (القفزة الصوتية المميزة للإحساس المبهج)
             const osc2 = audioCtx.createOscillator();
             const gain2 = audioCtx.createGain();
             osc2.type = 'sine';
-            osc2.frequency.setValueAtTime(880, now + 0.05); // A5
-            osc2.frequency.exponentialRampToValueAtTime(1174.66, now + 0.18); // D6
+            osc2.frequency.setValueAtTime(880, now + 0.05);
+            osc2.frequency.exponentialRampToValueAtTime(1174.66, now + 0.18);
             gain2.gain.setValueAtTime(0.25, now + 0.05);
             gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.22);
             osc2.connect(gain2);
@@ -597,7 +595,6 @@
             osc2.stop(now + 0.22);
         }
 
-        // 2. صوت زر التعليق (صوت فقاعة أو نبرة إرسال لطيفة)
         function playCommentSound() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const now = audioCtx.currentTime;
@@ -617,7 +614,6 @@
             osc.stop(now + 0.07);
         }
 
-        // 3. صوت زر المشاركة (صوت سحبة خفيفة ومبهجة)
         function playShareSound() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const now = audioCtx.currentTime;
@@ -637,7 +633,6 @@
             osc.stop(now + 0.09);
         }
 
-        // 4. صوت زر المراسلة (صوت إرسال سريع ونقي)
         function playMessageSound() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
             const now = audioCtx.currentTime;
@@ -669,7 +664,6 @@
             }
         }
 
-        // فتح وإغلاق قائمة خيارات المنشور (النقاط الثلاث)
         function togglePostMenu(menuId) {
             const menu = document.getElementById(menuId);
             menu.classList.toggle('hidden');
