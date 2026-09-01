@@ -61,7 +61,6 @@
         }
 
         .category-tab {
-            white-space: nowrap;
             transition: all 0.2s ease;
         }
         .category-tab.active {
@@ -97,12 +96,12 @@
             animation: flyPlane 0.2s ease-in forwards !important;
         }
 
-        /* تعديل اتجاه زر التفعيل RTL للتحرك نحو اليسار بشكل صحيح */
+        /* تعديل أزرار التفعيل لتتحرك الدائرة لليمين داخل الإطار */
         .toggle-checkbox:checked + .toggle-label {
             background-color: #10b981;
         }
         .toggle-checkbox:checked + .toggle-label .toggle-dot {
-            transform: translateX(-1.25rem);
+            transform: translateX(1.1rem);
         }
     </style>
 </head>
@@ -138,35 +137,33 @@
     <!-- 2. الرئيسية وخلاصة الإعلانات -->
     <main id="main-view" class="max-w-2xl mx-auto pt-3 px-2 pb-16">
         
-        <!-- خانة البحث وزر الفلترة -->
+        <!-- خانة البحث وزر الفلترة المحدث لتسهيل اختيار المحافظات عبر النافذة المنبثقة -->
         <div class="mb-3 flex gap-2">
             <div class="relative flex-1">
                 <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-3 text-gray-400 text-xs"></i>
                 <input type="text" placeholder="دور على نوع الدراجة، سكوتر، بطحة..." class="w-full bg-white pl-3 pr-9 py-2 rounded-2xl border border-gray-200/80 text-xs outline-none shadow-sm focus:border-blue-500 transition">
             </div>
-            <select class="bg-white border border-gray-200/80 rounded-2xl px-3 py-2 font-bold text-xs text-gray-700 outline-none shadow-sm">
-                <option value="">كل المحافظات</option>
-                <option>بغداد</option><option>البصرة</option><option>النجف</option>
-                <option>كربلاء</option><option>بابل</option><option>ميسان</option>
-                <option>ذي قار</option><option>الأنبار</option><option>ديالى</option>
-                <option>كركوك</option><option>صلاح الدين</option><option>المثنى</option><option>واسط</option>
-            </select>
+            <button onclick="openCityPicker('main')" id="main-city-btn" class="bg-white border border-gray-200/80 rounded-2xl px-3 py-2 font-bold text-xs text-gray-700 outline-none shadow-sm flex items-center gap-1.5">
+                <i class="fa-solid fa-location-dot text-blue-500"></i>
+                <span id="main-city-label">كل المحافظات</span>
+                <i class="fa-solid fa-chevron-down text-[10px] text-gray-400 mr-1"></i>
+            </button>
         </div>
 
-        <!-- خانة الفئات الرئيسية -->
+        <!-- خانة الفئات الرئيسية (تظهر بالكامل بدون تمرير) -->
         <div class="bg-white/90 backdrop-blur p-2 rounded-2xl shadow-sm border border-gray-100 mb-3">
-            <div class="flex items-center gap-2 overflow-x-auto text-xs pb-1 scrollbar-none">
-                <button onclick="selectCategory('all', this)" class="category-tab active px-3.5 py-1.5 rounded-xl border border-gray-200 text-gray-600 font-bold">الكل</button>
-                <button onclick="selectCategory('motor', this)" class="category-tab px-3.5 py-1.5 rounded-xl border border-gray-200 text-gray-600 font-bold flex items-center gap-1">
-                    <i class="fa-solid fa-motorcycle text-amber-500"></i> دراجات نارية
+            <div class="grid grid-cols-3 sm:grid-cols-5 gap-1.5 text-xs">
+                <button onclick="selectCategory('all', this)" class="category-tab active py-2 rounded-xl border border-gray-200 text-gray-600 font-bold text-center">الكل</button>
+                <button onclick="selectCategory('motor', this)" class="category-tab py-2 rounded-xl border border-gray-200 text-gray-600 font-bold flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-motorcycle text-amber-500"></i> نارية
                 </button>
-                <button onclick="selectCategory('electric', this)" class="category-tab px-3.5 py-1.5 rounded-xl border border-gray-200 text-gray-600 font-bold flex items-center gap-1">
-                    <i class="fa-solid fa-bolt text-yellow-500"></i> دراجات شحن
+                <button onclick="selectCategory('electric', this)" class="category-tab py-2 rounded-xl border border-gray-200 text-gray-600 font-bold flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-bolt text-yellow-500"></i> شحن
                 </button>
-                <button onclick="selectCategory('bicycle', this)" class="category-tab px-3.5 py-1.5 rounded-xl border border-gray-200 text-gray-600 font-bold flex items-center gap-1">
-                    <i class="fa-solid fa-bicycle text-green-500"></i> دراجات هوائية
+                <button onclick="selectCategory('bicycle', this)" class="category-tab py-2 rounded-xl border border-gray-200 text-gray-600 font-bold flex items-center justify-center gap-1">
+                    <i class="fa-solid fa-bicycle text-green-500"></i> هوائية
                 </button>
-                <button onclick="selectCategory('parts', this)" class="category-tab px-3.5 py-1.5 rounded-xl border border-gray-200 text-gray-600 font-bold flex items-center gap-1">
+                <button onclick="selectCategory('parts', this)" class="category-tab py-2 rounded-xl border border-gray-200 text-gray-600 font-bold flex items-center justify-center gap-1 col-span-2 sm:col-span-1">
                     <i class="fa-solid fa-wrench text-blue-500"></i> أدوات احتياطية
                 </button>
             </div>
@@ -199,7 +196,6 @@
                         <i class="fa-solid fa-truck-fast"></i> أكو توصيل
                     </span>
 
-                    <!-- قائمة النقاط الثلاث للإعلان -->
                     <div class="relative">
                         <button onclick="togglePostMenu('post-menu-1')" class="w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center text-gray-500 btn-tap">
                             <i class="fa-solid fa-ellipsis-vertical text-base"></i>
@@ -221,7 +217,7 @@
 
             <div class="p-3.5 space-y-2">
                 <div>
-                    <h3 class="text-base font-black text-gray-900 leading-snug">سكوتر ياماها زوما 125cc</h3>
+                    <h3 class="text-base font-black text-gray-900 leading-snug">ماكس عدلة 2007</h3>
                 </div>
 
                 <div class="bg-gray-50/80 p-2.5 rounded-xl border border-gray-100">
@@ -257,16 +253,12 @@
                 </button>
             </div>
 
-            <!-- قسم التعليقات المحدث (إضافة صورة المعلق وإحاطة التعليق بإطار محدد) -->
+            <!-- قسم التعليقات -->
             <div id="comments-1" class="bg-gray-50/80 p-3.5 border-t hidden text-xs space-y-3">
                 <div id="comments-list-1" class="space-y-2.5">
-                    
-                    <!-- تعليق 1 محدد بإطار أنيق مع صورة المعلق -->
                     <div class="bg-white p-3.5 rounded-2xl shadow-sm border border-gray-200 hover:border-blue-300 transition relative cursor-pointer" ondblclick="toggleEmojiBar(this)">
                         <div class="flex items-start gap-2.5">
-                            <!-- صورة البروفايل للمعلق -->
                             <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Hussein" alt="حسين البصري" class="w-8 h-8 rounded-full border border-gray-200 object-cover shadow-xs">
-                            
                             <div class="flex-1">
                                 <div class="flex justify-between items-center mb-1">
                                     <span class="font-bold text-gray-800 text-xs">حسين البصري</span>
@@ -297,7 +289,6 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
 
                 <div class="flex gap-2 pt-1">
@@ -332,47 +323,53 @@
         </div>
     </div>
 
-    <!-- 4. البروفايل الشخصي الكامل -->
+    <!-- 4. البروفايل الشخصي (تم تصغير الخطوط وإضافة زر الإعدادات) -->
     <div id="profile-view" class="hidden min-h-screen bg-gray-100 pb-12">
-        <header class="bg-white border-b sticky top-0 z-40 px-4 h-14 flex items-center justify-between shadow-sm">
-            <button onclick="hideProfilePage()" class="text-blue-600 font-bold text-sm flex items-center gap-1 btn-tap">
+        <header class="bg-white border-b sticky top-0 z-40 px-3 h-12 flex items-center justify-between shadow-sm">
+            <button onclick="hideProfilePage()" class="text-blue-600 font-bold text-xs flex items-center gap-1 btn-tap">
                 <i class="fa-solid fa-arrow-right"></i>
                 <span>رجوع للرئيسية</span>
             </button>
-            <h3 class="font-bold text-base text-gray-800">الملف الشخصي</h3>
-            <div class="w-8"></div>
+            <h3 class="font-bold text-xs text-gray-800">الملف الشخصي</h3>
+            <button onclick="toggleModal('profile-settings-modal')" class="text-gray-600 hover:text-blue-600 text-sm p-1 btn-tap">
+                <i class="fa-solid fa-user-gear"></i>
+            </button>
         </header>
 
         <div class="max-w-2xl mx-auto">
             <div class="bg-white border-b pb-4 mb-4 shadow-sm">
-                <div class="h-32 bg-gradient-to-r from-blue-500 to-indigo-600 relative"></div>
+                <div id="prof-cover" class="h-32 bg-gradient-to-r from-blue-500 to-indigo-600 relative bg-cover bg-center"></div>
                 <div class="px-4 relative flex justify-between items-end -mt-12 mb-3">
                     <div class="w-24 h-24 rounded-full border-4 border-white bg-gray-200 overflow-hidden shadow-md">
                         <img id="prof-view-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=Guest" class="w-full h-full object-cover">
                     </div>
-                    <button onclick="toggleModal('auth-modal')" class="bg-blue-600 text-white px-4 py-2 rounded-xl text-xs font-bold shadow btn-tap">
+                    <button onclick="toggleModal('auth-modal')" class="bg-blue-600 text-white px-3.5 py-1.5 rounded-xl text-xs font-bold shadow btn-tap">
                         تسجيل الدخول / حساب جديد
                     </button>
                 </div>
-                <div class="px-4">
-                    <h2 id="prof-view-name" class="text-xl font-black text-gray-900">مستخدم (Guest)</h2>
-                    <p id="prof-view-city" class="text-xs text-gray-500 mb-3">العراق</p>
+                <div class="px-4 space-y-1">
+                    <h2 id="prof-view-name" class="text-lg font-black text-gray-900">مستخدم (Guest)</h2>
+                    <p id="prof-view-bio" class="text-xs text-gray-600 hidden"></p>
+                    <div class="flex gap-3 text-xs text-gray-500 font-semibold pt-1">
+                        <span id="prof-view-city"><i class="fa-solid fa-location-dot text-blue-500 ml-1"></i>العراق</span>
+                        <span id="prof-view-phone" class="hidden"><i class="fa-solid fa-phone text-green-500 ml-1"></i>---</span>
+                    </div>
 
-                    <div class="grid grid-cols-2 gap-3 text-center border-t pt-3">
-                        <div class="bg-blue-50/50 p-2.5 rounded-xl border border-blue-100">
-                            <span class="block font-black text-lg text-blue-600">0</span>
-                            <span class="text-[11px] font-bold text-gray-500">دراجات معروضة</span>
+                    <div class="grid grid-cols-2 gap-3 text-center border-t pt-3 mt-3">
+                        <div class="bg-blue-50/50 p-2 rounded-xl border border-blue-100">
+                            <span class="block font-black text-base text-blue-600">0</span>
+                            <span class="text-[10px] font-bold text-gray-500">دراجات معروضة</span>
                         </div>
-                        <div class="bg-green-50/50 p-2.5 rounded-xl border border-green-100">
-                            <span class="block font-black text-lg text-green-600">0</span>
-                            <span class="text-[11px] font-bold text-gray-500">دراجات مباعة</span>
+                        <div class="bg-green-50/50 p-2 rounded-xl border border-green-100">
+                            <span class="block font-black text-base text-green-600">0</span>
+                            <span class="text-[10px] font-bold text-gray-500">دراجات مباعة</span>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="px-2">
-                <h3 class="font-bold text-sm text-gray-700 mb-2 px-2">دراجاتي المعروضة:</h3>
+                <h3 class="font-bold text-xs text-gray-700 mb-2 px-2">دراجاتي المعروضة:</h3>
                 <div class="bg-white p-8 rounded-2xl text-center text-gray-400 text-xs shadow-sm border border-dashed">
                     ما عندك دراجات معروضة حالياً.
                 </div>
@@ -380,7 +377,7 @@
         </div>
     </div>
 
-    <!-- 5. نافذة اعرض دراجتك (تم حذف خيار "اختر المحافظة" المكرر) -->
+    <!-- 5. نافذة إضافة إعلان (تم التحديث حسب المتطلبات) -->
     <div id="add-post-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-2">
         <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col slide-up">
             <div class="bg-[#1877f2] text-white p-4 flex justify-between items-center">
@@ -393,19 +390,19 @@
             <form onsubmit="handleFormSubmit(event)" class="p-4 overflow-y-auto space-y-3.5 text-xs font-bold">
                 
                 <div>
-                    <label class="block mb-1 text-gray-700">اسم الدراجة / نوعها:</label>
-                    <input type="text" placeholder="مثال: سكوتر ياماها زوما 125" required class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50">
+                    <label class="block mb-1 text-gray-700">اسم الدراجة نوعها:</label>
+                    <input type="text" placeholder="ماكس عدلة 2007" maxlength="40" required class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50 focus:bg-white focus:border-blue-500 transition">
                 </div>
 
                 <div>
-                    <label class="block mb-1 text-gray-700">وصف الدراجة والحالة:</label>
-                    <textarea placeholder="اكتب تفاصيل المحرك، النظافة، الكشر، الضمان..." rows="3" class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50 resize-none"></textarea>
+                    <label class="block mb-1 text-gray-700">الوصف:</label>
+                    <textarea placeholder="اكتب تفاصيل المحرك، النظافة، الكشر، الضمان..." maxlength="1000" rows="3" class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50 focus:bg-white focus:border-blue-500 transition resize-none"></textarea>
                 </div>
 
                 <div>
                     <label class="block mb-1 text-gray-700">السعر:</label>
                     <div class="flex gap-2">
-                        <input type="number" placeholder="750000" required class="flex-1 border rounded-xl p-2.5 outline-none font-normal bg-gray-50">
+                        <input type="number" placeholder="750000" maxlength="9" oninput="if(this.value.length > 9) this.value = this.value.slice(0, 9);" required class="flex-1 border rounded-xl p-2.5 outline-none font-normal bg-gray-50 focus:bg-white focus:border-blue-500 transition">
                         <select class="bg-blue-50 border border-blue-200 text-blue-700 font-bold rounded-xl px-3 outline-none">
                             <option value="IQD">د.ع (عراقي)</option>
                             <option value="USD">$ (دولار)</option>
@@ -416,30 +413,16 @@
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block mb-1 text-gray-700">المحافظة:</label>
-                        <!-- تم حذف خيار اختر المحافظة المكرر مباشرة والبدء بالمحافظات -->
-                        <select required class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50">
-                            <option value="بغداد">بغداد</option>
-                            <option value="البصرة">البصرة</option>
-                            <option value="النجف">النجف</option>
-                            <option value="كربلاء">كربلاء</option>
-                            <option value="بابل">بابل</option>
-                            <option value="ميسان">ميسان</option>
-                            <option value="ذي قار">ذي قار</option>
-                            <option value="الأنبار">الأنبار</option>
-                            <option value="ديالى">ديالى</option>
-                            <option value="كركوك">كركوك</option>
-                            <option value="صلاح الدين">صلاح الدين</option>
-                            <option value="المثنى">المثنى</option>
-                            <option value="واسط">واسط</option>
-                            <option value="أربيل">أربيل</option>
-                            <option value="السليمانية">السليمانية</option>
-                            <option value="دهوك">دهوك</option>
-                        </select>
+                        <!-- زر يفتح نافذة المحافظات المنبثقة الصغيرة -->
+                        <button type="button" onclick="openCityPicker('add')" id="add-city-btn" class="w-full border rounded-xl p-2.5 text-right font-normal bg-gray-50 hover:bg-white flex items-center justify-between text-gray-700">
+                            <span id="add-city-label">اختر المحافظة</span>
+                            <i class="fa-solid fa-chevron-down text-gray-400 text-[10px]"></i>
+                        </button>
                     </div>
 
                     <div>
                         <label class="block mb-1 text-gray-700">رقم الهاتف <span class="text-gray-400 font-normal">(اختياري)</span>:</label>
-                        <input type="tel" placeholder="077xxxxxxxx" class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50">
+                        <input type="tel" placeholder="077xxxxxxxx" class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50 focus:bg-white focus:border-blue-500 transition">
                     </div>
                 </div>
 
@@ -447,17 +430,21 @@
                     <span class="text-gray-700 font-bold flex items-center gap-1.5">
                         <i class="fa-solid fa-truck-fast text-blue-600"></i> أكو توصيل للمشتري؟
                     </span>
-                    <div class="relative inline-block w-10 align-middle select-none">
+                    <div class="relative inline-block w-9 align-middle select-none">
                         <input type="checkbox" id="toggle-delivery" class="toggle-checkbox hidden" checked />
-                        <label for="toggle-delivery" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200">
-                            <span class="toggle-dot block w-5 h-5 rounded-full bg-white shadow transform translate-x-0 transition-transform duration-200 my-0.5 mx-0.5"></span>
+                        <label for="toggle-delivery" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200 relative">
+                            <span class="toggle-dot block w-4 h-4 rounded-full bg-white shadow transform translate-x-0 transition-transform duration-200 my-0.5 mr-0.5"></span>
                         </label>
                     </div>
                 </div>
 
                 <div>
-                    <label class="block mb-1 text-gray-700">الصور والفيديو <span class="text-gray-400 font-normal">(5 صور + فيديو)</span>:</label>
-                    <input type="file" multiple accept="image/*,video/*" class="w-full text-xs text-gray-500 bg-gray-50 p-2 border rounded-xl">
+                    <label class="block mb-1 text-gray-700">الصور والفيديو:</label>
+                    <label class="border-2 border-dashed border-gray-300 rounded-xl p-3 flex flex-col items-center justify-center bg-gray-50 hover:bg-blue-50/50 cursor-pointer transition">
+                        <i class="fa-solid fa-cloud-arrow-up text-blue-500 text-lg mb-1"></i>
+                        <span id="file-chosen-text" class="text-xs text-gray-500 font-normal">ما اخترت صورة ولا فيديو</span>
+                        <input type="file" multiple accept="image/*,video/*" class="hidden" onchange="updateFileName(this)">
+                    </label>
                 </div>
 
                 <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold py-3 rounded-xl shadow-lg btn-tap text-sm">
@@ -467,7 +454,81 @@
         </div>
     </div>
 
-    <!-- 6. نافذة الإعدادات (تم إزالة المحافظة الافتراضية منها بالكامل) -->
+    <!-- 6. النافذة المنبثقة الصغيرة لاختيار المحافظة -->
+    <div id="city-picker-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
+        <div class="bg-white w-full max-w-xs rounded-2xl shadow-2xl p-4 space-y-3 slide-up">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h4 class="font-bold text-xs text-gray-800 flex items-center gap-1.5">
+                    <i class="fa-solid fa-map-location-dot text-blue-600"></i> حدد المحافظة
+                </h4>
+                <button onclick="toggleModal('city-picker-modal')" class="text-gray-400 hover:text-gray-600 text-base font-bold">&times;</button>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-1.5 max-h-60 overflow-y-auto text-xs font-semibold">
+                <button type="button" onclick="selectCityOption('بغداد')" class="p-2 text-right bg-gray-50 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition">بغداد</button>
+                <button type="button" onclick="selectCityOption('البصرة')" class="p-2 text-right bg-gray-50 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition">البصرة</button>
+                <button type="button" onclick="selectCityOption('النجف')" class="p-2 text-right bg-gray-50 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition">النجف</button>
+                <button type="button" onclick="selectCityOption('كربلاء')" class="p-2 text-right bg-gray-50 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition">كربلاء</button>
+                <button type="button" onclick="selectCityOption('بابل')" class="p-2 text-right bg-gray-50 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition">بابل</button>
+                <button type="button" onclick="selectCityOption('ميسان')" class="p-2 text-right bg-gray-50 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition">ميسان</button>
+                <button type="button" onclick="selectCityOption('ذي قار')" class="p-2 text-right bg-gray-50 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition">ذي قار</button>
+                <button type="button" onclick="selectCityOption('الأنبار')" class="p-2 text-right bg-gray-50 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition">الأنبار</button>
+                <button type="button" onclick="selectCityOption('ديالى')" class="p-2 text-right bg-gray-50 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition">ديالى</button>
+                <button type="button" onclick="selectCityOption('كركوك')" class="p-2 text-right bg-gray-50 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition">كركوك</button>
+                <button type="button" onclick="selectCityOption('صلاح الدين')" class="p-2 text-right bg-gray-50 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition">صلاح الدين</button>
+                <button type="button" onclick="selectCityOption('المثنى')" class="p-2 text-right bg-gray-50 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition">المثنى</button>
+                <button type="button" onclick="selectCityOption('واسط')" class="p-2 text-right bg-gray-50 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition">واسط</button>
+                <button type="button" onclick="selectCityOption('أربيل')" class="p-2 text-right bg-gray-50 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition">أربيل</button>
+                <button type="button" onclick="selectCityOption('السليمانية')" class="p-2 text-right bg-gray-50 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition">السليمانية</button>
+                <button type="button" onclick="selectCityOption('دهوك')" class="p-2 text-right bg-gray-50 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition">دهوك</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. نافذة إعدادات الملف الشخصي (المُضافة حديثاً) -->
+    <div id="profile-settings-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
+        <div class="bg-white w-full max-w-md rounded-2xl p-4 shadow-2xl space-y-3 max-h-[90vh] overflow-y-auto text-xs font-bold">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="text-sm font-black text-gray-800 flex items-center gap-1.5">
+                    <i class="fa-solid fa-user-gear text-blue-600"></i> تعديل حسابي
+                </h3>
+                <button onclick="toggleModal('profile-settings-modal')" class="text-xl font-bold p-1 cursor-pointer">&times;</button>
+            </div>
+
+            <form onsubmit="saveProfileSettings(event)" class="space-y-3">
+                <div>
+                    <label class="block mb-1 text-gray-700">الصورة الشخصية:</label>
+                    <input type="file" accept="image/*" onchange="previewAvatar(this)" class="w-full text-xs text-gray-500 bg-gray-50 p-2 border rounded-xl">
+                </div>
+
+                <div>
+                    <label class="block mb-1 text-gray-700">الصورة الخلفية (الغلاف):</label>
+                    <input type="file" accept="image/*" onchange="previewCover(this)" class="w-full text-xs text-gray-500 bg-gray-50 p-2 border rounded-xl">
+                </div>
+
+                <div>
+                    <label class="block mb-1 text-gray-700">الموقع (المحافظة والمنطقة):</label>
+                    <input type="text" id="setting-prof-city" placeholder="بغداد - الكرادة" class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50">
+                </div>
+
+                <div>
+                    <label class="block mb-1 text-gray-700">رقم الهاتف:</label>
+                    <input type="tel" id="setting-prof-phone" placeholder="07700000000" class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50">
+                </div>
+
+                <div>
+                    <label class="block mb-1 text-gray-700">الوصف الشخصي:</label>
+                    <textarea id="setting-prof-bio" maxlength="100" placeholder="اكتب نبذة قصيرة عنك..." rows="2" class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50 resize-none"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2.5 rounded-xl shadow btn-tap">
+                    حفظ التغييرات
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 8. نافذة الإعدادات العامة -->
     <div id="settings-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
         <div class="bg-white w-full max-w-md rounded-2xl p-5 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b pb-3">
@@ -478,8 +539,6 @@
             </div>
 
             <div class="space-y-3 text-xs font-bold text-gray-700">
-                
-                <!-- إعدادات الحساب والخصوصية -->
                 <div class="space-y-2">
                     <span class="text-gray-400 text-[11px]">الحساب والخصوصية</span>
                     
@@ -489,45 +548,40 @@
                     </div>
                 </div>
 
-                <!-- إعدادات التطبيق -->
                 <div class="space-y-2 pt-2 border-t">
                     <span class="text-gray-400 text-[11px]">التفضيلات العامة</span>
 
-                    <!-- 1. زر الإشعارات والتنبيهات -->
                     <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-bell text-blue-500"></i> الإشعارات والتنبيهات</span>
-                        <div class="relative inline-block w-10 align-middle select-none">
+                        <div class="relative inline-block w-9 align-middle select-none">
                             <input type="checkbox" id="toggle-notif" class="toggle-checkbox hidden" checked />
-                            <label for="toggle-notif" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200">
-                                <span class="toggle-dot block w-5 h-5 rounded-full bg-white shadow transform translate-x-0 transition-transform duration-200 my-0.5 mx-0.5"></span>
+                            <label for="toggle-notif" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200 relative">
+                                <span class="toggle-dot block w-4 h-4 rounded-full bg-white shadow transform translate-x-0 transition-transform duration-200 my-0.5 mr-0.5"></span>
                             </label>
                         </div>
                     </div>
 
-                    <!-- 2. زر الوضع الداكن -->
                     <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-moon text-indigo-500"></i> الوضع الداكن (Dark Mode)</span>
-                        <div class="relative inline-block w-10 align-middle select-none">
+                        <div class="relative inline-block w-9 align-middle select-none">
                             <input type="checkbox" id="toggle-dark" class="toggle-checkbox hidden" />
-                            <label for="toggle-dark" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200">
-                                <span class="toggle-dot block w-5 h-5 rounded-full bg-white shadow transform translate-x-0 transition-transform duration-200 my-0.5 mx-0.5"></span>
+                            <label for="toggle-dark" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200 relative">
+                                <span class="toggle-dot block w-4 h-4 rounded-full bg-white shadow transform translate-x-0 transition-transform duration-200 my-0.5 mr-0.5"></span>
                             </label>
                         </div>
                     </div>
 
-                    <!-- 3. زر توفير البيانات -->
                     <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-bolt text-green-500"></i> وضع توفير البيانات</span>
-                        <div class="relative inline-block w-10 align-middle select-none">
+                        <div class="relative inline-block w-9 align-middle select-none">
                             <input type="checkbox" id="toggle-data" class="toggle-checkbox hidden" />
-                            <label for="toggle-data" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200">
-                                <span class="toggle-dot block w-5 h-5 rounded-full bg-white shadow transform translate-x-0 transition-transform duration-200 my-0.5 mx-0.5"></span>
+                            <label for="toggle-data" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200 relative">
+                                <span class="toggle-dot block w-4 h-4 rounded-full bg-white shadow transform translate-x-0 transition-transform duration-200 my-0.5 mr-0.5"></span>
                             </label>
                         </div>
                     </div>
                 </div>
 
-                <!-- الدعم والمساعدة -->
                 <div class="space-y-2 pt-2 border-t">
                     <span class="text-gray-400 text-[11px]">الدعم والمساعدة</span>
                     
@@ -544,7 +598,7 @@
         </div>
     </div>
 
-    <!-- 7. نافذة تسجيل الدخول -->
+    <!-- 9. نافذة تسجيل الدخول -->
     <div id="auth-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
         <div class="bg-white w-full max-w-sm rounded-2xl p-5 shadow-2xl">
             <div class="flex justify-between items-center mb-3">
@@ -562,14 +616,13 @@
     <!-- السكريبت والمؤثرات -->
     <script>
         let currentUser = null;
+        let activeCityTarget = 'add'; // 'add' or 'main'
 
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
         function playFacebookLikeSound() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
-            
             const now = audioCtx.currentTime;
-            
             const osc1 = audioCtx.createOscillator();
             const gain1 = audioCtx.createGain();
             osc1.type = 'sine';
@@ -581,18 +634,6 @@
             gain1.connect(audioCtx.destination);
             osc1.start(now);
             osc1.stop(now + 0.12);
-
-            const osc2 = audioCtx.createOscillator();
-            const gain2 = audioCtx.createGain();
-            osc2.type = 'sine';
-            osc2.frequency.setValueAtTime(880, now + 0.05);
-            osc2.frequency.exponentialRampToValueAtTime(1174.66, now + 0.18);
-            gain2.gain.setValueAtTime(0.25, now + 0.05);
-            gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.22);
-            osc2.connect(gain2);
-            gain2.connect(audioCtx.destination);
-            osc2.start(now + 0.05);
-            osc2.stop(now + 0.22);
         }
 
         function playCommentSound() {
@@ -600,14 +641,11 @@
             const now = audioCtx.currentTime;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-
             osc.type = 'sine';
             osc.frequency.setValueAtTime(400, now);
             osc.frequency.exponentialRampToValueAtTime(700, now + 0.07);
-
             gain.gain.setValueAtTime(0.15, now);
             gain.gain.exponentialRampToValueAtTime(0.01, now + 0.07);
-
             osc.connect(gain);
             gain.connect(audioCtx.destination);
             osc.start(now);
@@ -619,14 +657,11 @@
             const now = audioCtx.currentTime;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-
             osc.type = 'triangle';
             osc.frequency.setValueAtTime(600, now);
             osc.frequency.exponentialRampToValueAtTime(900, now + 0.09);
-
             gain.gain.setValueAtTime(0.12, now);
             gain.gain.exponentialRampToValueAtTime(0.01, now + 0.09);
-
             osc.connect(gain);
             gain.connect(audioCtx.destination);
             osc.start(now);
@@ -638,14 +673,11 @@
             const now = audioCtx.currentTime;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-
             osc.type = 'sine';
             osc.frequency.setValueAtTime(750, now);
             osc.frequency.exponentialRampToValueAtTime(1050, now + 0.06);
-
             gain.gain.setValueAtTime(0.15, now);
             gain.gain.exponentialRampToValueAtTime(0.01, now + 0.06);
-
             osc.connect(gain);
             gain.connect(audioCtx.destination);
             osc.start(now);
@@ -654,6 +686,32 @@
 
         function toggleModal(id) {
             document.getElementById(id).classList.toggle('hidden');
+        }
+
+        /* التحكم بنوافذ اختيارات المحافظة */
+        function openCityPicker(target) {
+            activeCityTarget = target;
+            toggleModal('city-picker-modal');
+        }
+
+        function selectCityOption(city) {
+            if (activeCityTarget === 'add') {
+                document.getElementById('add-city-label').innerText = city;
+            } else {
+                document.getElementById('main-city-label').innerText = city;
+            }
+            toggleModal('city-picker-modal');
+        }
+
+        function updateFileName(input) {
+            const label = document.getElementById('file-chosen-text');
+            if (input.files && input.files.length > 0) {
+                label.innerText = `تم اختيار ${input.files.length} ملف/صور`;
+                label.classList.add('text-blue-600', 'font-bold');
+            } else {
+                label.innerText = "ما اخترت صورة ولا فيديو";
+                label.classList.remove('text-blue-600', 'font-bold');
+            }
         }
 
         function checkAuthAndAction(action) {
@@ -817,7 +875,7 @@
 
         function showSellerProfile(name, city) {
             document.getElementById('prof-view-name').innerText = name;
-            document.getElementById('prof-view-city').innerText = city;
+            document.getElementById('prof-view-city').innerHTML = `<i class="fa-solid fa-location-dot text-blue-500 ml-1"></i>${city}`;
             showProfilePage();
         }
 
@@ -828,6 +886,50 @@
             document.getElementById('prof-view-name').innerText = currentUser.name;
             alert("تم تسجيل الدخول بنجاح!");
             toggleModal('auth-modal');
+        }
+
+        /* إدارة وتحديث تفاصيل الملف الشخصي */
+        function previewAvatar(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('prof-view-avatar').src = e.target.result;
+                    document.getElementById('header-avatar').src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function previewCover(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('prof-cover').style.backgroundImage = `url('${e.target.result}')`;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function saveProfileSettings(e) {
+            e.preventDefault();
+            const city = document.getElementById('setting-prof-city').value;
+            const phone = document.getElementById('setting-prof-phone').value;
+            const bio = document.getElementById('setting-prof-bio').value;
+
+            if (city) document.getElementById('prof-view-city').innerHTML = `<i class="fa-solid fa-location-dot text-blue-500 ml-1"></i>${city}`;
+            if (phone) {
+                const phoneElem = document.getElementById('prof-view-phone');
+                phoneElem.innerHTML = `<i class="fa-solid fa-phone text-green-500 ml-1"></i>${phone}`;
+                phoneElem.classList.remove('hidden');
+            }
+            if (bio) {
+                const bioElem = document.getElementById('prof-view-bio');
+                bioElem.innerText = bio;
+                bioElem.classList.remove('hidden');
+            }
+
+            alert("تم تحديث معلومات ملفك الشخصي بنجاح!");
+            toggleModal('profile-settings-modal');
         }
 
         function toggleComments(id) {
