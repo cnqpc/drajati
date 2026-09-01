@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>دراجتي - سوق الدراجات الأول في العراق</title>
-    <!-- استدعاء خط القاهرة الرسمي Cairo Font -->
+    <!-- خط القاهرة Cairo Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -13,8 +13,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome للأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Supabase JS -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
         body { 
@@ -23,7 +21,6 @@
             min-height: 100vh;
         }
 
-        /* التأثيرات الحركية والبصرية المميزة */
         .btn-tap { 
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
         }
@@ -39,7 +36,6 @@
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
         }
 
-        /* نبض زر إعلان جديد */
         @keyframes subtle-pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.03); }
@@ -48,7 +44,6 @@
             animation: subtle-pulse 3s infinite ease-in-out;
         }
 
-        /* أنيميشن صعود النوافذ */
         .slide-up {
             animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -64,11 +59,22 @@
             0% { transform: scale(0.5); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
+
+        /* تنسيق شريط الفئات السريع */
+        .category-tab {
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+        .category-tab.active {
+            background-color: #1877f2;
+            color: white;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body class="text-gray-800">
 
-    <!-- 1. الهيدر العلوي المحدث مع الأيقونة الجديدة وزر الإعدادات -->
+    <!-- 1. الهيدر العلوي -->
     <header class="bg-[#1877f2]/95 backdrop-blur-md text-white sticky top-0 z-40 shadow-md">
         <div class="max-w-2xl mx-auto px-4 h-16 flex items-center justify-between">
             <!-- الشعار مع الأيقونة المميزة الهوية -->
@@ -79,19 +85,19 @@
                 <span class="font-black text-2xl tracking-tight text-white drop-shadow-sm">دراجتي</span>
             </div>
 
-            <!-- الأزرار اليسارية: إعلان جديد + الإعدادات + البروفايل -->
+            <!-- الأزرار اليسارية: اعرض دراجتك (باللهجة العراقية) + الإعدادات + البروفايل -->
             <div class="flex items-center space-x-2 space-x-reverse">
                 <button onclick="checkAuthAndAction(() => toggleModal('add-post-modal'))" class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white px-3.5 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg shadow-green-500/20 btn-tap pulse-btn">
                     <i class="fa-solid fa-plus-circle text-sm"></i>
-                    <span>إعلان جديد</span>
+                    <span>اعرض دراجتك</span>
                 </button>
 
-                <!-- زر الإعدادات المبتكر -->
+                <!-- زر الإعدادات -->
                 <button onclick="toggleModal('settings-modal')" class="w-9 h-9 bg-white/15 hover:bg-white/25 rounded-full flex items-center justify-center text-white text-base btn-tap">
                     <i class="fa-solid fa-gear"></i>
                 </button>
 
-                <!-- البروفايل الشخصي (صورة Guest أعلى اليسار) -->
+                <!-- البروفايل الشخصي -->
                 <div onclick="showProfilePage()" class="w-9 h-9 bg-white/20 border-2 border-white/40 rounded-full flex items-center justify-center cursor-pointer overflow-hidden shadow-sm btn-tap">
                     <img id="header-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=Guest" alt="Guest" class="w-full h-full object-cover">
                 </div>
@@ -100,34 +106,63 @@
     </header>
 
     <!-- 2. الرئيسية وخلاصة الإعلانات -->
-    <main id="main-view" class="max-w-2xl mx-auto pt-4 px-2 pb-16">
-        <!-- شريط فلاتر المحافظات -->
-        <div class="bg-white/80 backdrop-blur p-3 rounded-2xl shadow-sm border border-gray-100 mb-4">
-            <div class="flex items-center gap-2 overflow-x-auto text-xs pb-1">
-                <span class="font-bold text-gray-500 whitespace-nowrap"><i class="fa-solid fa-location-dot text-red-500 ml-1"></i>المحافظة:</span>
-                <select class="bg-gray-100 border rounded-xl px-3 py-1.5 font-bold text-gray-700 outline-none">
-                    <option value="">كافة المحافظات</option>
-                    <option>بغداد</option><option>البصرة</option><option>النجف</option>
-                    <option>كربلاء</option><option>بابل</option><option>ميسان</option>
-                    <option>ذي قار</option><option>الأنبار</option><option>ديالى</option>
-                    <option>كركوك</option><option>صلاح الدين</option><option>المثنى</option><option>واسط</option>
-                </select>
+    <main id="main-view" class="max-w-2xl mx-auto pt-3 px-2 pb-16">
+        
+        <!-- خانة البحث ورر الفلترة -->
+        <div class="mb-3 flex gap-2">
+            <div class="relative flex-1">
+                <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-3 text-gray-400 text-xs"></i>
+                <input type="text" placeholder="دور على نوع الدراجة، سكوتر، بطحة..." class="w-full bg-white pl-3 pr-9 py-2 rounded-2xl border border-gray-200/80 text-xs outline-none shadow-sm focus:border-blue-500 transition">
+            </div>
+            <!-- اختيار المحافظة -->
+            <select class="bg-white border border-gray-200/80 rounded-2xl px-3 py-2 font-bold text-xs text-gray-700 outline-none shadow-sm">
+                <option value="">كل المحافظات</option>
+                <option>بغداد</option><option>البصرة</option><option>النجف</option>
+                <option>كربلاء</option><option>بابل</option><option>ميسان</option>
+                <option>ذي قار</option><option>الأنبار</option><option>ديالى</option>
+                <option>كركوك</option><option>صلاح الدين</option><option>المثنى</option><option>واسط</option>
+            </select>
+        </div>
+
+        <!-- خانة الفئات الرئيسية -->
+        <div class="bg-white/90 backdrop-blur p-2 rounded-2xl shadow-sm border border-gray-100 mb-3">
+            <div class="flex items-center gap-2 overflow-x-auto text-xs pb-1 scrollbar-none">
+                <button onclick="selectCategory('all', this)" class="category-tab active px-3.5 py-1.5 rounded-xl border border-gray-200 text-gray-600 font-bold">الكل</button>
+                <button onclick="selectCategory('motor', this)" class="category-tab px-3.5 py-1.5 rounded-xl border border-gray-200 text-gray-600 font-bold flex items-center gap-1">
+                    <i class="fa-solid fa-motorcycle text-amber-500"></i> دراجات نارية
+                </button>
+                <button onclick="selectCategory('electric', this)" class="category-tab px-3.5 py-1.5 rounded-xl border border-gray-200 text-gray-600 font-bold flex items-center gap-1">
+                    <i class="fa-solid fa-bolt text-yellow-500"></i> دراجات شحن
+                </button>
+                <button onclick="selectCategory('bicycle', this)" class="category-tab px-3.5 py-1.5 rounded-xl border border-gray-200 text-gray-600 font-bold flex items-center gap-1">
+                    <i class="fa-solid fa-bicycle text-green-500"></i> دراجات هوائية
+                </button>
+                <button onclick="selectCategory('parts', this)" class="category-tab px-3.5 py-1.5 rounded-xl border border-gray-200 text-gray-600 font-bold flex items-center gap-1">
+                    <i class="fa-solid fa-wrench text-blue-500"></i> أدوات احتياطية
+                </button>
+            </div>
+
+            <!-- الشريحة الفرعية الخاصة بالأدوات الاحتياطية (تظهر عند اختيار الأدوات الاحتياطية) -->
+            <div id="sub-parts-bar" class="hidden mt-2 pt-2 border-t flex items-center gap-2 text-[11px] slide-up">
+                <span class="font-bold text-gray-500">نوع الأدوات:</span>
+                <button onclick="filterSubPart(this)" class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-lg font-bold border border-blue-200">قطع نارية</button>
+                <button onclick="filterSubPart(this)" class="px-2.5 py-1 bg-gray-100 text-gray-600 rounded-lg font-bold">قطع شحن</button>
+                <button onclick="filterSubPart(this)" class="px-2.5 py-1 bg-gray-100 text-gray-600 rounded-lg font-bold">قطع هوائية</button>
             </div>
         </div>
 
-        <!-- منشور نموذجي بدون خيار الورق وبسعر دينار/دولار وتوصيل -->
+        <!-- منشور نموذجي -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200/70 mb-4 overflow-hidden card-hover">
             <div class="p-3.5 flex items-center justify-between border-b border-gray-100">
                 <div class="flex items-center space-x-3 space-x-reverse cursor-pointer" onclick="showSellerProfile('علي العراقي', 'بغداد - الكرادة')">
                     <div class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-sm">ع</div>
                     <div>
                         <h4 class="font-bold text-sm text-gray-900">علي العراقي</h4>
-                        <p class="text-[11px] text-gray-400">بغداد • منذ ساعتين</p>
+                        <p class="text-[11px] text-gray-400">بغداد • قبل ساعتين</p>
                     </div>
                 </div>
-                <!-- شارة التوصيل الاختيارية -->
                 <span class="bg-emerald-50 text-emerald-600 border border-emerald-200/60 text-[11px] px-2.5 py-1 rounded-full font-bold flex items-center gap-1">
-                    <i class="fa-solid fa-truck-fast"></i> يتوفر توصيل
+                    <i class="fa-solid fa-truck-fast"></i> إمكانية التوصيل
                 </span>
             </div>
 
@@ -139,7 +174,7 @@
                 </div>
             </div>
 
-            <!-- أزرار التفاعل -->
+            <!-- أزرار التفاعل (مع تصحيح زر المراسلة والإبقاء على زر الإعجاب) -->
             <div class="px-2 py-1 flex justify-between items-center text-gray-600 border-t border-gray-100 text-xs font-bold">
                 <button onclick="checkAuthAndAction(() => togglePostLike(this))" class="flex-1 py-2 flex items-center justify-center space-x-1 space-x-reverse hover:bg-gray-50 rounded-xl btn-tap">
                     <i class="fa-regular fa-thumbs-up text-base"></i>
@@ -151,24 +186,25 @@
                     <span>تعليق</span>
                 </button>
 
-                <button onclick="sharePost('سكوتر ياماها زوما 125cc', '850000')" class="flex-1 py-2 flex items-center justify-center space-x-1 space-x-reverse hover:bg-gray-50 rounded-xl btn-tap">
+                <button onclick="sharePost()" class="flex-1 py-2 flex items-center justify-center space-x-1 space-x-reverse hover:bg-gray-50 rounded-xl btn-tap">
                     <i class="fa-solid fa-share text-base"></i>
                     <span>مشاركة</span>
                 </button>
 
+                <!-- زر المراسلة المصحح بالكامل -->
                 <button onclick="openChat('علي العراقي', '07700000000')" class="flex-1 py-2 text-blue-600 flex items-center justify-center space-x-1 space-x-reverse hover:bg-blue-50 rounded-xl font-bold btn-tap">
                     <i class="fa-solid fa-paper-plane text-base"></i>
                     <span>مراسلة</span>
                 </button>
             </div>
 
-            <!-- قسم التعليقات (مع إيموجي حصرية وزر رد فرعي) -->
+            <!-- قسم التعليقات (تم حذف نص "اضغط مرتين لرؤية الإيموجي") -->
             <div id="comments-1" class="bg-gray-50/80 p-3.5 border-t hidden text-xs space-y-3">
                 <div id="comments-list-1" class="space-y-2">
                     <div class="bg-white p-3 rounded-2xl shadow-sm border border-gray-100 relative cursor-pointer" ondblclick="toggleEmojiBar(this)">
                         <div class="flex justify-between items-center mb-1">
                             <span class="font-bold text-gray-800">حسين البصري</span>
-                            <span class="text-[10px] text-gray-400">منذ 30 دقيقة</span>
+                            <span class="text-[10px] text-gray-400">قبل 30 دقيقة</span>
                         </div>
                         <p class="text-gray-700 mb-2">بي مجال السعر شراي ومستعجل؟</p>
                         
@@ -176,17 +212,15 @@
                             <button onclick="toggleReplyBox('reply-box-1')" class="text-blue-600 font-bold hover:underline btn-tap">
                                 <i class="fa-solid fa-reply ml-1"></i>رد
                             </button>
-                            <span class="text-[10px] text-gray-400 italic">(انقر مرتين لإظهار الإيموجي)</span>
                         </div>
 
-                        <!-- شريط إيموجي يظهر فقط عند الضغط مرتين ويسمح باختيار واحد فقط -->
+                        <!-- شريط الإيموجي دون نص إرشادي -->
                         <div class="emoji-bar hidden mt-2 pt-2 border-t flex items-center gap-4 text-sm emoji-pop">
                             <button onclick="selectExclusiveEmoji(this)" class="emoji-btn font-bold text-gray-400 hover:scale-125 transition">👍 <span class="count">0</span></button>
                             <button onclick="selectExclusiveEmoji(this)" class="emoji-btn font-bold text-gray-400 hover:scale-125 transition">😂 <span class="count">0</span></button>
                             <button onclick="selectExclusiveEmoji(this)" class="emoji-btn font-bold text-gray-400 hover:scale-125 transition">👎 <span class="count">0</span></button>
                         </div>
 
-                        <!-- صندوق الرد الفرعي -->
                         <div id="reply-box-1" class="hidden mt-2 pt-2 border-t flex gap-2">
                             <input type="text" placeholder="اكتب ردك..." class="flex-1 border rounded-full px-3 py-1 outline-none text-xs bg-gray-50">
                             <button onclick="addReply(this)" class="bg-blue-600 text-white px-3 py-1 rounded-full font-bold btn-tap">إرسال</button>
@@ -202,12 +236,36 @@
         </div>
     </main>
 
-    <!-- 3. صفحة الملف الشخصي الكاملة (Full Profile View) -->
+    <!-- 3. نافذة المراسلة المباشرة المصححة -->
+    <div id="chat-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
+        <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[450px]">
+            <div class="bg-[#1877f2] text-white p-3.5 flex justify-between items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center font-bold">ع</div>
+                    <span id="chat-seller-name" class="font-bold text-sm">مراسلة البائع</span>
+                </div>
+                <button onclick="toggleModal('chat-modal')" class="text-xl font-bold">&times;</button>
+            </div>
+            
+            <div class="flex-1 p-3 bg-gray-50 overflow-y-auto space-y-2 text-xs" id="chat-messages">
+                <div class="bg-blue-100 text-blue-900 p-2.5 rounded-xl max-w-[80%]">
+                    السلام عليكم، الدراجة بعدهي معروضة لو انباعت؟
+                </div>
+            </div>
+
+            <div class="p-2 border-t bg-white flex gap-2">
+                <input id="chat-input" type="text" placeholder="اكتب رسالتك للبائع..." class="flex-1 border rounded-full px-3.5 py-2 outline-none text-xs">
+                <button onclick="sendChatMessage()" class="bg-blue-600 text-white px-4 py-2 rounded-full font-bold btn-tap text-xs">إرسال</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. البروفايل الشخصي الكامل -->
     <div id="profile-view" class="hidden min-h-screen bg-gray-100 pb-12">
         <header class="bg-white border-b sticky top-0 z-40 px-4 h-14 flex items-center justify-between shadow-sm">
             <button onclick="hideProfilePage()" class="text-blue-600 font-bold text-sm flex items-center gap-1 btn-tap">
                 <i class="fa-solid fa-arrow-right"></i>
-                <span>العودة للرئيسية</span>
+                <span>رجوع للرئيسية</span>
             </button>
             <h3 class="font-bold text-base text-gray-800">الملف الشخصي</h3>
             <div class="w-8"></div>
@@ -242,20 +300,20 @@
             </div>
 
             <div class="px-2">
-                <h3 class="font-bold text-sm text-gray-700 mb-2 px-2">منشوراتي ودراجاتي المعروضة:</h3>
+                <h3 class="font-bold text-sm text-gray-700 mb-2 px-2">دراجاتي المعروضة:</h3>
                 <div class="bg-white p-8 rounded-2xl text-center text-gray-400 text-xs shadow-sm border border-dashed">
-                    لا توجد منشورات معروضة حتى الآن.
+                    ما عندك دراجات معروضة حالياً.
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 4. نافذة إضافة إعلان جديد المحدثة بالكامل -->
+    <!-- 5. نافذة اعرض دراجتك (إعلان جديد) -->
     <div id="add-post-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-2">
         <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col slide-up">
             <div class="bg-[#1877f2] text-white p-4 flex justify-between items-center">
                 <h3 class="font-bold text-base flex items-center gap-2">
-                    <i class="fa-solid fa-plus-circle"></i> إضافة إعلان دراجة
+                    <i class="fa-solid fa-plus-circle"></i> اعرض دراجتك للبيع
                 </h3>
                 <button onclick="toggleModal('add-post-modal')" class="text-xl font-bold p-1 cursor-pointer">&times;</button>
             </div>
@@ -266,12 +324,11 @@
                     <input type="text" placeholder="مثال: سكوتر ياماها زوما 125" required class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50">
                 </div>
 
-                <!-- السعر واختيار العملة -->
                 <div>
                     <label class="block mb-1 text-gray-700">السعر:</label>
                     <div class="flex gap-2">
                         <input type="number" placeholder="750000" required class="flex-1 border rounded-xl p-2.5 outline-none font-normal bg-gray-50">
-                        <select id="currency-select" class="bg-blue-50 border border-blue-200 text-blue-700 font-bold rounded-xl px-3 outline-none">
+                        <select class="bg-blue-50 border border-blue-200 text-blue-700 font-bold rounded-xl px-3 outline-none">
                             <option value="IQD">د.ع (عراقي)</option>
                             <option value="USD">$ (دولار)</option>
                         </select>
@@ -279,7 +336,6 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-2">
-                    <!-- المحافظات -->
                     <div>
                         <label class="block mb-1 text-gray-700">المحافظة:</label>
                         <select required class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50">
@@ -291,17 +347,15 @@
                         </select>
                     </div>
 
-                    <!-- رقم الهاتف (اختياري) -->
                     <div>
                         <label class="block mb-1 text-gray-700">رقم الهاتف <span class="text-gray-400 font-normal">(اختياري)</span>:</label>
                         <input type="tel" placeholder="077xxxxxxxx" class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50">
                     </div>
                 </div>
 
-                <!-- خيار التوصيل (اختياري) -->
                 <div class="bg-gray-50 p-3 rounded-xl border border-gray-200 flex items-center justify-between">
                     <span class="text-gray-700 font-bold flex items-center gap-1.5">
-                        <i class="fa-solid fa-truck-fast text-blue-600"></i> إمكانية التوصيل للمشتري:
+                        <i class="fa-solid fa-truck-fast text-blue-600"></i> عندك توصيل للمشتري؟
                     </span>
                     <label class="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" class="sr-only peer">
@@ -310,28 +364,23 @@
                 </div>
 
                 <div>
-                    <label class="block mb-1 text-gray-700">الصور والفيديو <span class="text-gray-400 font-normal">(5 صور + فيديو 30 ثانية)</span>:</label>
+                    <label class="block mb-1 text-gray-700">الصور والفيديو <span class="text-gray-400 font-normal">(5 صور + فيديو)</span>:</label>
                     <input type="file" multiple accept="image/*,video/*" class="w-full text-xs text-gray-500 bg-gray-50 p-2 border rounded-xl">
                 </div>
 
-                <div>
-                    <label class="block mb-1 text-gray-700">تفاصيل إضافية عن الدراجة:</label>
-                    <textarea rows="2" placeholder="اكتب حالة المحرك، النظافة، أي ملاحقت إضافية..." class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50"></textarea>
-                </div>
-
                 <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold py-3 rounded-xl shadow-lg btn-tap text-sm">
-                    نشر الإعلان الآن
+                    انشر الإعلان هسا
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- 5. نافذة الإعدادات المقترحة (Settings Modal) -->
+    <!-- 6. نافذة الإعدادات -->
     <div id="settings-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
         <div class="bg-white w-full max-w-sm rounded-2xl p-5 shadow-2xl space-y-4">
             <div class="flex justify-between items-center border-b pb-2">
                 <h3 class="font-black text-base flex items-center gap-2 text-gray-800">
-                    <i class="fa-solid fa-gear text-blue-600"></i> إعدادات المنصة
+                    <i class="fa-solid fa-gear text-blue-600"></i> الإعدادات
                 </h3>
                 <button onclick="toggleModal('settings-modal')" class="text-lg font-bold">&times;</button>
             </div>
@@ -339,16 +388,11 @@
             <div class="space-y-3 text-xs font-bold text-gray-700">
                 <div class="flex items-center justify-between p-2.5 bg-gray-50 rounded-xl">
                     <span>الوضع الداكن (Dark Mode)</span>
-                    <input type="checkbox" onchange="alert('سيتم تفعيل الوضع الداكن مستقبلاً!')" class="w-4 h-4 text-blue-600">
-                </div>
-
-                <div class="flex items-center justify-between p-2.5 bg-gray-50 rounded-xl">
-                    <span>إشعارات المحادثات والرسائل</span>
-                    <input type="checkbox" checked class="w-4 h-4 text-blue-600">
+                    <input type="checkbox" class="w-4 h-4 text-blue-600">
                 </div>
 
                 <div class="p-2.5 bg-gray-50 rounded-xl cursor-pointer hover:bg-gray-100" onclick="alert('للدعم الاتصال بنا عبر واتساب المنصة')">
-                    <i class="fa-solid fa-headset text-green-600 ml-1"></i> التواصل مع الدعم الفني
+                    <i class="fa-solid fa-headset text-green-600 ml-1"></i> التواصل ويا الدعم الفني
                 </div>
             </div>
 
@@ -358,11 +402,11 @@
         </div>
     </div>
 
-    <!-- 6. نافذة تسجيل الدخول بـ Google -->
+    <!-- 7. نافذة تسجيل الدخول -->
     <div id="auth-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
         <div class="bg-white w-full max-w-sm rounded-2xl p-5 shadow-2xl">
             <div class="flex justify-between items-center mb-3">
-                <h3 class="font-bold text-base">الدخول إلى دراجتي</h3>
+                <h3 class="font-bold text-base">تسجيل الدخول إلى دراجتي</h3>
                 <button onclick="toggleModal('auth-modal')" class="text-lg font-bold">&times;</button>
             </div>
             
@@ -373,7 +417,7 @@
         </div>
     </div>
 
-    <!-- البرمجة السلوكية والتفاعلات -->
+    <!-- السكريبت والوظائف -->
     <script>
         let currentUser = null;
 
@@ -387,6 +431,46 @@
             } else {
                 action();
             }
+        }
+
+        // اختيار الفئات
+        function selectCategory(cat, btn) {
+            document.querySelectorAll('.category-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const subBar = document.getElementById('sub-parts-bar');
+            if (cat === 'parts') {
+                subBar.classList.remove('hidden');
+            } else {
+                subBar.classList.add('hidden');
+            }
+        }
+
+        function filterSubPart(btn) {
+            const parent = btn.parentElement;
+            parent.querySelectorAll('button').forEach(b => {
+                b.className = "px-2.5 py-1 bg-gray-100 text-gray-600 rounded-lg font-bold";
+            });
+            btn.className = "px-2.5 py-1 bg-blue-50 text-blue-600 rounded-lg font-bold border border-blue-200";
+        }
+
+        // إطلاق نافذة المراسلة
+        function openChat(sellerName, phone) {
+            document.getElementById('chat-seller-name').innerText = "مراسلة: " + sellerName;
+            toggleModal('chat-modal');
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            if(!input.value.trim()) return;
+            
+            const msgBox = document.getElementById('chat-messages');
+            const newMsg = document.createElement('div');
+            newMsg.className = "bg-blue-600 text-white p-2.5 rounded-xl max-w-[80%] mr-auto text-left";
+            newMsg.innerText = input.value;
+            msgBox.appendChild(newMsg);
+            input.value = "";
+            msgBox.scrollTop = msgBox.scrollHeight;
         }
 
         function showProfilePage() {
@@ -468,6 +552,10 @@
             if (!input.value.trim()) return;
             alert("تم إضافة تعليقك بنجاح!");
             input.value = '';
+        }
+
+        function sharePost() {
+            alert("تم نسخ رابط الإعلان بمحافظتك لمشاركته!");
         }
 
         function handleFormSubmit(e) {
