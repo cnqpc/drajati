@@ -26,6 +26,7 @@
 
         .btn-tap { 
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
+            cursor: pointer;
         }
         .btn-tap:active { 
             transform: scale(0.93); 
@@ -46,43 +47,6 @@
             from { transform: translateY(100%); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
-
-        .toggle-checkbox:checked + .toggle-label {
-            background-color: #10b981;
-        }
-        .toggle-checkbox:checked + .toggle-label .toggle-dot {
-            transform: translateX(-1.1rem);
-        }
-
-        @keyframes popBookmark {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.3) rotate(-10deg); }
-            100% { transform: scale(1) rotate(0); }
-        }
-        .bookmark-pop {
-            animation: popBookmark 0.35s ease-in-out;
-        }
-
-        .featured-bg {
-            background-color: #1e293b;
-            background-image: radial-gradient(#334155 1px, transparent 1px), radial-gradient(#334155 1px, #1e293b 1px);
-            background-size: 16px 16px;
-            background-position: 0 0, 8px 8px;
-        }
-
-        @keyframes marquee {
-            0% { transform: translateX(0%); }
-            50% { transform: translateX(40%); }
-            100% { transform: translateX(0%); }
-        }
-        .animate-marquee {
-            display: flex;
-            width: max-content;
-            animation: marquee 18s ease-in-out infinite alternate;
-        }
-        .animate-marquee:hover {
-            animation-play-state: paused;
-        }
     </style>
 </head>
 <body class="text-gray-800 pb-12">
@@ -90,7 +54,7 @@
     <!-- 1. الهيدر العلوي الرئيسي -->
     <header class="bg-[#1877f2]/95 backdrop-blur-md text-white sticky top-0 z-40 shadow-md">
         <div class="max-w-2xl mx-auto px-2.5 h-14 flex items-center justify-between">
-            <div class="flex items-center space-x-1.5 space-x-reverse cursor-pointer" onclick="hideAllViews(); showMainView();">
+            <div class="flex items-center space-x-1.5 space-x-reverse cursor-pointer" onclick="showMainView()">
                 <div class="w-8 h-8 bg-gradient-to-tr from-amber-400 to-orange-500 rounded-lg flex items-center justify-center text-white text-base shadow-md border border-white/20 transform -rotate-3">
                     <i class="fa-solid fa-motorcycle"></i>
                 </div>
@@ -139,7 +103,7 @@
             </button>
         </div>
 
-        <!-- حاوية المنشورات التي سيتم جلبها مباشرة من Supabase -->
+        <!-- حاوية المنشورات -->
         <div id="posts-container" class="space-y-3">
             <p class="text-center text-xs text-gray-500 py-6">جاري تحميل المنشورات المباشرة...</p>
         </div>
@@ -148,7 +112,7 @@
         <div id="quick-browse-view" class="hidden space-y-2.5">
             <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border shadow-sm">
                 <span class="font-black text-xs text-gray-800 flex items-center gap-1">
-                    <i class="fa-solid fa-table-cells text-amber-500"></i> اتصفح بسرعة <span id="qb-page-num">1</span>
+                    <i class="fa-solid fa-table-cells text-amber-500"></i> اتصفح بسرعة
                 </span>
                 <button onclick="toggleQuickBrowse()" class="text-xs text-red-500 font-bold">إغلاق</button>
             </div>
@@ -185,13 +149,14 @@
 
     <!-- 4. نافذة الإعدادات -->
     <div id="settings-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
-        <div class="bg-white w-full max-w-sm rounded-2xl p-4 shadow-2xl space-y-3.5 slide-up max-h-[90vh] overflow-y-auto">
+        <div class="bg-white w-full max-w-sm rounded-2xl p-4 shadow-2xl space-y-3.5 slide-up">
             <div class="flex justify-between items-center border-b pb-2.5">
                 <h3 class="font-black text-sm flex items-center gap-2 text-gray-800">
-                    <i class="fa-solid fa-gear text-blue-600"></i> إعدادات المنصة
+                    <i class="fa-solid fa-gear text-blue-600"></i> إعدادات التطبيق
                 </h3>
                 <button onclick="toggleModal('settings-modal')" class="text-lg font-bold text-gray-400 hover:text-gray-700">&times;</button>
             </div>
+            <p class="text-xs text-gray-600 leading-relaxed">تطبيق دراجتي - المنصة المباشرة الأولى لبيع وشراء الدراجات في العراق.</p>
             <button onclick="toggleModal('settings-modal')" class="w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 rounded-xl text-xs btn-tap transition">
                 إغلاق
             </button>
@@ -264,7 +229,7 @@
     <!-- 6. البروفايل الشخصي -->
     <div id="profile-view" class="hidden min-h-screen bg-gray-100 pb-12">
         <header class="bg-white border-b sticky top-0 z-40 px-3 h-11 flex items-center justify-between shadow-sm">
-            <button onclick="hideAllViews(); showMainView();" class="text-blue-600 font-bold text-xs flex items-center gap-1 btn-tap">
+            <button onclick="showMainView()" class="text-blue-600 font-bold text-xs flex items-center gap-1 btn-tap">
                 <i class="fa-solid fa-arrow-right"></i>
                 <span>رجوع للرئيسية</span>
             </button>
@@ -303,25 +268,115 @@
         </div>
     </div>
 
-    <!-- البرمجية والتزامن المباشر مع Supabase مع الحماية من الأخطاء -->
+    <!-- السكربت الخالي من الأخطاء والآمن للتنفيذ -->
     <script>
-        // ضع روابطك الخاصة بـ Supabase هنا
         const SUPABASE_URL = "https://lurzvtbvsglxswoiftao.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_DDnpGIIa1_yMCTGPZjhQJA_oMg48DGt";
 
-        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let supabase = null;
         let currentUser = null;
         let selectedCity = 'كل المحافظات';
         let selectedCategory = 'الكل';
 
-        window.addEventListener('DOMContentLoaded', async () => {
-            initAuth();
-            loadPosts();
-            setupRealtimeSubscriptions();
-        });
+        window.onload = function() {
+            try {
+                if (window.supabase) {
+                    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    initAuth();
+                    loadPosts();
+                    setupRealtimeSubscriptions();
+                } else {
+                    console.warn("لم يتم تحميل مكتبة Supabase");
+                }
+            } catch (err) {
+                console.error("خطأ تهيئة Supabase:", err);
+            }
+        };
 
-        // 1. إدارة جلسة المستخدم
+        // --- وظائف التحكم بالواجهات والنوافذ (تعمل دائماً وبدون أخطاء) ---
+        function toggleModal(id) { 
+            const modal = document.getElementById(id);
+            if (modal) modal.classList.toggle('hidden'); 
+        }
+
+        function hideAllViews() {
+            document.getElementById('main-view').classList.add('hidden');
+            document.getElementById('profile-view').classList.add('hidden');
+        }
+
+        function showMainView() { 
+            hideAllViews();
+            document.getElementById('main-view').classList.remove('hidden'); 
+        }
+
+        function showProfilePage() { 
+            hideAllViews(); 
+            document.getElementById('profile-view').classList.remove('hidden'); 
+        }
+
+        function toggleQuickBrowse() {
+            const mainPosts = document.getElementById('posts-container');
+            const qbView = document.getElementById('quick-browse-view');
+            
+            if (qbView.classList.contains('hidden')) {
+                mainPosts.classList.add('hidden');
+                qbView.classList.remove('hidden');
+            } else {
+                mainPosts.classList.remove('hidden');
+                qbView.classList.add('hidden');
+            }
+        }
+
+        function openCityPicker() { toggleModal('city-picker-modal'); }
+
+        function selectCategory(cat) {
+            selectedCategory = cat;
+            document.getElementById('selected-category-label').innerText = cat;
+            toggleModal('categories-modal');
+            filterPosts();
+        }
+
+        function selectCity(city) {
+            selectedCity = city;
+            document.getElementById('main-city-label').innerText = city;
+            toggleModal('city-picker-modal');
+            filterPosts();
+        }
+
+        function filterPosts() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const posts = document.querySelectorAll('.post-card');
+
+            posts.forEach(post => {
+                const titleEl = post.querySelector('.post-title');
+                const title = titleEl ? titleEl.innerText.toLowerCase() : '';
+                const postCat = post.getAttribute('data-category');
+                const postCity = post.getAttribute('data-city');
+
+                const matchesSearch = title.includes(query);
+                const matchesCat = (selectedCategory === 'الكل') || (postCat === selectedCategory);
+                const matchesCity = (selectedCity === 'كل المحافظات') || (postCity === selectedCity);
+
+                if (matchesSearch && matchesCat && matchesCity) {
+                    post.classList.remove('hidden');
+                } else {
+                    post.classList.add('hidden');
+                }
+            });
+        }
+
+        function checkAuthAndAction(action) {
+            if (!currentUser) {
+                alert("يرجى تسجيل الدخول أولاً!");
+                showProfilePage();
+            } else { 
+                action(); 
+            }
+        }
+
+        // --- وظائف الاتصال بـ Supabase ---
         async function initAuth() {
+            if (!supabase) return;
             try {
                 const { data: { user } } = await supabase.auth.getUser();
                 updateUserUI(user);
@@ -330,7 +385,7 @@
                     updateUserUI(session?.user || null);
                 });
             } catch (err) {
-                console.warn('تعذر جلب حالة المستخدم الحالية:', err);
+                console.warn('حالة تسجيل الدخول:', err);
             }
         }
 
@@ -357,16 +412,20 @@
         }
 
         async function loginWithGoogle() {
-            await supabase.auth.signInWithOAuth({ provider: 'google' });
+            if (supabase) await supabase.auth.signInWithOAuth({ provider: 'google' });
         }
 
         async function logout() {
-            await supabase.auth.signOut();
+            if (supabase) await supabase.auth.signOut();
         }
 
-        // 2. جلب المنشورات والتعليقات بأمان
         async function loadPosts() {
             const container = document.getElementById('posts-container');
+            if (!supabase) {
+                container.innerHTML = '<p class="text-center text-xs text-red-500 py-6">تعذر الاتصال بقاعدة البيانات.</p>';
+                return;
+            }
+
             try {
                 const { data: posts, error } = await supabase
                     .from('posts')
@@ -386,8 +445,8 @@
                     container.appendChild(createPostCard(post));
                 });
             } catch (err) {
-                console.error('خطأ الاتصال بـ Supabase:', err);
-                container.innerHTML = '<p class="text-center text-xs text-red-500 py-6">تعذر الاتصال بقاعدة البيانات. تأكد من إعداد المفتاح والجداول بشكل صحيح.</p>';
+                console.error('فشل جلب المنشورات:', err);
+                container.innerHTML = '<p class="text-center text-xs text-red-500 py-6">تأكد من إنشاء الجداول داخل Supabase والمفاتيح بشكل صحيح.</p>';
             }
         }
 
@@ -421,11 +480,11 @@
                     <div class="text-base font-black text-green-600">${post.price || 0} د.ع</div>
                 </div>
                 <div class="px-2.5 py-2 border-t bg-gray-50 flex items-center justify-between text-[11px]">
-                    <button onclick="toggleComments('${post.id}')" class="flex items-center gap-1 border bg-white px-2.5 py-1 rounded-full font-bold">
+                    <button onclick="toggleComments('${post.id}')" class="flex items-center gap-1 border bg-white px-2.5 py-1 rounded-full font-bold btn-tap">
                         <i class="fa-regular fa-comment text-blue-500"></i>
                         <span>التعليقات</span>
                     </button>
-                    <button onclick="sharePost('${post.title}')" class="flex items-center gap-1 border bg-white px-2.5 py-1 rounded-full font-bold text-green-600">
+                    <button onclick="sharePost('${post.title}')" class="flex items-center gap-1 border bg-white px-2.5 py-1 rounded-full font-bold text-green-600 btn-tap">
                         <i class="fa-solid fa-share-nodes"></i> مشاركة
                     </button>
                 </div>
@@ -440,8 +499,13 @@
             return div;
         }
 
-        // 3. الاستماع للتحديثات اللحظية
+        function toggleComments(id) { 
+            const commentsDiv = document.getElementById(`comments-${id}`);
+            if (commentsDiv) commentsDiv.classList.toggle('hidden'); 
+        }
+
         function setupRealtimeSubscriptions() {
+            if (!supabase) return;
             try {
                 supabase.channel('public:posts')
                     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, payload => {
@@ -467,11 +531,10 @@
                     })
                     .subscribe();
             } catch (err) {
-                console.warn('تعذر تفعيل التحديثات اللحظية:', err);
+                console.warn('تحديثات realtime غير مفعلة:', err);
             }
         }
 
-        // 4. تعليق جديد
         async function sendComment(postId) {
             if (!currentUser) return alert("يرجى تسجيل الدخول أولاً للتعليق!");
             const input = document.getElementById(`input-${postId}`);
@@ -486,7 +549,6 @@
             else input.value = '';
         }
 
-        // 5. إضافة إعلان جديد
         async function handleAddPost(e) {
             e.preventDefault();
             if (!currentUser) return alert("يرجى تسجيل الدخول أولاً لنشر إعلان!");
@@ -505,80 +567,11 @@
             ]);
 
             if (error) {
-                alert("حدث خطأ أثناء إضافة الإعلان، يرجى المحاولة لاحقاً.");
+                alert("حدث خطأ أثناء إضافة الإعلان.");
             } else {
                 toggleModal('add-post-modal');
                 e.target.reset();
             }
-        }
-
-        // 6. أزرار وواجهات المستخدم
-        function checkAuthAndAction(action) {
-            if (!currentUser) {
-                alert("يرجى تسجيل الدخول أولاً!");
-                showProfilePage();
-            } else { action(); }
-        }
-
-        function toggleModal(id) { 
-            const modal = document.getElementById(id);
-            if (modal) modal.classList.toggle('hidden'); 
-        }
-
-        function toggleComments(id) { 
-            const commentsDiv = document.getElementById(`comments-${id}`);
-            if (commentsDiv) commentsDiv.classList.toggle('hidden'); 
-        }
-
-        function hideAllViews() {
-            document.getElementById('main-view').classList.add('hidden');
-            document.getElementById('profile-view').classList.add('hidden');
-        }
-
-        function showMainView() { 
-            document.getElementById('main-view').classList.remove('hidden'); 
-        }
-
-        function showProfilePage() { 
-            hideAllViews(); 
-            document.getElementById('profile-view').classList.remove('hidden'); 
-        }
-
-        function selectCategory(cat) {
-            selectedCategory = cat;
-            document.getElementById('selected-category-label').innerText = cat;
-            toggleModal('categories-modal');
-            filterPosts();
-        }
-
-        function openCityPicker() { toggleModal('city-picker-modal'); }
-
-        function selectCity(city) {
-            selectedCity = city;
-            document.getElementById('main-city-label').innerText = city;
-            toggleModal('city-picker-modal');
-            filterPosts();
-        }
-
-        function filterPosts() {
-            const query = document.getElementById('search-input').value.toLowerCase();
-            const posts = document.querySelectorAll('.post-card');
-
-            posts.forEach(post => {
-                const title = post.querySelector('.post-title').innerText.toLowerCase();
-                const postCat = post.getAttribute('data-category');
-                const postCity = post.getAttribute('data-city');
-
-                const matchesSearch = title.includes(query);
-                const matchesCat = (selectedCategory === 'الكل') || (postCat === selectedCategory);
-                const matchesCity = (selectedCity === 'كل المحافظات') || (postCity === selectedCity);
-
-                if (matchesSearch && matchesCat && matchesCity) {
-                    post.classList.remove('hidden');
-                } else {
-                    post.classList.add('hidden');
-                }
-            });
         }
 
         async function sharePost(title) {
@@ -587,19 +580,6 @@
             } else {
                 navigator.clipboard.writeText(window.location.href);
                 alert('تم نسخ رابط المنشور!');
-            }
-        }
-
-        function toggleQuickBrowse() {
-            const mainPosts = document.getElementById('posts-container');
-            const qbView = document.getElementById('quick-browse-view');
-            
-            if (qbView.classList.contains('hidden')) {
-                mainPosts.classList.add('hidden');
-                qbView.classList.remove('hidden');
-            } else {
-                mainPosts.classList.remove('hidden');
-                qbView.classList.add('hidden');
             }
         }
     </script>
