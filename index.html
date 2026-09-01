@@ -96,6 +96,14 @@
         .plane-flying {
             animation: flyPlane 0.2s ease-in forwards !important;
         }
+
+        /* تعديل اتجاه زر التفعيل RTL للتحرك نحو اليسار بشكل صحيح */
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #10b981;
+        }
+        .toggle-checkbox:checked + .toggle-label .toggle-dot {
+            transform: translateX(-1.25rem);
+        }
     </style>
 </head>
 <body class="text-gray-800">
@@ -171,19 +179,24 @@
             </div>
         </div>
 
-        <!-- منشور نموذجي مع النقاط الثلاث والأزرار الموحدة التصميم -->
+        <!-- منشور نموذجي معدل مع خانة المحافظة المستقلة واسم الدراجة والوصف منفصلين -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200/70 mb-4 overflow-hidden card-hover">
             <div class="p-3.5 flex items-center justify-between border-b border-gray-100 relative">
                 <div class="flex items-center space-x-3 space-x-reverse cursor-pointer" onclick="showSellerProfile('علي العراقي', 'بغداد - الكرادة')">
                     <div class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-sm">ع</div>
                     <div>
                         <h4 class="font-bold text-sm text-gray-900">علي العراقي</h4>
-                        <p class="text-[11px] text-gray-400">بغداد • قبل ساعتين</p>
+                        <p class="text-[11px] text-gray-400">قبل ساعتين</p>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-2">
-                    <span class="bg-emerald-50 text-emerald-600 border border-emerald-200/60 text-[11px] px-2.5 py-1 rounded-full font-bold flex items-center gap-1">
+                <div class="flex items-center gap-1.5">
+                    <!-- خانة المحافظة المضافة بجانب التوصيل -->
+                    <span class="bg-blue-50 text-blue-700 border border-blue-200/60 text-[11px] px-2.5 py-0.5 rounded-full font-bold flex items-center gap-1">
+                        <i class="fa-solid fa-location-dot text-blue-500"></i> بغداد
+                    </span>
+
+                    <span class="bg-emerald-50 text-emerald-600 border border-emerald-200/60 text-[11px] px-2.5 py-0.5 rounded-full font-bold flex items-center gap-1">
                         <i class="fa-solid fa-truck-fast"></i> أكو توصيل
                     </span>
 
@@ -207,37 +220,47 @@
                 </div>
             </div>
 
-            <div class="p-3.5">
-                <p class="text-sm font-semibold text-gray-800 mb-2">سكوتر ياماها زوما 125cc نظيف جداً بشرط الفحص، محرك ما مفتوح.</p>
-                <div class="flex items-baseline gap-2 mb-2">
+            <!-- اسم الدراجة والوصف مقسمين بخانتين مستقلتين -->
+            <div class="p-3.5 space-y-2">
+                <!-- خانة اسم الدراجة -->
+                <div>
+                    <h3 class="text-base font-black text-gray-900 leading-snug">سكوتر ياماها زوما 125cc</h3>
+                </div>
+
+                <!-- خانة الوصف تحت الاسم -->
+                <div class="bg-gray-50/80 p-2.5 rounded-xl border border-gray-100">
+                    <p class="text-xs text-gray-600 font-semibold leading-relaxed">دراجة نظيفة جداً بشرط الفحص الكامل، محرك ما مفتوح، كشر وبدن بلاد، وأحجام التايرات ممتازة واستعمال شخصي خفيف.</p>
+                </div>
+
+                <div class="flex items-baseline gap-2 pt-1">
                     <div class="text-xl font-black text-green-600">850,000 د.ع</div>
                     <span class="text-xs font-bold text-gray-400">(حوالي $575)</span>
                 </div>
             </div>
 
-            <!-- أزرار التفاعل (الأزرار الأربعة موحدة بنفس إطار زر الإعجاب المميز + أصوات تفاعلية) -->
+            <!-- أزرار التفاعل الموحدة تصميمياً + صوت الإعجاب الشهير المميز -->
             <div class="px-3 py-2.5 flex justify-between items-center border-t border-gray-100 text-xs font-bold gap-1.5">
                 
-                <!-- 1. زر الإعجاب -->
-                <button onclick="playLikeSound(); checkAuthAndAction(() => triggerLikeEffect(this));" class="like-container flex-1 bg-gray-100/80 hover:bg-gray-200/70 py-1.5 px-2 rounded-full flex items-center justify-center gap-1.5 btn-tap border border-gray-200/50 relative overflow-visible transition-all">
+                <!-- 1. زر الإعجاب المطور مع صوت الفيسبوك المبهج -->
+                <button onclick="playFacebookLikeSound(); checkAuthAndAction(() => triggerLikeEffect(this));" class="like-container flex-1 bg-gray-100/80 hover:bg-gray-200/70 py-1.5 px-2 rounded-full flex items-center justify-center gap-1.5 btn-tap border border-gray-200/50 relative overflow-visible transition-all">
                     <i class="like-icon fa-regular fa-thumbs-up text-sm text-gray-600 transition-all"></i>
                     <span class="like-count text-xs font-black text-gray-700">12</span>
                 </button>
                 
                 <!-- 2. زر التعليق -->
-                <button onclick="playActionSound(); toggleComments('comments-1');" class="flex-1 bg-gray-100/80 hover:bg-gray-200/70 py-1.5 px-2 rounded-full flex items-center justify-center gap-1.5 btn-tap border border-gray-200/50 text-gray-700 hover:text-blue-600 transition-all">
+                <button onclick="playCommentSound(); toggleComments('comments-1');" class="flex-1 bg-gray-100/80 hover:bg-gray-200/70 py-1.5 px-2 rounded-full flex items-center justify-center gap-1.5 btn-tap border border-gray-200/50 text-gray-700 hover:text-blue-600 transition-all">
                     <i class="fa-regular fa-comment text-sm"></i>
                     <span>تعليق</span>
                 </button>
 
                 <!-- 3. زر المشاركة -->
-                <button onclick="playActionSound(); sharePost();" class="flex-1 bg-gray-100/80 hover:bg-gray-200/70 py-1.5 px-2 rounded-full flex items-center justify-center gap-1.5 btn-tap border border-gray-200/50 text-gray-700 hover:text-blue-600 transition-all">
+                <button onclick="playShareSound(); sharePost();" class="flex-1 bg-gray-100/80 hover:bg-gray-200/70 py-1.5 px-2 rounded-full flex items-center justify-center gap-1.5 btn-tap border border-gray-200/50 text-gray-700 hover:text-blue-600 transition-all">
                     <i class="fa-solid fa-share text-sm"></i>
                     <span>مشاركة</span>
                 </button>
 
                 <!-- 4. زر المراسلة السريع -->
-                <button onclick="playActionSound(); animateAndOpenChat(this, 'علي العراقي', '07700000000');" class="flex-1 bg-blue-50 hover:bg-blue-100/80 text-blue-600 py-1.5 px-2 rounded-full flex items-center justify-center gap-1.5 font-bold btn-tap border border-blue-200 transition-all">
+                <button onclick="playMessageSound(); animateAndOpenChat(this, 'علي العراقي', '07700000000');" class="flex-1 bg-blue-50 hover:bg-blue-100/80 text-blue-600 py-1.5 px-2 rounded-full flex items-center justify-center gap-1.5 font-bold btn-tap border border-blue-200 transition-all">
                     <i class="chat-plane-icon fa-solid fa-paper-plane text-sm"></i>
                     <span>مراسلة</span>
                 </button>
@@ -356,7 +379,7 @@
         </div>
     </div>
 
-    <!-- 5. نافذة اعرض دراجتك (إعلان جديد) -->
+    <!-- 5. نافذة اعرض دراجتك (تم إصلاح اتجاه الزر الحركي بشكل صحيح للدردشة والموقع) -->
     <div id="add-post-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-2">
         <div class="bg-white w-full max-w-lg rounded-t-3xl sm:rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col slide-up">
             <div class="bg-[#1877f2] text-white p-4 flex justify-between items-center">
@@ -367,9 +390,17 @@
             </div>
             
             <form onsubmit="handleFormSubmit(event)" class="p-4 overflow-y-auto space-y-3.5 text-xs font-bold">
+                
+                <!-- اسم الدراجة في خانة أولى -->
                 <div>
-                    <label class="block mb-1 text-gray-700">عنوان الإعلان / اسم الدراجة:</label>
+                    <label class="block mb-1 text-gray-700">اسم الدراجة / نوعها:</label>
                     <input type="text" placeholder="مثال: سكوتر ياماها زوما 125" required class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50">
+                </div>
+
+                <!-- الوصف في خانة تحت الاسم -->
+                <div>
+                    <label class="block mb-1 text-gray-700">وصف الدراجة والحالة:</label>
+                    <textarea placeholder="اكتب تفاصيل المحرك، النظافة، الكشر، الضمان..." rows="3" class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50 resize-none"></textarea>
                 </div>
 
                 <div>
@@ -401,14 +432,17 @@
                     </div>
                 </div>
 
+                <!-- زر التفعيل والتعطيل الصحيح لخدمة التوصيل (يتحرك نحو اليسار بشكل مضبوط) -->
                 <div class="bg-gray-50 p-3 rounded-xl border border-gray-200 flex items-center justify-between">
                     <span class="text-gray-700 font-bold flex items-center gap-1.5">
                         <i class="fa-solid fa-truck-fast text-blue-600"></i> أكو توصيل للمشتري؟
                     </span>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" class="sr-only peer">
-                        <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:right-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
-                    </label>
+                    <div class="relative inline-block w-10 align-middle select-none">
+                        <input type="checkbox" id="toggle-delivery" class="toggle-checkbox hidden" checked />
+                        <label for="toggle-delivery" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200">
+                            <span class="toggle-dot block w-5 h-5 rounded-full bg-white shadow transform translate-x-0 transition-transform duration-200 my-0.5 mx-0.5"></span>
+                        </label>
+                    </div>
                 </div>
 
                 <div>
@@ -423,7 +457,7 @@
         </div>
     </div>
 
-    <!-- 6. نافذة الإعدادات الكاملة والمعاد تكوينها بالشكل الصحيح -->
+    <!-- 6. نافذة الإعدادات المعاد تصميمها بالكامل بمفاتيح التفعيل التفاعلية Slider Switches -->
     <div id="settings-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
         <div class="bg-white w-full max-w-md rounded-2xl p-5 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b pb-3">
@@ -453,27 +487,45 @@
                     </div>
                 </div>
 
-                <!-- إعدادات التطبيق -->
+                <!-- إعدادات التطبيق بـ Toggle Switches موحدة بدلاً من علامات الصح -->
                 <div class="space-y-2 pt-2 border-t">
                     <span class="text-gray-400 text-[11px]">التفضيلات العامة</span>
 
+                    <!-- 1. زر الإشعارات والتنبيهات -->
                     <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-bell text-blue-500"></i> الإشعارات والتنبيهات</span>
-                        <input type="checkbox" checked class="w-4 h-4 accent-blue-600">
+                        <div class="relative inline-block w-10 align-middle select-none">
+                            <input type="checkbox" id="toggle-notif" class="toggle-checkbox hidden" checked />
+                            <label for="toggle-notif" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200">
+                                <span class="toggle-dot block w-5 h-5 rounded-full bg-white shadow transform translate-x-0 transition-transform duration-200 my-0.5 mx-0.5"></span>
+                            </label>
+                        </div>
                     </div>
 
+                    <!-- 2. زر الوضع الداكن -->
                     <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-moon text-indigo-500"></i> الوضع الداكن (Dark Mode)</span>
-                        <input type="checkbox" class="w-4 h-4 accent-blue-600">
+                        <div class="relative inline-block w-10 align-middle select-none">
+                            <input type="checkbox" id="toggle-dark" class="toggle-checkbox hidden" />
+                            <label for="toggle-dark" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200">
+                                <span class="toggle-dot block w-5 h-5 rounded-full bg-white shadow transform translate-x-0 transition-transform duration-200 my-0.5 mx-0.5"></span>
+                            </label>
+                        </div>
                     </div>
 
+                    <!-- 3. زر توفير البيانات -->
                     <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
                         <span class="flex items-center gap-2"><i class="fa-solid fa-bolt text-green-500"></i> وضع توفير البيانات</span>
-                        <input type="checkbox" class="w-4 h-4 accent-blue-600">
+                        <div class="relative inline-block w-10 align-middle select-none">
+                            <input type="checkbox" id="toggle-data" class="toggle-checkbox hidden" />
+                            <label for="toggle-data" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200">
+                                <span class="toggle-dot block w-5 h-5 rounded-full bg-white shadow transform translate-x-0 transition-transform duration-200 my-0.5 mx-0.5"></span>
+                            </label>
+                        </div>
                     </div>
                 </div>
 
-                <!-- الدعم والمساعدة (مع تغيير العبارة إلى تواصل ويانا) -->
+                <!-- الدعم والمساعدة -->
                 <div class="space-y-2 pt-2 border-t">
                     <span class="text-gray-400 text-[11px]">الدعم والمساعدة</span>
                     
@@ -505,51 +557,104 @@
         </div>
     </div>
 
-    <!-- السكريبت والمؤثرات الصوتية والتفاعلية -->
+    <!-- السكريبت المطور والمؤثرات الصوتية المتجاوبة بدقة عالية -->
     <script>
         let currentUser = null;
 
-        // نظام محاكاة الأصوات التفاعلية بدون مكتبات خارجية (Web Audio API)
+        // تهيئة محرك الصوتيات برمجياً عبر Web Audio API
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-        // صوت الإعجاب النقي والناعم
-        function playLikeSound() {
+        // 1. صوت اللايك المبهج الرائع (محاكاة دقيقة لنغمة الفيسبوك Pop Tone المميزة)
+        function playFacebookLikeSound() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
+            
+            const now = audioCtx.currentTime;
+            
+            // الصوت الأول (نغمة منخفضة ناعمة)
+            const osc1 = audioCtx.createOscillator();
+            const gain1 = audioCtx.createGain();
+            osc1.type = 'sine';
+            osc1.frequency.setValueAtTime(523.25, now); // C5
+            osc1.frequency.exponentialRampToValueAtTime(659.25, now + 0.08); // E5
+            gain1.gain.setValueAtTime(0.2, now);
+            gain1.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+            osc1.connect(gain1);
+            gain1.connect(audioCtx.destination);
+            osc1.start(now);
+            osc1.stop(now + 0.12);
+
+            // الصوت الثاني (القفزة الصوتية المميزة للإحساس المبهج)
+            const osc2 = audioCtx.createOscillator();
+            const gain2 = audioCtx.createGain();
+            osc2.type = 'sine';
+            osc2.frequency.setValueAtTime(880, now + 0.05); // A5
+            osc2.frequency.exponentialRampToValueAtTime(1174.66, now + 0.18); // D6
+            gain2.gain.setValueAtTime(0.25, now + 0.05);
+            gain2.gain.exponentialRampToValueAtTime(0.01, now + 0.22);
+            osc2.connect(gain2);
+            gain2.connect(audioCtx.destination);
+            osc2.start(now + 0.05);
+            osc2.stop(now + 0.22);
+        }
+
+        // 2. صوت زر التعليق (صوت فقاعة أو نبرة إرسال لطيفة)
+        function playCommentSound() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
 
             osc.type = 'sine';
-            osc.frequency.setValueAtTime(440, audioCtx.currentTime); 
-            osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.12);
+            osc.frequency.setValueAtTime(400, now);
+            osc.frequency.exponentialRampToValueAtTime(700, now + 0.07);
 
-            gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
+            gain.gain.setValueAtTime(0.15, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.07);
 
             osc.connect(gain);
             gain.connect(audioCtx.destination);
-
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.12);
+            osc.start(now);
+            osc.stop(now + 0.07);
         }
 
-        // صوت النقر الكلاسيكي البسيط للأزرار الثلاثة (تعليق، مشاركة، مراسلة)
-        function playActionSound() {
+        // 3. صوت زر المشاركة (صوت سحبة خفيفة ومبهجة)
+        function playShareSound() {
             if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
 
             osc.type = 'triangle';
-            osc.frequency.setValueAtTime(320, audioCtx.currentTime);
-            osc.frequency.exponentialRampToValueAtTime(160, audioCtx.currentTime + 0.05);
+            osc.frequency.setValueAtTime(600, now);
+            osc.frequency.exponentialRampToValueAtTime(900, now + 0.09);
 
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+            gain.gain.setValueAtTime(0.12, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.09);
 
             osc.connect(gain);
             gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.09);
+        }
 
-            osc.start();
-            osc.stop(audioCtx.currentTime + 0.05);
+        // 4. صوت زر المراسلة (صوت إرسال سريع ونقي)
+        function playMessageSound() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(750, now);
+            osc.frequency.exponentialRampToValueAtTime(1050, now + 0.06);
+
+            gain.gain.setValueAtTime(0.15, now);
+            gain.gain.exponentialRampToValueAtTime(0.01, now + 0.06);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.06);
         }
 
         function toggleModal(id) {
@@ -569,7 +674,6 @@
             const menu = document.getElementById(menuId);
             menu.classList.toggle('hidden');
 
-            // إغلاق القائمة عند النقر خارجها
             document.addEventListener('click', function closeMenu(e) {
                 if (!e.target.closest('#' + menuId) && !e.target.closest('button[onclick*="' + menuId + '"]')) {
                     menu.classList.add('hidden');
