@@ -4,227 +4,717 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>دراجتي - سوق الدراجات في العراق</title>
-    <!-- تضمين مكتبة Supabase الرسمية -->
+    <!-- Supabase JS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
-            --primary: #e63946;
-            --secondary: #1d3557;
-            --light: #f1faee;
-            --dark: #111;
-            --gray: #6c757d;
+            --primary-color: #e63946;
+            --primary-hover: #d62839;
+            --secondary-color: #1d3557;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #2b2d42;
+            --text-muted: #6c757d;
+            --border-color: #e9ecef;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --radius: 12px;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: system-ui, -apple-system, sans-serif; }
-        body { background-color: #f8f9fa; color: var(--dark); padding-bottom: 70px; }
-        header { background: var(--secondary); color: white; padding: 1rem; text-align: center; position: sticky; top: 0; z-index: 100; }
-        .container { max-width: 600px; margin: 0 auto; padding: 1rem; }
-        .search-box { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
-        .search-box input { flex: 1; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; }
-        .post-card { background: white; border-radius: 12px; padding: 1rem; margin-bottom: 1rem; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .post-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
-        .post-price { color: var(--primary); font-weight: bold; font-size: 1.2rem; }
-        .post-desc { margin-bottom: 0.5rem; color: #333; }
-        .post-meta { display: flex; gap: 1rem; color: var(--gray); font-size: 0.85rem; margin-bottom: 0.5rem; }
-        .post-actions { display: flex; justify-content: space-between; border-top: 1px solid #eee; padding-top: 0.5rem; margin-top: 0.5rem; }
-        .btn { padding: 0.5rem 1rem; border: none; border-radius: 6px; cursor: pointer; background: #eee; font-weight: bold; }
-        .btn-primary { background: var(--primary); color: white; }
-        .nav-bar { position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 0.75rem; border-top: 1px solid #ccc; }
-        .nav-item { border: none; background: none; font-size: 0.9rem; color: var(--gray); cursor: pointer; }
-        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 200; justify-content: center; align-items: center; }
-        .modal-content { background: white; padding: 1.5rem; border-radius: 12px; width: 90%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
-        .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; margin-bottom: 0.3rem; font-weight: bold; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.6rem; border: 1px solid #ccc; border-radius: 6px; }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            padding-bottom: 70px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            cursor: pointer;
+            color: var(--text-color);
+            padding: 0.4rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Container & Grid */
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* Controls / Search & Filters */
+        .controls-section {
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 0.75rem;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 2.5rem 0.75rem 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-size: 0.95rem;
+        }
+
+        .search-box .search-icon {
+            position: absolute;
+            right: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        select {
+            width: 100%;
+            padding: 0.6rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-color);
+            color: var(--text-color);
+            font-size: 0.88rem;
+        }
+
+        /* Post Card */
+        .post-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            margin-bottom: 1.25rem;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .post-user {
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .user-details h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .user-details span {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .post-content {
+            padding: 1rem;
+        }
+
+        .post-title-price {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .post-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .post-price {
+            color: var(--primary-color);
+            font-size: 1.15rem;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .post-tags {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .tag {
+            background: var(--bg-color);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
+
+        .post-desc {
+            font-size: 0.92rem;
+            line-height: 1.5;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+            white-space: pre-line;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background: var(--bg-color);
+            border-top: 1px solid var(--border-color);
+        }
+
+        .action-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.55rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.88rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: 0.2s;
+        }
+
+        .btn-primary { background: var(--primary-color); color: white; }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--text-color); }
+
+        /* Comments Section */
+        .comments-container {
+            padding: 0.75rem 1rem;
+            background: var(--bg-color);
+            border-top: 1px solid var(--border-color);
+            display: none;
+        }
+
+        .comment-item {
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            background: var(--card-bg);
+            padding: 0.5rem;
+            border-radius: 6px;
+        }
+
+        .comment-input-box {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .comment-input-box input {
+            flex: 1;
+            padding: 0.4rem 0.6rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--card-bg);
+            color: var(--text-color);
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-around;
+            padding: 0.5rem 0;
+            z-index: 100;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-button {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 0.75rem;
+            gap: 0.2rem;
+            cursor: pointer;
+            width: 20%;
+        }
+
+        .nav-button.active { color: var(--primary-color); font-weight: bold; }
+        .nav-button span { font-size: 1.2rem; }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 500px;
+            border-radius: var(--radius);
+            padding: 1.25rem;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            margin-bottom: 0.9rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.65rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        .view-tab { display: none; }
+        .view-tab.active { display: block; }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>دراجتي 🏍️</h1>
+        <a href="#" class="logo">🏍️ دراجتي</a>
+        <div class="header-actions">
+            <button class="icon-btn" onclick="toggleTheme()" title="تغيير المظهر">🌙</button>
+        </div>
     </header>
 
     <div class="container">
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="ابحث عن دراجة، محافظة، أو نوع..." onkeyup="filterPosts()">
+
+        <!-- TAB 1: الرئيسية -->
+        <div id="tabHome" class="view-tab active">
+            <div class="controls-section">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="searchInput" placeholder="ابحث عن دراجة، نوع، أو سعر..." oninput="applyFilters()">
+                </div>
+                <div class="filters-grid">
+                    <select id="filterGov" onchange="applyFilters()">
+                        <option value="">جميع المحافظات</option>
+                        <option value="بغداد">بغداد</option>
+                        <option value="البصرة">البصرة</option>
+                        <option value="النجف">النجف</option>
+                        <option value="كربلاء">كربلاء</option>
+                        <option value="أربيل">أربيل</option>
+                        <option value="ذي قار">ذي قار</option>
+                        <option value="بابل">بابل</option>
+                    </select>
+                    <select id="filterCategory" onchange="applyFilters()">
+                        <option value="">جميع الفئات</option>
+                        <option value="سجاد / إيراني">سجاد / إيراني</option>
+                        <option value="سكوتر">سكوتر</option>
+                        <option value="بطة / ياباني">بطة / ياباني</option>
+                        <option value="رياضي / دباب">رياضي / دباب</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="postsFeed">
+                <p style="text-align:center; padding: 2rem; color: var(--text-muted);">جاري تحميل الإعلانات من قاعدة البيانات...</p>
+            </div>
         </div>
 
-        <div id="postsList">
-            <!-- جاري تحميل المنشورات من قاعدة البيانات -->
-            <p style="text-align:center; color: var(--gray);">جاري تحميل المنشورات...</p>
+        <!-- TAB 2: المحفوظات -->
+        <div id="tabBookmarks" class="view-tab">
+            <h3 style="margin-bottom: 1rem;">الإعلانات المحفوظة 📌</h3>
+            <div id="bookmarksFeed">
+                <p style="text-align:center; color: var(--text-muted);">لا توجد إعلانات محفوظة حالياً.</p>
+            </div>
         </div>
+
+        <!-- TAB 3: إعلاناتي -->
+        <div id="tabMyPosts" class="view-tab">
+            <h3 style="margin-bottom: 1rem;">إعلاناتي 📝</h3>
+            <div id="myPostsFeed">
+                <p style="text-align:center; color: var(--text-muted);">لم تقم بنشر أي إعلانات بعد.</p>
+            </div>
+        </div>
+
     </div>
 
-    <!-- نافذة إضافة منشور جديد -->
-    <div id="addPostModal" class="modal">
+    <!-- Modal: إضافة منشور جديد -->
+    <div id="addModal" class="modal">
         <div class="modal-content">
-            <h2>إضافة إعلان دراجة جديد</h2>
-            <form onsubmit="handleAddPost(event)">
+            <div class="modal-header">
+                <h3>إضافة إعلان دراجة جديد</h3>
+                <button class="icon-btn" onclick="closeModal('addModal')">✕</button>
+            </div>
+            <form onsubmit="handleCreatePost(event)">
                 <div class="form-group">
                     <label>عنوان الإعلان</label>
-                    <input type="text" id="postTitle" required placeholder="مثال: إيراني 2022 نظيف">
+                    <input type="text" id="postTitle" required placeholder="مثال: إيراني نامي 2023 مكفول">
                 </div>
                 <div class="form-group">
                     <label>السعر (بالدينار العراقي)</label>
                     <input type="number" id="postPrice" required placeholder="مثال: 750000">
                 </div>
                 <div class="form-group">
-                    <label>المحافظة</label>
-                    <select id="postGov" required>
-                        <option value="بغداد">بغداد</option>
-                        <option value="البصرة">البصرة</option>
-                        <option value="النجف">النجف</option>
-                        <option value="كربلاء">كربلاء</option>
-                        <option value="أربيل">أربيل</option>
-                        <option value="ذار قار">ذي قار</option>
-                        <option value="بابل">بابل</option>
-                    </select>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:0.5rem;">
+                        <div>
+                            <label>المحافظة</label>
+                            <select id="postGov" required>
+                                <option value="بغداد">بغداد</option>
+                                <option value="البصرة">البصرة</option>
+                                <option value="النجف">النجف</option>
+                                <option value="كربلاء">كربلاء</option>
+                                <option value="أربيل">أربيل</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>الفئة</label>
+                            <select id="postCategory" required>
+                                <option value="سجاد / إيراني">سجاد / إيراني</option>
+                                <option value="سكوتر">سكوتر</option>
+                                <option value="بطة / ياباني">بطة / ياباني</option>
+                                <option value="رياضي / دباب">رياضي / دباب</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label>الفئة</label>
-                    <select id="postCategory" required>
-                        <option value="سجاد / إيراني">سجاد / إيراني</option>
-                        <option value="سكوتر">سكوتر</option>
-                        <option value="بطة / ياباني">بطة / ياباني</option>
-                        <option value="رياضي / دباب">رياضي / دباب</option>
-                        <option value="أخرى">أخرى</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>رقم الهاتف للاتصال</label>
-                    <input type="tel" id="postPhone" required placeholder="07xxxxxxxx">
+                    <label>رقم الهاتف للتواصل</label>
+                    <input type="tel" id="postPhone" required placeholder="07XXXXXXXXX">
                 </div>
                 <div class="form-group">
                     <label>الوصف التفصيلي</label>
-                    <textarea id="postDesc" rows="3" placeholder="اذكر حالة المحرك، الأوراق، وغيرها..."></textarea>
+                    <textarea id="postDesc" rows="3" placeholder="تفاصيل المحرك، الأوراق، أو أي عيوب..."></textarea>
                 </div>
-                <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
-                    <button type="button" class="btn" onclick="closeModal('addPostModal')">إلغاء</button>
-                    <button type="submit" class="btn btn-primary">نشر الإعلان</button>
-                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 0.5rem;">نشر الإعلان الآن</button>
             </form>
         </div>
     </div>
 
-    <!-- شريط التنقل السفلي -->
-    <div class="nav-bar">
-        <button class="nav-item" onclick="loadPosts()">🏠 الرئيسية</button>
-        <button class="nav-item" onclick="openModal('addPostModal')">➕ إضافة إعلان</button>
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <button class="nav-button active" onclick="switchTab('tabHome', this)">
+            <span>🏠</span>الرئيسية
+        </button>
+        <button class="nav-button" onclick="switchTab('tabBookmarks', this)">
+            <span>📌</span>المحفوظات
+        </button>
+        <button class="nav-button" onclick="openModal('addModal')">
+            <span>➕</span>إضافة
+        </button>
+        <button class="nav-button" onclick="switchTab('tabMyPosts', this)">
+            <span>📝</span>إعلاناتي
+        </button>
     </div>
 
     <script>
-        // 1. مفاتيح الربط الخاصة بـ Supabase
+        // --- 1. تهيئة Supabase مع مفاتيح المشروع الخاص بك ---
         const SUPABASE_URL = 'https://lurzvtbvsglxswoiftao.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx1cnp2dGJ2c2dseHN3b2lmdGFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgyMzUzNjcsImV4cCI6MjEwMzgxMTM2N30.JrbwksyvYCF_3uSdrRFEtEMTt9CQLa0vGguCv9GHnB8';
-
-        // إنشاء كائن الاتصال
         const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        let allPostsData = [];
+        // معرف مؤقت للعميل المعرف
+        const TEMP_USER_ID = '00000000-0000-0000-0000-000000000000';
 
-        // 2. دالة جلب المنشورات من قاعدة البيانات وتحديث الشاشة
-        async function loadPosts() {
-            const listElement = document.getElementById('postsList');
-            listElement.innerHTML = '<p style="text-align:center; color: var(--gray);">جاري تحميل المنشورات...</p>';
+        let globalPosts = [];
+        let bookmarkedIds = new Set();
 
+        // --- 2. جلب المنشورات من قاعدة البيانات ---
+        async function fetchPosts() {
+            const feed = document.getElementById('postsFeed');
             try {
-                const { data: posts, error } = await supabase
+                const { data, error } = await supabase
                     .from('posts')
                     .select('*')
                     .order('created_at', { ascending: false });
 
                 if (error) throw error;
 
-                allPostsData = posts || [];
-                renderPosts(allPostsData);
-
+                globalPosts = data || [];
+                renderFeed(globalPosts);
             } catch (err) {
-                console.error('خطأ في جلب البيانات:', err.message);
-                listElement.innerHTML = '<p style="text-align:center; color:red;">تعذر تحميل المنشورات. يرجى محاولة التحديث.</p>';
+                console.error(err);
+                feed.innerHTML = '<p style="text-align:center; color:red;">خطأ أثناء جلب المنشورات من القاعدة.</p>';
             }
         }
 
-        // 3. دالة رسم المنشورات في الصفحة
-        function renderPosts(posts) {
-            const listElement = document.getElementById('postsList');
+        // --- 3. رسم الإعلانات بداخل الواجهة ---
+        function renderFeed(posts) {
+            const feed = document.getElementById('postsFeed');
             if (posts.length === 0) {
-                listElement.innerHTML = '<p style="text-align:center; color: var(--gray);">لا توجد إعلانات حالياً. كن أول من يضيف إعلاناً!</p>';
+                feed.innerHTML = '<p style="text-align:center; padding: 2rem; color: var(--text-muted);">لا توجد منشورات متاحة حالياً.</p>';
                 return;
             }
 
-            listElement.innerHTML = posts.map(post => `
-                <div class="post-card">
-                    <div class="post-header">
-                        <h3>${escapeHtml(post.title)}</h3>
-                        <span class="post-price">${Number(post.price).toLocaleString()} د.ع</span>
+            feed.innerHTML = posts.map(post => {
+                const isBookmarked = bookmarkedIds.has(post.id);
+                return `
+                <div class="post-card" id="post-${post.id}">
+                    <div class="post-user">
+                        <div class="user-info">
+                            <div class="avatar">🏍️</div>
+                            <div class="user-details">
+                                <h4>مستخدم دراجتي</h4>
+                                <span>${new Date(post.created_at).toLocaleDateString('ar-IQ')}</span>
+                            </div>
+                        </div>
+                        <button class="icon-btn" onclick="toggleBookmark('${post.id}')">
+                            ${isBookmarked ? '📌' : '📍'}
+                        </button>
                     </div>
-                    <div class="post-meta">
-                        <span>📍 ${escapeHtml(post.governorate)}</span>
-                        <span>🏷️ ${escapeHtml(post.category)}</span>
+
+                    <div class="post-content">
+                        <div class="post-title-price">
+                            <h3 class="post-title">${escapeHtml(post.title)}</h3>
+                            <span class="post-price">${Number(post.price).toLocaleString()} د.ع</span>
+                        </div>
+                        <div class="post-tags">
+                            <span class="tag">📍 ${escapeHtml(post.governorate)}</span>
+                            <span class="tag">🏷️ ${escapeHtml(post.category)}</span>
+                        </div>
+                        <p class="post-desc">${escapeHtml(post.description || 'لا يوجد وصف مضاف.')}</p>
                     </div>
-                    <p class="post-desc">${escapeHtml(post.description || 'لا يوجد وصف متاح.')}</p>
+
                     <div class="post-actions">
-                        <span>📞 ${escapeHtml(post.phone || 'غير مدرج')}</span>
-                        <button class="btn btn-primary" onclick="alert('رقم صاحب الإعلان: ' + '${escapeHtml(post.phone)}')">اتصال</button>
+                        <div class="action-group">
+                            <button class="btn btn-outline" onclick="toggleCommentsVisibility('${post.id}')">💬 تعليق</button>
+                        </div>
+                        <a href="tel:${escapeHtml(post.phone)}" class="btn btn-primary" style="text-decoration:none;">📞 اتصال: ${escapeHtml(post.phone || 'غير متوفر')}</a>
+                    </div>
+
+                    <!-- قسم التعليقات -->
+                    <div class="comments-container" id="comments-${post.id}">
+                        <div id="comments-list-${post.id}">
+                            <div class="comment-item">لا توجد تعليقات بعد.</div>
+                        </div>
+                        <div class="comment-input-box">
+                            <input type="text" id="input-comment-${post.id}" placeholder="اكتب تعليقاً...">
+                            <button class="btn btn-primary" onclick="addComment('${post.id}')">إرسال</button>
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // --- 4. إضافة إعلان جديد وحفظه حقيقياً ---
+        async function handleCreatePost(event) {
+            event.preventDefault();
+
+            const title = document.getElementById('postTitle').value;
+            const price = parseFloat(document.getElementById('postPrice').value);
+            const governorate = document.getElementById('postGov').value;
+            const category = document.getElementById('postCategory').value;
+            const phone = document.getElementById('postPhone').value;
+            const description = document.getElementById('postDesc').value;
+
+            try {
+                const { error } = await supabase
+                    .from('posts')
+                    .insert([{
+                        user_id: TEMP_USER_ID,
+                        title, price, governorate, category, phone, description, images: []
+                    }]);
+
+                if (error) throw error;
+
+                alert('تم نشر الإعلان بنجاح في قاعدة البيانات!');
+                closeModal('addModal');
+                event.target.reset();
+                fetchPosts();
+            } catch (err) {
+                alert('فشل في نشر الإعلان: ' + err.message);
+            }
+        }
+
+        // --- 5. البحث والتصفية المباشرة ---
+        function applyFilters() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const gov = document.getElementById('filterGov').value;
+            const category = document.getElementById('filterCategory').value;
+
+            const filtered = globalPosts.filter(post => {
+                const matchQuery = post.title.toLowerCase().includes(query) || (post.description && post.description.toLowerCase().includes(query));
+                const matchGov = gov === '' || post.governorate === gov;
+                const matchCategory = category === '' || post.category === category;
+                return matchQuery && matchGov && matchCategory;
+            });
+
+            renderFeed(filtered);
+        }
+
+        // --- 6. التفاعلات الأُخرى (المحفوظات، التعليقات، والمظهر) ---
+        function toggleBookmark(id) {
+            if (bookmarkedIds.has(id)) {
+                bookmarkedIds.delete(id);
+            } else {
+                bookmarkedIds.add(id);
+            }
+            renderFeed(globalPosts);
+            renderBookmarks();
+        }
+
+        function renderBookmarks() {
+            const feed = document.getElementById('bookmarksFeed');
+            const bookmarkedPosts = globalPosts.filter(p => bookmarkedIds.has(p.id));
+            if (bookmarkedPosts.length === 0) {
+                feed.innerHTML = '<p style="text-align:center; color: var(--text-muted);">لا توجد إعلانات محفوظة حالياً.</p>';
+                return;
+            }
+            feed.innerHTML = bookmarkedPosts.map(p => `
+                <div class="post-card">
+                    <div class="post-content">
+                        <h3>${escapeHtml(p.title)}</h3>
+                        <p style="color:var(--primary-color); font-weight:bold;">${Number(p.price).toLocaleString()} د.ع</p>
                     </div>
                 </div>
             `).join('');
         }
 
-        // 4. دالة إضافة منشور جديد إلى Supabase
-        async function handleAddPost(event) {
-            event.preventDefault();
+        function toggleCommentsVisibility(postId) {
+            const el = document.getElementById(`comments-${postId}`);
+            el.style.display = el.style.display === 'block' ? 'none' : 'block';
+        }
 
-            const title = document.getElementById('postTitle').value;
-            const price = document.getElementById('postPrice').value;
-            const governorate = document.getElementById('postGov').value;
-            const category = document.getElementById('postCategory').value;
-            const description = document.getElementById('postDesc').value;
-            const phone = document.getElementById('postPhone').value;
+        function addComment(postId) {
+            const input = document.getElementById(`input-comment-${postId}`);
+            const text = input.value.trim();
+            if (!text) return;
 
-            try {
-                // ملاحظة: يُستخدم معرف مؤقت للمستخدم غير المسجل لتسهيل التجربة الآن
-                const tempUserId = '00000000-0000-0000-0000-000000000000'; 
+            const list = document.getElementById(`comments-list-${postId}`);
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'comment-item';
+            commentDiv.innerHTML = `<b>مستخدم:</b> ${escapeHtml(text)}`;
+            list.appendChild(commentDiv);
+            input.value = '';
+        }
 
-                const { data, error } = await supabase
-                    .from('posts')
-                    .insert([
-                        {
-                            user_id: tempUserId,
-                            title: title,
-                            price: parseFloat(price),
-                            governorate: governorate,
-                            category: category,
-                            description: description,
-                            phone: phone,
-                            images: []
-                        }
-                    ]);
+        function switchTab(tabId, btn) {
+            document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-button').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            btn.classList.add('active');
 
-                if (error) throw error;
-
-                alert('تم نشر الإعلان وحفظه في قاعدة البيانات بنجاح!');
-                closeModal('addPostModal');
-                event.target.reset();
-                loadPosts();
-
-            } catch (err) {
-                console.error('خطأ أثناء النشر:', err.message);
-                alert('حدث خطأ أثناء حفظ المنشور: ' + err.message);
+            if (tabId === 'tabMyPosts') {
+                const myPosts = globalPosts.filter(p => p.user_id === TEMP_USER_ID);
+                const feed = document.getElementById('myPostsFeed');
+                if (myPosts.length === 0) {
+                    feed.innerHTML = '<p style="text-align:center; color: var(--text-muted);">لم تقم بنشر أي إعلانات بعد.</p>';
+                } else {
+                    feed.innerHTML = myPosts.map(p => `<div class="post-card"><div class="post-content"><h3>${escapeHtml(p.title)}</h3></div></div>`).join('');
+                }
             }
         }
 
-        // 5. البحث والتصفية
-        function filterPosts() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = allPostsData.filter(p => 
-                p.title.toLowerCase().includes(query) ||
-                p.governorate.toLowerCase().includes(query) ||
-                p.category.toLowerCase().includes(query)
-            );
-            renderPosts(filtered);
+        function toggleTheme() {
+            const body = document.body;
+            body.setAttribute('data-theme', body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
         }
 
-        // أدوات مساعدة
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
         function escapeHtml(text) {
@@ -234,8 +724,7 @@
             });
         }
 
-        // تشغيل التحميل التلقائي فور فتح الصفحة
-        window.onload = loadPosts;
+        window.onload = fetchPosts;
     </script>
 </body>
 </html>
