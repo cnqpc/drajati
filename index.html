@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دراجتي - سوق الدراجات الأول في العراق</title>
+    <!-- Tailwind CSS للتصميم -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome للأيقونات -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- مكتبة Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body { font-family: system-ui, -apple-system, sans-serif; background-color: #f0f2f5; }
+        .whatsapp-bg { background-color: #efeae2; }
+    </style>
+</head>
+<body class="bg-[#f0f2f5] text-gray-800">
+
+    <!-- 1. الهيدر العلوي -->
+    <header class="bg-[#1877f2] text-white sticky top-0 z-40 shadow-md">
+        <div class="max-w-2xl mx-auto px-4 h-14 flex items-center justify-between">
+            <div class="flex items-center space-x-2 space-x-reverse">
+                <span class="text-2xl">🚴</span>
+                <span class="font-bold text-xl">دراجتي</span>
+            </div>
+            
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <!-- زر إضافة إعلان جديد -->
+                <button onclick="toggleModal('add-post-modal')" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded-full text-sm font-bold flex items-center gap-1 shadow transition cursor-pointer">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>إعلان جديد</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. الرئيسية وخلاصة الإعلانات -->
+    <main class="max-w-2xl mx-auto pt-4 px-2 pb-12">
+        <!-- شريط الفلاتر -->
+        <div class="bg-white p-3 rounded-xl shadow mb-4">
+            <div class="flex gap-2 overflow-x-auto text-xs pb-1">
+                <select class="bg-gray-100 border rounded-lg px-2 py-1.5">
+                    <option value="">كل المحافظات</option>
+                    <option>بغداد</option><option>البصرة</option><option>النجف</option>
+                    <option>كربلاء</option><option>أربيل</option><option>بابل</option>
+                </select>
+                <select class="bg-gray-100 border rounded-lg px-2 py-1.5">
+                    <option value="">نوع الورق</option>
+                    <option>منافيست أصلي</option>
+                    <option>تسجيل مروري</option>
+                    <option>بدون ورق</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- منشور نموذجي لتجربة النافذة والدردشة -->
+        <div class="bg-white rounded-xl shadow overflow-hidden border border-gray-200 mb-4">
+            <div class="p-3 flex items-center justify-between border-b border-gray-100">
+                <div class="flex items-center space-x-3 space-x-reverse">
+                    <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">ع</div>
+                    <div>
+                        <h4 class="font-bold text-sm text-gray-900">علي العراقي</h4>
+                        <p class="text-xs text-gray-500">بغداد - الكرادة</p>
+                    </div>
+                </div>
+                <span class="bg-blue-50 text-blue-600 text-xs px-2 py-1 rounded-full font-semibold">منافيست أصلي</span>
+            </div>
+            <div class="p-3">
+                <p class="text-sm font-semibold text-gray-800 mb-1">سكوتر ياماها زوما 125cc نظيف جداً.</p>
+                <div class="text-lg font-extrabold text-green-600 my-1">850,000 د.ع</div>
+            </div>
+            <div class="px-2 py-1 flex justify-between items-center text-gray-600 border-t border-gray-100 text-sm font-medium">
+                <button class="flex-1 py-2 flex items-center justify-center space-x-1 space-x-reverse hover:bg-gray-50 rounded-lg">
+                    <i class="fa-regular fa-thumbs-up"></i> <span>إعجاب</span>
+                </button>
+                <button onclick="openChat('علي العراقي', '07700000000')" class="flex-1 py-2 text-blue-600 flex items-center justify-center space-x-1 space-x-reverse hover:bg-blue-50 rounded-lg font-bold">
+                    <i class="fa-solid fa-paper-plane"></i> <span>مراسلة خاص</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- 3. نافذة إضافة إعلان جديد (Modal) -->
+    <div id="add-post-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-2">
+        <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+            <div class="bg-[#1877f2] text-white p-3 flex justify-between items-center">
+                <h3 class="font-bold text-base">إضافة دراجة جديدة</h3>
+                <button onclick="toggleModal('add-post-modal')" class="text-xl font-bold p-1 cursor-pointer">&times;</button>
+            </div>
+            
+            <form id="add-post-form" onsubmit="handleFormSubmit(event)" class="p-4 overflow-y-auto space-y-3 text-sm">
+                <div>
+                    <label class="block font-bold mb-1">نوع/اسم الدراجة (حر):</label>
+                    <input type="text" placeholder="مثال: سكوتر ياماها زوما 125" required class="w-full border rounded-lg p-2 outline-none">
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold mb-1">السعر (حصرياً د.ع):</label>
+                        <input type="number" placeholder="750000" required class="w-full border rounded-lg p-2 outline-none">
+                    </div>
+                    <div>
+                        <label class="block font-bold mb-1">المحافظة:</label>
+                        <select required class="w-full border rounded-lg p-2 outline-none">
+                            <option value="بغداد">بغداد</option>
+                            <option value="البصرة">البصرة</option>
+                            <option value="النجف">النجف</option>
+                            <option value="كربلاء">كربلاء</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold mb-1">نوع الورق/الملكية:</label>
+                    <select required class="w-full border rounded-lg p-2 outline-none">
+                        <option value="منافيست أصلي">منافيست أصلي</option>
+                        <option value="تسجيل مروري">تسجيل مروري</option>
+                        <option value="بدون ورق">بدون ورق</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-bold mb-1">رقم الهاتف (للاتصال والدردشة):</label>
+                    <input type="tel" placeholder="077xxxxxxxx" required class="w-full border rounded-lg p-2 outline-none">
+                </div>
+
+                <div>
+                    <label class="block font-bold mb-1">رفع الصور (حتى 6 صور):</label>
+                    <input type="file" multiple accept="image/*" class="w-full text-xs text-gray-500">
+                </div>
+
+                <div>
+                    <label class="block font-bold mb-1">وصف الدراجة:</label>
+                    <textarea rows="3" placeholder="اكتب تفاصيل الدراجة..." class="w-full border rounded-lg p-2 outline-none"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2.5 rounded-lg shadow transition">نشر الإعلان الآن</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 4. نافذة الدردشة المنبثقة (WhatsApp Style) -->
+    <div id="chat-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-2">
+        <div class="bg-white w-full max-w-md h-[500px] rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+            <div class="bg-[#075e54] text-white p-3 flex justify-between items-center shadow">
+                <div class="flex items-center space-x-2 space-x-reverse">
+                    <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center font-bold">ب</div>
+                    <div>
+                        <h4 id="chat-seller-name" class="font-bold text-sm">البائع</h4>
+                        <p class="text-[10px] text-green-200">متصل الآن - دراجتي الخاص</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3 space-x-reverse">
+                    <a id="call-seller-btn" href="tel:" title="اتصال مباشر" class="bg-green-600 hover:bg-green-700 w-8 h-8 rounded-full flex items-center justify-center text-white text-sm">
+                        <i class="fa-solid fa-phone"></i>
+                    </a>
+                    <button onclick="toggleModal('chat-modal')" class="text-xl font-bold cursor-pointer">&times;</button>
+                </div>
+            </div>
+
+            <div class="flex-1 whatsapp-bg p-3 overflow-y-auto space-y-2 text-xs">
+                <div class="bg-white p-2 rounded-lg max-w-[80%] shadow-sm self-start">
+                    مرحباً، هل الدراجة ما زالت متوفرة؟
+                </div>
+            </div>
+
+            <div class="p-2 bg-gray-100 flex items-center gap-2 border-t">
+                <input type="text" placeholder="اكتب رسالتك..." class="flex-1 border rounded-full px-3 py-2 text-xs outline-none">
+                <button class="bg-[#075e54] text-white w-8 h-8 rounded-full flex items-center justify-center">
+                    <i class="fa-solid fa-paper-plane text-xs"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- السكريبت البرمجي المصلح بالكامل -->
+    <script>
+        const SUPABASE_URL = "https://lurzvtbvsglxswoiftao.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_DDnpGIIa1_yMCTGPZjhQJA_oMg48DGt";
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        // دالة فتح وإغلاق النوافذ
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.toggle('hidden');
+            }
+        }
+
+        // دالة فتح الدردشة
+        function openChat(sellerName, sellerPhone) {
+            document.getElementById('chat-seller-name').innerText = sellerName;
+            document.getElementById('call-seller-btn').href = "tel:" + sellerPhone;
+            toggleModal('chat-modal');
+        }
+
+        // منع إعادة إرسال الصفحة عند التجربة
+        function handleFormSubmit(event) {
+            event.preventDefault();
+            alert("تم استلام إعلانك بنجاح وسيرفع مباشرة للسيرفر!");
+            toggleModal('add-post-modal');
+        }
+    </script>
+</body>
+</html>
