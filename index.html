@@ -44,7 +44,6 @@
             to { transform: translateY(0); opacity: 1; }
         }
 
-        /* تعديل أزرار التفعيل */
         .toggle-checkbox:checked + .toggle-label {
             background-color: #10b981;
         }
@@ -52,18 +51,17 @@
             transform: translateX(-1.1rem);
         }
 
-        /* تأثير انبعاث جزيئات الحفظ */
+        /* تأثير انبعاث أيقونة الحفظ بالأصفر */
         @keyframes popBookmark {
             0% { transform: scale(1); }
             50% { transform: scale(1.4) rotate(-15deg); }
             100% { transform: scale(1) rotate(0); }
         }
-        .bookmark-active {
+        .bookmark-pop {
             animation: popBookmark 0.4s ease-in-out;
-            color: #f59e0b !important;
         }
 
-        /* خلفية الإعلانات المميزة بأسلوب محركات ودراجات */
+        /* خلفية الإعلانات المميزة */
         .featured-bg {
             background-color: #1e293b;
             background-image: radial-gradient(#334155 1px, transparent 1px), radial-gradient(#334155 1px, #1e293b 1px);
@@ -71,9 +69,27 @@
             background-position: 0 0, 10px 10px;
         }
 
-        /* سكرول انسيابي للمميز */
-        .smooth-scroll {
-            scroll-behavior: smooth;
+        /* حركة سلسة للإعلانات المميزة تسير نحو اليمين وتعود تلقائياً */
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            50% { transform: translateX(50%); }
+            100% { transform: translateX(0%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: max-content;
+            animation: marquee 20s ease-in-out infinite alternate;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+
+        .scrollbar-none::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-none {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
         }
     </style>
 </head>
@@ -90,10 +106,10 @@
             </div>
 
             <div class="flex items-center space-x-2 space-x-reverse">
-                <!-- زر التصفح السريع -->
-                <button onclick="toggleQuickBrowse()" class="bg-white/15 hover:bg-white/25 text-white px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 btn-tap" title="التصفح السريع">
+                <!-- تغيير الاسم إلى "اتصفح بسرعة" -->
+                <button onclick="toggleQuickBrowse()" class="bg-white/15 hover:bg-white/25 text-white px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 btn-tap" title="اتصفح بسرعة">
                     <i class="fa-solid fa-table-cells text-amber-300"></i>
-                    <span>تصفح سريع</span>
+                    <span>اتصفح بسرعة</span>
                 </button>
 
                 <button onclick="checkAuthAndAction(() => toggleModal('add-post-modal'))" class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white px-3.5 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg shadow-green-500/20 btn-tap">
@@ -128,56 +144,68 @@
                 <i class="fa-solid fa-chevron-down text-[10px] text-gray-400"></i>
             </button>
 
-            <button onclick="openCityPicker('main')" id="main-city-btn" class="bg-white border border-gray-200/80 rounded-2xl px-3 py-2 font-bold text-xs text-gray-700 outline-none shadow-sm flex items-center gap-1.5 btn-tap">
+            <button onclick="openCityPicker()" id="main-city-btn" class="bg-white border border-gray-200/80 rounded-2xl px-3 py-2 font-bold text-xs text-gray-700 outline-none shadow-sm flex items-center gap-1.5 btn-tap">
                 <i class="fa-solid fa-location-dot text-blue-500"></i>
                 <span id="main-city-label">كل المحافظات</span>
             </button>
         </div>
 
-        <!-- قسم الإعلانات المميزة المثبتة مع الخلفية المميزة والانتقال البصري -->
+        <!-- قسم الإعلانات المميزة (حذف كلمة مثبتة + حركة تسير نحو اليمين وتعود تلقائياً بدون أسهم) -->
         <div class="mb-4 rounded-2xl p-3 featured-bg text-white shadow-lg relative overflow-hidden">
             <div class="flex items-center justify-between mb-2 px-1">
                 <span class="text-xs font-black text-amber-400 flex items-center gap-1">
-                    <i class="fa-solid fa-star text-amber-400 animate-pulse"></i> إعلانات مميزة (مُثبتة)
+                    <i class="fa-solid fa-star text-amber-400 animate-pulse"></i> إعلانات مميزة
                 </span>
-                <div class="flex gap-1 text-xs">
-                    <button onclick="scrollFeatured(-250)" class="w-6 h-6 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center btn-tap"><i class="fa-solid fa-chevron-right text-[10px]"></i></button>
-                    <button onclick="scrollFeatured(250)" class="w-6 h-6 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center btn-tap"><i class="fa-solid fa-chevron-left text-[10px]"></i></button>
-                </div>
             </div>
             
-            <div id="featured-container" class="flex gap-3 overflow-x-auto pb-1 scrollbar-none smooth-scroll">
-                <!-- إعلان مميز 1 -->
-                <div class="min-w-[240px] max-w-[240px] bg-gray-900/80 border border-amber-500/40 rounded-xl p-2.5 shadow-md relative flex-shrink-0 backdrop-blur-sm">
-                    <span class="absolute top-2 left-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow">مميز</span>
-                    <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=400&q=80" class="w-full h-28 object-cover rounded-lg mb-2">
-                    <h4 class="font-bold text-xs text-white truncate">هارلي ديفيدسون 2021 بلاد</h4>
-                    <p class="text-[10px] text-gray-300 mb-1">بغداد - المنصور</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-black text-amber-400">4,500,000 د.ع</span>
-                        <button onclick="showSellerProfile('سعد البغدادي', 'بغداد - المنصور', '07701112233', '2023-05-10')" class="bg-amber-500 hover:bg-amber-600 text-white p-1.5 rounded-lg text-xs btn-tap">
-                            <i class="fa-solid fa-phone"></i>
-                        </button>
+            <div class="overflow-hidden w-full">
+                <div class="animate-marquee flex gap-3">
+                    <!-- إعلان مميز 1 -->
+                    <div class="min-w-[240px] max-w-[240px] bg-gray-900/80 border border-amber-500/40 rounded-xl p-2.5 shadow-md relative flex-shrink-0 backdrop-blur-sm">
+                        <span class="absolute top-2 left-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow">مميز</span>
+                        <img src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=400&q=80" class="w-full h-28 object-cover rounded-lg mb-2">
+                        <h4 class="font-bold text-xs text-white truncate">هارلي ديفيدسون 2021 بلاد</h4>
+                        <p class="text-[10px] text-gray-300 mb-1">بغداد - المنصور</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-black text-amber-400">4,500,000 د.ع</span>
+                            <button onclick="showSellerProfile('سعد البغدادي', 'بغداد - المنصور', '07701112233', '2023-05-10')" class="bg-amber-500 hover:bg-amber-600 text-white p-1.5 rounded-lg text-xs btn-tap">
+                                <i class="fa-solid fa-phone"></i>
+                            </button>
+                        </div>
                     </div>
-                </div>
 
-                <!-- إعلان مميز 2 -->
-                <div class="min-w-[240px] max-w-[240px] bg-gray-900/80 border border-amber-500/40 rounded-xl p-2.5 shadow-md relative flex-shrink-0 backdrop-blur-sm">
-                    <span class="absolute top-2 left-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow">مميز</span>
-                    <img src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=400&q=80" class="w-full h-28 object-cover rounded-lg mb-2">
-                    <h4 class="font-bold text-xs text-white truncate">سكوتر كهربائي شحن سريع</h4>
-                    <p class="text-[10px] text-gray-300 mb-1">النجف - الحنّانة</p>
-                    <div class="flex justify-between items-center">
-                        <span class="text-xs font-black text-amber-400">350,000 د.ع</span>
-                        <button onclick="showSellerProfile('كرار النجفي', 'النجف - الحنّانة', '07804445566', '2023-08-14')" class="bg-amber-500 hover:bg-amber-600 text-white p-1.5 rounded-lg text-xs btn-tap">
-                            <i class="fa-solid fa-phone"></i>
-                        </button>
+                    <!-- إعلان مميز 2 -->
+                    <div class="min-w-[240px] max-w-[240px] bg-gray-900/80 border border-amber-500/40 rounded-xl p-2.5 shadow-md relative flex-shrink-0 backdrop-blur-sm">
+                        <span class="absolute top-2 left-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow">مميز</span>
+                        <img src="https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=400&q=80" class="w-full h-28 object-cover rounded-lg mb-2">
+                        <h4 class="font-bold text-xs text-white truncate">سكوتر كهربائي شحن سريع</h4>
+                        <p class="text-[10px] text-gray-300 mb-1">النجف - الحنّانة</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-black text-amber-400">350,000 د.ع</span>
+                            <button onclick="showSellerProfile('كرار النجفي', 'النجف - الحنّانة', '07804445566', '2023-08-14')" class="bg-amber-500 hover:bg-amber-600 text-white p-1.5 rounded-lg text-xs btn-tap">
+                                <i class="fa-solid fa-phone"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- إعلان مميز 3 -->
+                    <div class="min-w-[240px] max-w-[240px] bg-gray-900/80 border border-amber-500/40 rounded-xl p-2.5 shadow-md relative flex-shrink-0 backdrop-blur-sm">
+                        <span class="absolute top-2 left-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow">مميز</span>
+                        <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=400&q=80" class="w-full h-28 object-cover rounded-lg mb-2">
+                        <h4 class="font-bold text-xs text-white truncate">دراجة هوندا رياضية 2022</h4>
+                        <p class="text-[10px] text-gray-300 mb-1">البصرة - الجزاير</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-black text-amber-400">2,100,000 د.ع</span>
+                            <button onclick="showSellerProfile('أحمد البصري', 'البصرة - الجزاير', '07709998877', '2024-01-05')" class="bg-amber-500 hover:bg-amber-600 text-white p-1.5 rounded-lg text-xs btn-tap">
+                                <i class="fa-solid fa-phone"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- حاوية المنشورات والإعلانات الرئيسية -->
+        <!-- حاوية المنشورات الرئيسية -->
         <div id="posts-container" class="space-y-4">
             <!-- منشور نموذجي 1 -->
             <div class="post-card bg-white rounded-2xl shadow-sm border border-gray-200/70 overflow-hidden card-hover" data-category="دراجات نارية" data-city="بغداد">
@@ -212,36 +240,39 @@
                     <div class="text-xl font-black text-green-600 pt-1">850,000 د.ع</div>
                 </div>
 
-                <!-- أزرار التفاعل (زر الإعجاب ذو لون أحمر شفاف عند التفعيل وبداخله العداد) -->
+                <!-- أزرار التفاعل (إضافة الكبسولات للتعليقات والمشاركة والحفظ بالأصفر) -->
                 <div class="px-3.5 py-2.5 border-t border-gray-100 bg-gray-50/50 flex items-center justify-between text-xs">
-                    <div class="flex items-center gap-3">
-                        <button onclick="toggleLike(this)" class="like-btn flex items-center gap-1.5 border border-gray-200 bg-white px-3 py-1 rounded-full text-gray-600 font-bold transition btn-tap">
+                    <div class="flex items-center gap-2">
+                        <!-- كبسولة الإعجاب -->
+                        <button onclick="toggleLike(this)" class="like-btn flex items-center gap-1.5 border border-gray-200 bg-white px-3 py-1.5 rounded-full text-gray-600 font-bold transition btn-tap shadow-sm">
                             <i class="fa-regular fa-heart text-sm"></i>
                             <span>إعجاب</span>
                             <span class="like-count bg-gray-100 px-1.5 py-0.2 rounded-full text-[10px]">14</span>
                         </button>
                         
-                        <button onclick="toggleComments('comments-1')" class="flex items-center gap-1.5 text-gray-600 hover:text-blue-600 font-bold transition btn-tap">
-                            <i class="fa-regular fa-comment text-sm"></i>
+                        <!-- كبسولة التعليقات -->
+                        <button onclick="toggleComments('comments-1')" class="flex items-center gap-1.5 border border-gray-200 bg-white px-3 py-1.5 rounded-full text-gray-600 hover:text-blue-600 font-bold transition btn-tap shadow-sm">
+                            <i class="fa-regular fa-comment text-sm text-blue-500"></i>
                             <span>التعليقات</span>
                             <span class="bg-blue-100 text-blue-700 text-[10px] px-1.5 py-0.2 rounded-full font-bold">2</span>
                         </button>
 
-                        <button onclick="sharePost()" class="flex items-center gap-1 text-gray-600 hover:text-green-600 font-bold transition btn-tap">
-                            <i class="fa-solid fa-share text-sm"></i>
+                        <!-- كبسولة المشاركة -->
+                        <button onclick="sharePost()" class="flex items-center gap-1.5 border border-gray-200 bg-white px-3 py-1.5 rounded-full text-gray-600 hover:text-green-600 font-bold transition btn-tap shadow-sm">
+                            <i class="fa-solid fa-share text-sm text-green-500"></i>
                             <span>مشاركة</span>
                         </button>
                     </div>
 
-                    <button onclick="toggleBookmark(this)" class="bookmark-btn text-gray-400 hover:text-amber-500 font-bold text-base transition btn-tap p-1" title="حفظ المنشور">
+                    <!-- زر الحفظ يتحول للون الأصفر عند الضغط -->
+                    <button onclick="toggleBookmark(this)" class="bookmark-btn text-gray-400 hover:text-amber-500 font-bold text-lg transition btn-tap p-1" title="حفظ المنشور">
                         <i class="fa-regular fa-bookmark"></i>
                     </button>
                 </div>
 
-                <!-- قسم التعليقات المطور (صورة المعلق + الرد الداخلي المنسق + إشارة الرد) -->
+                <!-- قسم التعليقات المطور -->
                 <div id="comments-1" class="hidden bg-gray-50 p-3 border-t space-y-3 text-xs">
                     <div class="space-y-3 max-h-60 overflow-y-auto">
-                        <!-- تعليق 1 -->
                         <div class="bg-white p-3 rounded-xl shadow-sm border space-y-2">
                             <div class="flex items-start gap-2">
                                 <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Murtada" class="w-7 h-7 rounded-full border">
@@ -254,7 +285,6 @@
                                 </div>
                             </div>
 
-                            <!-- الرد المدمج داخل إطار التعليق الأصلي -->
                             <div class="mr-6 border-r-2 border-blue-500 pr-2 pt-1 bg-blue-50/50 p-2 rounded-lg">
                                 <div class="flex items-center gap-1 text-[10px] text-blue-700 font-bold mb-0.5">
                                     <i class="fa-solid fa-share text-[9px]"></i>
@@ -269,7 +299,6 @@
                         </div>
                     </div>
 
-                    <!-- صندوق كتابة التعليق/الرد -->
                     <div class="pt-1">
                         <div id="reply-indicator-comments-1" class="hidden text-[10px] text-blue-600 font-bold mb-1 flex justify-between items-center bg-blue-50 px-2 py-1 rounded-lg">
                             <span>جاري الرد على: <strong id="reply-target-comments-1"></strong></span>
@@ -284,30 +313,29 @@
             </div>
         </div>
 
-        <!-- view التصفح السريع (2x20 شبكي) -->
+        <!-- view اتصفح بسرعة (بدون أسهم، وتغيير الجملة إلى: اتصفح بسرعة، صفحة أو القائمة واحد) -->
         <div id="quick-browse-view" class="hidden space-y-3">
             <div class="flex justify-between items-center bg-white p-3 rounded-2xl border shadow-sm">
                 <span class="font-black text-xs text-gray-800 flex items-center gap-1.5">
-                    <i class="fa-solid fa-table-cells text-amber-500"></i> التصفح السريع شبكي (صفحة <span id="qb-page-num">1</span>)
+                    <i class="fa-solid fa-table-cells text-amber-500"></i> اتصفح بسرعة، صفحة أو القائمة <span id="qb-page-num">1</span>
                 </span>
                 <button onclick="toggleQuickBrowse()" class="text-xs text-red-500 font-bold">إغلاق</button>
             </div>
 
-            <!-- قائمة الشبكة (20 عنصر عمودي بمعدل 2 بكل سطر) -->
             <div id="quick-browse-grid" class="grid grid-cols-2 gap-2">
                 <!-- سيتم ملئ العناصر عبر الـ JavaScript -->
             </div>
 
-            <!-- أزرار التنقل بين الصفحات -->
+            <!-- التنقل السفلي في اتصفح بسرعة بدون أسهم -->
             <div class="flex justify-between items-center bg-white p-3 rounded-2xl border shadow-sm text-xs font-bold">
-                <button onclick="changeQBPage(-1)" class="bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-xl btn-tap">الصفحة السابقة</button>
+                <button onclick="changeQBPage(-1)" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-xl btn-tap">الصفحة السابقة</button>
                 <span id="qb-page-indicator" class="text-gray-500">صفحة 1 من 2</span>
-                <button onclick="changeQBPage(1)" class="bg-blue-600 text-white px-3 py-1.5 rounded-xl btn-tap">الصفحة التالية</button>
+                <button onclick="changeQBPage(1)" class="bg-blue-600 text-white px-4 py-2 rounded-xl btn-tap">الصفحة التالية</button>
             </div>
         </div>
     </main>
 
-    <!-- 3. نافذة الفئات المنبثقة الكلاسيكية -->
+    <!-- 3. نافذة الفئات -->
     <div id="categories-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
         <div class="bg-white w-full max-w-sm rounded-2xl p-4 shadow-2xl space-y-3 slide-up">
             <div class="flex justify-between items-center border-b pb-2.5">
@@ -320,44 +348,21 @@
             <div id="main-categories-list" class="space-y-2 text-xs font-bold">
                 <button onclick="selectCategory('الكل')" class="w-full p-3 bg-gray-50 hover:bg-blue-50 rounded-xl text-right flex items-center justify-between border border-gray-100 text-gray-700 hover:text-blue-600 transition">
                     <span class="flex items-center gap-2.5"><i class="fa-solid fa-border-all text-blue-500 text-sm"></i> كل الفئات</span>
-                    <i class="fa-solid fa-chevron-left text-[10px] text-gray-400"></i>
                 </button>
                 <button onclick="selectCategory('دراجات نارية')" class="w-full p-3 bg-gray-50 hover:bg-blue-50 rounded-xl text-right flex items-center justify-between border border-gray-100 text-gray-700 hover:text-blue-600 transition">
                     <span class="flex items-center gap-2.5"><i class="fa-solid fa-motorcycle text-amber-500 text-sm"></i> الدراجات النارية</span>
-                    <i class="fa-solid fa-chevron-left text-[10px] text-gray-400"></i>
                 </button>
                 <button onclick="selectCategory('دراجات هوائية')" class="w-full p-3 bg-gray-50 hover:bg-blue-50 rounded-xl text-right flex items-center justify-between border border-gray-100 text-gray-700 hover:text-blue-600 transition">
                     <span class="flex items-center gap-2.5"><i class="fa-solid fa-bicycle text-green-500 text-sm"></i> الدراجات الهوائية</span>
-                    <i class="fa-solid fa-chevron-left text-[10px] text-gray-400"></i>
                 </button>
                 <button onclick="selectCategory('دراجات الشحن')" class="w-full p-3 bg-gray-50 hover:bg-blue-50 rounded-xl text-right flex items-center justify-between border border-gray-100 text-gray-700 hover:text-blue-600 transition">
                     <span class="flex items-center gap-2.5"><i class="fa-solid fa-bolt text-yellow-500 text-sm"></i> دراجات الشحن</span>
-                    <i class="fa-solid fa-chevron-left text-[10px] text-gray-400"></i>
-                </button>
-                <button onclick="showSubCategories()" class="w-full p-3 bg-blue-50 hover:bg-blue-100 rounded-xl text-right flex items-center justify-between border border-blue-200/80 text-blue-700 transition">
-                    <span class="flex items-center gap-2.5"><i class="fa-solid fa-wrench text-blue-600 text-sm"></i> الأدوات الاحتياطية</span>
-                    <i class="fa-solid fa-chevron-left text-xs text-blue-500"></i>
-                </button>
-            </div>
-
-            <div id="sub-categories-list" class="hidden space-y-2 text-xs font-bold">
-                <button onclick="hideSubCategories()" class="text-blue-600 mb-2 flex items-center gap-1 text-[11px] font-bold btn-tap">
-                    <i class="fa-solid fa-arrow-right"></i> العودة للقائمة الرئيسية
-                </button>
-                <button onclick="selectCategory('أدوات نارية')" class="w-full p-3 bg-gray-50 hover:bg-blue-50 rounded-xl text-right flex items-center justify-between border border-gray-100">
-                    <span class="flex items-center gap-2.5"><i class="fa-solid fa-cog text-amber-500"></i> أدوات احتياطية للنارية</span>
-                </button>
-                <button onclick="selectCategory('أدوات هوائية')" class="w-full p-3 bg-gray-50 hover:bg-blue-50 rounded-xl text-right flex items-center justify-between border border-gray-100">
-                    <span class="flex items-center gap-2.5"><i class="fa-solid fa-cog text-green-500"></i> أدوات احتياطية للهوائية</span>
-                </button>
-                <button onclick="selectCategory('أدوات شحن')" class="w-full p-3 bg-gray-50 hover:bg-blue-50 rounded-xl text-right flex items-center justify-between border border-gray-100">
-                    <span class="flex items-center gap-2.5"><i class="fa-solid fa-cog text-yellow-500"></i> أدوات احتياطية لدراجات الشحن</span>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- 4. نافذة إضافة منشور جديد (المعدلة بكل الشروط المطلوبة) -->
+    <!-- 4. نافذة إضافة منشور جديد -->
     <div id="add-post-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3 overflow-y-auto">
         <div class="bg-white w-full max-w-md rounded-2xl p-5 shadow-2xl space-y-4 my-8 slide-up">
             <div class="flex justify-between items-center border-b pb-3">
@@ -381,16 +386,12 @@
                             <option value="دراجات نارية">دراجات نارية</option>
                             <option value="دراجات هوائية">دراجات هوائية</option>
                             <option value="دراجات الشحن">دراجات الشحن</option>
-                            <option value="أدوات نارية">أدوات احتياطية نارية</option>
-                            <option value="أدوات هوائية">أدوات احتياطية هوائية</option>
-                            <option value="أدوات شحن">أدوات احتياطية شحن</option>
                         </select>
                     </div>
 
                     <div>
                         <label class="block mb-1 text-gray-700">المحافظة:</label>
                         <select id="post-city-input" required class="w-full border rounded-xl p-2.5 outline-none font-normal bg-gray-50 focus:bg-white focus:border-blue-500">
-                            <!-- المحافظات العراقية بالكامل بدون إقليم كردستان -->
                             <option value="بغداد">بغداد</option>
                             <option value="البصرة">البصرة</option>
                             <option value="كربلاء">كربلاء</option>
@@ -419,16 +420,6 @@
                     <p id="desc-error" class="hidden text-red-500 text-[10px] mt-1">لقد تجاوزت عدد الأحرف</p>
                 </div>
 
-                <div>
-                    <label class="block mb-1 text-gray-700">صور الدراجة (حتى 4 صور):</label>
-                    <input type="file" id="post-images-input" multiple accept="image/*" class="w-full text-xs font-normal">
-                </div>
-
-                <div class="bg-amber-50 border border-amber-200 p-2.5 rounded-xl flex items-center justify-between">
-                    <span class="text-amber-800 text-[11px]">هل ترغب بتثبيت الإعلان ليظهر بالأعلى؟</span>
-                    <button type="button" onclick="openPromoteModal()" class="text-amber-600 font-bold text-xs underline">ثبّت إعلانك</button>
-                </div>
-
                 <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow btn-tap transition">
                     انشر دراجتك
                 </button>
@@ -436,40 +427,7 @@
         </div>
     </div>
 
-    <!-- 5. نافذة الدفع والتثبيت -->
-    <div id="promote-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
-        <div class="bg-white w-full max-w-sm rounded-2xl p-5 shadow-2xl space-y-4 slide-up">
-            <div class="flex justify-between items-center border-b pb-3">
-                <h3 class="font-black text-sm text-gray-800 flex items-center gap-2">
-                    <i class="fa-solid fa-rocket text-amber-500"></i> تثبيت وترقية إعلانك
-                </h3>
-                <button onclick="toggleModal('promote-modal')" class="text-xl font-bold p-1 text-gray-400 hover:text-gray-700">&times;</button>
-            </div>
-
-            <div class="space-y-3 text-xs font-bold">
-                <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl">
-                    <div class="flex justify-between text-amber-900">
-                        <span>تثبيت لمدة 7 أيام:</span>
-                        <span class="font-black">5,000 د.ع</span>
-                    </div>
-                </div>
-
-                <div class="space-y-2">
-                    <label class="block text-gray-700">اختر طريقة الدفع الإلكتروني:</label>
-                    <div class="grid grid-cols-2 gap-2">
-                        <button onclick="processPayment('زين كاش')" class="border border-red-500/40 bg-red-50 p-3 rounded-xl flex items-center justify-center gap-2 text-red-700 font-bold btn-tap">
-                            <i class="fa-solid fa-wallet"></i> ZainCash
-                        </button>
-                        <button onclick="processPayment('فاست باي')" class="border border-blue-500/40 bg-blue-50 p-3 rounded-xl flex items-center justify-center gap-2 text-blue-700 font-bold btn-tap">
-                            <i class="fa-solid fa-mobile-screen"></i> FastPay
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 6. البروفايل الشخصي المعدل بالكامل (إزالة الإعدادات + إضافة زري القلم والمعروضات) -->
+    <!-- 5. البروفايل الشخصي (التحكم بالمنشورات المحفوظة فتح/إغلاق) -->
     <div id="profile-view" class="hidden min-h-screen bg-gray-100 pb-12">
         <header class="bg-white border-b sticky top-0 z-40 px-3 h-12 flex items-center justify-between shadow-sm">
             <button onclick="hideAllViews(); showMainView();" class="text-blue-600 font-bold text-xs flex items-center gap-1 btn-tap">
@@ -477,12 +435,11 @@
                 <span>رجوع للرئيسية</span>
             </button>
             <h3 class="font-bold text-xs text-gray-800">الملف الشخصي</h3>
-            <div></div> <!-- تم إزالة زر الإعدادات أعلى اليسار -->
+            <div></div>
         </header>
 
         <div class="max-w-2xl mx-auto p-4 space-y-4">
             <div class="bg-white rounded-2xl p-4 border shadow-sm text-center relative">
-                <!-- زر القلم لتعديل البروفايل -->
                 <button onclick="toggleModal('edit-profile-modal')" class="absolute top-3 left-3 w-8 h-8 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center btn-tap border border-blue-200" title="تعديل البروفايل">
                     <i class="fa-solid fa-pen text-xs"></i>
                 </button>
@@ -502,29 +459,29 @@
                 </button>
             </div>
 
-            <!-- خيارات البروفايل المعدلة (إزالة الإعدادات العامة وإضافة قائمة المعروضات) -->
+            <!-- خيارات البروفايل (المنشورات المحفوظة تقبل الفتح والإغلاق عند الضغط) -->
             <div class="bg-white rounded-2xl border shadow-sm divide-y text-xs font-bold text-gray-700">
-                <div class="p-3.5 flex items-center justify-between cursor-pointer hover:bg-gray-50" onclick="showSavedPosts()">
+                <div class="p-3.5 flex items-center justify-between cursor-pointer hover:bg-gray-50 select-none" onclick="toggleSavedPostsSection()">
                     <span class="flex items-center gap-2.5 text-amber-600">
                         <i class="fa-solid fa-bookmark text-base"></i> المنشورات المحفوظة
                     </span>
-                    <i class="fa-solid fa-chevron-left text-xs text-gray-400"></i>
+                    <i id="saved-arrow" class="fa-solid fa-chevron-left text-xs text-gray-400 transition-transform duration-200"></i>
                 </div>
 
-                <div class="p-3.5 flex items-center justify-between cursor-pointer hover:bg-gray-50" onclick="showMyListings()">
+                <div class="p-3.5 flex items-center justify-between cursor-pointer hover:bg-gray-50 select-none" onclick="toggleMyListingsSection()">
                     <span class="flex items-center gap-2.5 text-blue-600">
                         <i class="fa-solid fa-boxes-stacked text-base"></i> المعروضات (إعلاناتي)
                     </span>
-                    <i class="fa-solid fa-chevron-left text-xs text-gray-400"></i>
+                    <i id="listings-arrow" class="fa-solid fa-chevron-left text-xs text-gray-400 transition-transform duration-200"></i>
                 </div>
             </div>
 
-            <!-- حاوية استعراض المعروضات أو المحفوظات داخل البروفايل -->
+            <!-- حاوية عرض المنشورات المحفوظة أو المعروضات مع الفتح والإغلاق -->
             <div id="profile-dynamic-content" class="space-y-3"></div>
         </div>
     </div>
 
-    <!-- نافذة تعديل البروفايل (التي تفتح من زر القلم) -->
+    <!-- 6. نافذة تعديل البروفايل -->
     <div id="edit-profile-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
         <div class="bg-white w-full max-w-sm rounded-2xl p-5 shadow-2xl space-y-3 slide-up">
             <div class="flex justify-between items-center border-b pb-2">
@@ -568,7 +525,7 @@
         </div>
     </div>
 
-    <!-- 7. بروفايل البائع (تضمن المعروضات وتاريخ الانضمام) -->
+    <!-- 7. بروفايل البائع -->
     <div id="seller-profile-view" class="hidden min-h-screen bg-gray-100 pb-12">
         <header class="bg-white border-b sticky top-0 z-40 px-3 h-12 flex items-center justify-between shadow-sm">
             <button onclick="hideAllViews(); showMainView();" class="text-blue-600 font-bold text-xs flex items-center gap-1 btn-tap">
@@ -596,19 +553,16 @@
                 </a>
             </div>
 
-            <!-- المعروضات الخاصة بالبائع -->
             <div class="space-y-2">
                 <h4 class="font-black text-xs text-gray-800 flex items-center gap-1">
                     <i class="fa-solid fa-boxes-stacked text-blue-600"></i> معروضات البائع
                 </h4>
-                <div id="seller-listings-container" class="space-y-3">
-                    <!-- منشورات البائع تنزل تلقائياً -->
-                </div>
+                <div id="seller-listings-container" class="space-y-3"></div>
             </div>
         </div>
     </div>
 
-    <!-- 8. نافذة الإعدادات العامة -->
+    <!-- 8. نافذة الإعدادات -->
     <div id="settings-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
         <div class="bg-white w-full max-w-md rounded-2xl p-5 shadow-2xl space-y-4 slide-up">
             <div class="flex justify-between items-center border-b pb-3">
@@ -617,47 +571,14 @@
                 </h3>
                 <button onclick="toggleModal('settings-modal')" class="text-xl font-bold p-1 cursor-pointer">&times;</button>
             </div>
-
-            <div class="space-y-3 text-xs font-bold text-gray-700">
-                <div class="space-y-2">
-                    <span class="text-gray-400 text-[11px]">التفضيلات العامة</span>
-                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-bell text-blue-500"></i> الإشعارات والتنبيهات</span>
-                        <div class="relative inline-block w-9 align-middle select-none">
-                            <input type="checkbox" id="toggle-notif" class="toggle-checkbox hidden" checked />
-                            <label for="toggle-notif" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200 relative">
-                                <span class="toggle-dot block w-4 h-4 rounded-full bg-white shadow transform translate-x-0 transition-transform duration-200 my-0.5 mr-1"></span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-moon text-indigo-500"></i> الوضع الداكن (Dark Mode)</span>
-                        <div class="relative inline-block w-9 align-middle select-none">
-                            <input type="checkbox" id="toggle-dark" class="toggle-checkbox hidden" />
-                            <label for="toggle-dark" class="toggle-label block overflow-hidden h-5 rounded-full bg-gray-300 cursor-pointer transition-colors duration-200 relative">
-                                <span class="toggle-dot block w-4 h-4 rounded-full bg-white shadow transform translate-x-0 transition-transform duration-200 my-0.5 mr-1"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="space-y-2 pt-2 border-t">
-                    <span class="text-gray-400 text-[11px]">الدعم والمساعدة</span>
-                    <div class="p-3 bg-red-50 text-red-700 rounded-xl cursor-pointer hover:bg-red-100 border border-red-200/60 flex items-center justify-between" onclick="alert('تواصل ويانا عبر البريد: support@drajati.iq')">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-envelope text-lg text-red-600"></i> تواصل ويانا عبر الجيميل</span>
-                        <i class="fa-solid fa-chevron-left text-xs"></i>
-                    </div>
-                </div>
-            </div>
-
+            <p class="text-xs text-gray-600">خيارات المنصة والتفضيلات.</p>
             <button onclick="toggleModal('settings-modal')" class="w-full bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2.5 rounded-xl text-xs btn-tap transition">
                 إغلاق
             </button>
         </div>
     </div>
 
-    <!-- 9. نافذة اختيار المحافظات (كامل المحافظات العراقية دون الإقليم) -->
+    <!-- 9. نافذة اختيار المحافظات -->
     <div id="city-picker-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
         <div class="bg-white w-full max-w-sm rounded-2xl p-4 shadow-2xl space-y-3 slide-up">
             <div class="flex justify-between items-center border-b pb-2">
@@ -675,7 +596,7 @@
                 <button onclick="selectCity('المثنى')" class="p-2.5 bg-gray-50 rounded-xl text-right hover:bg-blue-50">المثنى</button>
                 <button onclick="selectCity('ميسان')" class="p-2.5 bg-gray-50 rounded-xl text-right hover:bg-blue-50">ميسان</button>
                 <button onclick="selectCity('ذي قار')" class="p-2.5 bg-gray-50 rounded-xl text-right hover:bg-blue-50">ذي قار</button>
-                <button onclick="selectCity('كركوك')" class="p-2.5 bg-gray-50 rounded-xl text-right hover:bg-blue-50">كركوك</button>
+                <button onclick="selectCity('كركوك')" class="p-2.5 bg-gray-50 rounded-xl text-right hover:bg-blue-50">كركوك</option>
                 <button onclick="selectCity('صلاح الدين')" class="p-2.5 bg-gray-50 rounded-xl text-right hover:bg-blue-50">صلاح الدين</button>
                 <button onclick="selectCity('الأنبار')" class="p-2.5 bg-gray-50 rounded-xl text-right hover:bg-blue-50">الأنبار</button>
                 <button onclick="selectCity('بابل')" class="p-2.5 bg-gray-50 rounded-xl text-right hover:bg-blue-50">بابل</button>
@@ -695,23 +616,31 @@
                 <i class="fa-brands fa-google-play text-green-600 text-base"></i>
                 <span>متابعة باستخدام Google Play</span>
             </button>
-
-            <button onclick="handleLogin('Apple')" class="w-full bg-black text-white hover:bg-gray-800 font-bold py-2.5 rounded-xl flex items-center justify-center gap-2 btn-tap shadow-sm text-xs">
-                <i class="fa-brands fa-apple text-base"></i>
-                <span>متابعة باستخدام Apple ID</span>
-            </button>
         </div>
     </div>
 
-    <!-- الصوتيات والتفاعلات البرمجية -->
+    <!-- النافذة المنبثقة لعرض المنشور المحفوظ بملء الشاشة عند الضغط عليه -->
+    <div id="single-post-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-3">
+        <div class="bg-white w-full max-w-md rounded-2xl p-4 shadow-2xl space-y-3 slide-up max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 id="modal-post-title" class="font-bold text-sm text-gray-800">تفاصيل المنشور</h3>
+                <button onclick="toggleModal('single-post-modal')" class="text-xl font-bold p-1 text-gray-400 hover:text-gray-700">&times;</button>
+            </div>
+            <div id="single-post-content" class="space-y-3 text-xs">
+                <!-- المحتوى ينزل ديناميكياً -->
+            </div>
+        </div>
+    </div>
+
+    <!-- الصوتيات والبرمجيات المعدلة -->
     <script>
         let currentUser = null;
         let selectedCity = 'كل المحافظات';
         let selectedCategory = 'الكل';
         let currentQBPage = 1;
         let replyTargetMap = {};
+        let activeProfileSection = null; // للتتبع بين المنشورات المحفوظة أو المعروضات
 
-        /* الأصوات البرمجية باستخدام Web Audio API النظيف بدون ملفات خارجية */
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         
         function playLikeSound() {
@@ -761,6 +690,71 @@
             document.getElementById('profile-view').classList.remove('hidden');
         }
 
+        /* التحكم بفتح وإغلاق المنشورات المحفوظة في البروفايل */
+        function toggleSavedPostsSection() {
+            const content = document.getElementById('profile-dynamic-content');
+            const arrow = document.getElementById('saved-arrow');
+
+            if (activeProfileSection === 'saved') {
+                content.innerHTML = '';
+                activeProfileSection = null;
+                arrow.classList.remove('-rotate-90');
+            } else {
+                activeProfileSection = 'saved';
+                arrow.classList.add('-rotate-90');
+                document.getElementById('listings-arrow').classList.remove('-rotate-90');
+                
+                content.innerHTML = `
+                    <h4 class="font-bold text-xs text-amber-600">المنشورات المحفوظة (اضغط على المنشور لفتحه):</h4>
+                    <div onclick="openSavedPostDetails()" class="bg-white p-3 rounded-xl border border-amber-200 hover:border-amber-400 flex gap-3 items-center cursor-pointer transition shadow-sm card-hover">
+                        <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=200&q=80" class="w-14 h-14 object-cover rounded-lg">
+                        <div class="flex-1">
+                            <h5 class="font-bold text-xs text-gray-800">ماكس عدلة 2007 نظيفة جداً</h5>
+                            <p class="text-[10px] text-gray-500">بغداد - 850,000 د.ع</p>
+                            <span class="text-[9px] text-amber-600 font-bold">انقر هنا لعرض المنشور بالكامل</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-left text-xs text-gray-400"></i>
+                    </div>
+                `;
+            }
+        }
+
+        function openSavedPostDetails() {
+            const modalContent = document.getElementById('single-post-content');
+            modalContent.innerHTML = `
+                <div class="bg-white rounded-xl space-y-2">
+                    <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=500&q=80" class="w-full h-48 object-cover rounded-xl">
+                    <h4 class="font-black text-sm text-gray-900">ماكس عدلة 2007 نظيفة جداً</h4>
+                    <p class="text-xs text-gray-600">دراجة نظيفة جداً بشرط الفحص الكامل، محرك ما مفتوح، كشر وبدن بلاد.</p>
+                    <div class="text-base font-black text-green-600">850,000 د.ع</div>
+                    <div class="pt-2">
+                        <button onclick="showSellerProfile('علي العراقي', 'بغداد - الكرادة', '07700000000', '2023-01-15'); toggleModal('single-post-modal');" class="w-full bg-blue-600 text-white py-2 rounded-xl font-bold text-xs">تواصل مع البائع</button>
+                    </div>
+                </div>
+            `;
+            toggleModal('single-post-modal');
+        }
+
+        function toggleMyListingsSection() {
+            const content = document.getElementById('profile-dynamic-content');
+            const arrow = document.getElementById('listings-arrow');
+
+            if (activeProfileSection === 'listings') {
+                content.innerHTML = '';
+                activeProfileSection = null;
+                arrow.classList.remove('-rotate-90');
+            } else {
+                activeProfileSection = 'listings';
+                arrow.classList.add('-rotate-90');
+                document.getElementById('saved-arrow').classList.remove('-rotate-90');
+
+                content.innerHTML = `
+                    <h4 class="font-bold text-xs text-blue-600">معروضاتي:</h4>
+                    <p class="text-xs text-gray-500 font-normal">لا توجد لديك معروضات حالية.</p>
+                `;
+            }
+        }
+
         function showSellerProfile(name, city, phone, joinedDate) {
             hideAllViews();
             document.getElementById('seller-name').innerHTML = `${name} <i class="fa-solid fa-circle-check text-blue-500 text-xs" title="حساب موثق"></i>`;
@@ -769,7 +763,6 @@
             document.getElementById('seller-phone-link').href = 'tel:' + phone;
             document.getElementById('seller-avatar-img').src = "https://api.dicebear.com/7.x/avataaars/svg?seed=" + encodeURIComponent(name);
             
-            // إضافة معروضات البائع تلقائياً
             const container = document.getElementById('seller-listings-container');
             container.innerHTML = `
                 <div class="bg-white p-3 rounded-xl border flex gap-3 items-center">
@@ -800,11 +793,6 @@
             document.getElementById('prof-bio').innerText = currentUser.bio;
             document.getElementById('prof-phone').innerHTML = `<i class="fa-solid fa-phone text-blue-500"></i> ${currentUser.phone}`;
             
-            // تعبئة حقول التعديل
-            document.getElementById('edit-name-input').value = currentUser.name;
-            document.getElementById('edit-bio-input').value = currentUser.bio;
-            document.getElementById('edit-phone-input').value = currentUser.phone;
-
             alert("تم تسجيل الدخول بنجاح عبر " + provider);
             toggleModal('auth-modal');
         }
@@ -825,7 +813,6 @@
             toggleModal('edit-profile-modal');
         }
 
-        /* تفاعلات الإعجاب المحدثة (لون أحمر شفاف وعداد داخلي + صوت) */
         function toggleLike(btn) {
             playLikeSound();
             const icon = btn.querySelector('i');
@@ -849,26 +836,27 @@
             }
         }
 
-        /* حفظ المنشور وتمرير تأثير انبعاث الأيقونة */
+        /* تعديل زر الحفظ ليتحول إلى اللون الأصفر عند النقر عليه */
         function toggleBookmark(btn) {
             const icon = btn.querySelector('i');
-            btn.classList.add('bookmark-active');
+            btn.classList.add('bookmark-pop');
             
             setTimeout(() => {
-                btn.classList.remove('bookmark-active');
+                btn.classList.remove('bookmark-pop');
             }, 400);
 
             if (icon.classList.contains('fa-regular')) {
-                icon.classList.remove('fa-regular');
-                icon.classList.add('fa-solid');
+                icon.classList.remove('fa-regular', 'text-gray-400');
+                icon.classList.add('fa-solid', 'text-amber-500');
+                btn.classList.add('text-amber-500');
                 alert('تم حفظ المنشور في المحفوظات!');
             } else {
-                icon.classList.remove('fa-solid');
-                icon.classList.add('fa-regular');
+                icon.classList.remove('fa-solid', 'text-amber-500');
+                icon.classList.add('fa-regular', 'text-gray-400');
+                btn.classList.remove('text-amber-500');
             }
         }
 
-        /* التعليقات والرد داخل نفس الإطار + الصوت */
         function toggleComments(id) {
             playCommentSound();
             document.getElementById(id).classList.toggle('hidden');
@@ -930,7 +918,6 @@
             playCommentSound();
         }
 
-        /* التحقق من حدود الأحرف في إضافة الإعلان */
         function checkLength(input, max, errorId) {
             const errElem = document.getElementById(errorId);
             if(input.value.length > max) {
@@ -946,7 +933,7 @@
             }
         }
 
-        /* التصفح السريع شبكة 2x20 */
+        /* اتصفح بسرعة (شبكة بدون أسهم) */
         function toggleQuickBrowse() {
             const mainContainer = document.getElementById('posts-container');
             const qbView = document.getElementById('quick-browse-view');
@@ -969,13 +956,12 @@
             const grid = document.getElementById('quick-browse-grid');
             grid.innerHTML = '';
 
-            // تخليد 20 عنصر في الشبكة للكل صفحة
             for(let i = 1; i <= 20; i++) {
                 const itemNum = (page - 1) * 20 + i;
                 grid.innerHTML += `
-                    <div class="bg-white p-2 rounded-xl border shadow-sm text-center space-y-1 card-hover">
+                    <div class="bg-white p-2 rounded-xl border shadow-sm text-center space-y-1 card-hover cursor-pointer" onclick="alert('فتح منشور اتصفح بسرعة #${itemNum}')">
                         <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=250&q=80" class="w-full h-24 object-cover rounded-lg">
-                        <h5 class="font-bold text-[11px] text-gray-800 truncate">دراجة سريعة #${itemNum}</h5>
+                        <h5 class="font-bold text-[11px] text-gray-800 truncate">دراجة #${itemNum}</h5>
                         <p class="text-[10px] text-green-600 font-black">750,000 د.ع</p>
                     </div>
                 `;
@@ -987,22 +973,6 @@
             if(newPage >= 1 && newPage <= 2) {
                 renderQuickBrowsePage(newPage);
             }
-        }
-
-        /* التحكم بالسكرول للإعلانات المميزة */
-        function scrollFeatured(amount) {
-            document.getElementById('featured-container').scrollBy({ left: amount, behavior: 'smooth' });
-        }
-
-        /* دوال تحكم الفئات والمحافظات والبروفايل */
-        function showSubCategories() {
-            document.getElementById('main-categories-list').classList.add('hidden');
-            document.getElementById('sub-categories-list').classList.remove('hidden');
-        }
-
-        function hideSubCategories() {
-            document.getElementById('sub-categories-list').classList.add('hidden');
-            document.getElementById('main-categories-list').classList.between('hidden');
         }
 
         function selectCategory(catName) {
@@ -1023,12 +993,20 @@
             filterPosts();
         }
 
+        /* دالة البحث المرنة التي تُساوي بين ة وَ هـ في كلمة (دراجة / دراجه) */
+        function normalizeArabic(text) {
+            return text
+                .toLowerCase()
+                .replace(/ة/g, 'ه') // تحويل التاء المربوطة إلى هاء
+                .replace(/[أإآ]/g, 'ا'); // توحيد الألفات
+        }
+
         function filterPosts() {
-            const query = document.getElementById('search-input').value.toLowerCase();
+            const query = normalizeArabic(document.getElementById('search-input').value);
             const posts = document.querySelectorAll('.post-card');
 
             posts.forEach(post => {
-                const title = post.querySelector('.post-title').innerText.toLowerCase();
+                const title = normalizeArabic(post.querySelector('.post-title').innerText);
                 const postCat = post.getAttribute('data-category');
                 const postCity = post.getAttribute('data-city');
 
@@ -1044,28 +1022,6 @@
             });
         }
 
-        function showSavedPosts() {
-            const dynamicContent = document.getElementById('profile-dynamic-content');
-            dynamicContent.innerHTML = `
-                <h4 class="font-bold text-xs text-amber-600">المنشورات المحفوظة</h4>
-                <div class="bg-white p-3 rounded-xl border flex gap-3 items-center">
-                    <img src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=200&q=80" class="w-14 h-14 object-cover rounded-lg">
-                    <div>
-                        <h5 class="font-bold text-xs">ماكس عدلة 2007</h5>
-                        <p class="text-[10px] text-gray-500">850,000 د.ع</p>
-                    </div>
-                </div>
-            `;
-        }
-
-        function showMyListings() {
-            const dynamicContent = document.getElementById('profile-dynamic-content');
-            dynamicContent.innerHTML = `
-                <h4 class="font-bold text-xs text-blue-600">معروضاتي</h4>
-                <p class="text-xs text-gray-500 font-normal">لا توجد لديك معروضات حالية.</p>
-            `;
-        }
-
         function sharePost() {
             alert('تم نسخ رابط المنشور بنجاح!');
         }
@@ -1074,15 +1030,6 @@
             e.preventDefault();
             alert('تم نشر دراجتك بنجاح!');
             toggleModal('add-post-modal');
-        }
-
-        function openPromoteModal() {
-            checkAuthAndAction(() => toggleModal('promote-modal'));
-        }
-
-        function processPayment(gateway) {
-            alert('جاري توجيهك إلى بوابة ' + gateway + ' لإتمام التثبيت...');
-            toggleModal('promote-modal');
         }
     </script>
 </body>
