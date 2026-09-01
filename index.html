@@ -303,8 +303,9 @@
         </div>
     </div>
 
-    <!-- البرمجية والتزامن المباشر مع Supabase -->
+    <!-- البرمجية والتزامن المباشر مع Supabase مع الحماية من الأخطاء -->
     <script>
+        // ضع روابطك الخاصة بـ Supabase هنا
         const SUPABASE_URL = "https://lurzvtbvsglxswoiftao.supabase.co";
         const SUPABASE_ANON_KEY = "sb_publishable_DDnpGIIa1_yMCTGPZjhQJA_oMg48DGt";
 
@@ -319,14 +320,18 @@
             setupRealtimeSubscriptions();
         });
 
-        // 1. تسجيل الدخول باستخدام Supabase
+        // 1. إدارة جلسة المستخدم
         async function initAuth() {
-            const { data: { user } } = await supabase.auth.getUser();
-            updateUserUI(user);
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                updateUserUI(user);
 
-            supabase.auth.onAuthStateChange((_event, session) => {
-                updateUserUI(session?.user || null);
-            });
+                supabase.auth.onAuthStateChange((_event, session) => {
+                    updateUserUI(session?.user || null);
+                });
+            } catch (err) {
+                console.warn('تعذر جلب حالة المستخدم الحالية:', err);
+            }
         }
 
         function updateUserUI(user) {
@@ -359,21 +364,31 @@
             await supabase.auth.signOut();
         }
 
-        // 2. جلب المنشورات والتعليقات من قاعدة البيانات
+        // 2. جلب المنشورات والتعليقات بأمان
         async function loadPosts() {
-            const { data: posts, error } = await supabase
-                .from('posts')
-                .select('*, comments(*)')
-                .order('created_at', { ascending: false });
-
-            if (error) return console.error(error);
-
             const container = document.getElementById('posts-container');
-            container.innerHTML = '';
+            try {
+                const { data: posts, error } = await supabase
+                    .from('posts')
+                    .select('*, comments(*)')
+                    .order('created_at', { ascending: false });
 
-            posts.forEach(post => {
-                container.appendChild(createPostCard(post));
-            });
+                if (error) throw error;
+
+                container.innerHTML = '';
+                
+                if (!posts || posts.length === 0) {
+                    container.innerHTML = '<p class="text-center text-xs text-gray-500 py-6">لا توجد منشورات حالياً. كن أول من يضيف إعلاناً!</p>';
+                    return;
+                }
+
+                posts.forEach(post => {
+                    container.appendChild(createPostCard(post));
+                });
+            } catch (err) {
+                console.error('خطأ الاتصال بـ Supabase:', err);
+                container.innerHTML = '<p class="text-center text-xs text-red-500 py-6">تعذر الاتصال بقاعدة البيانات. تأكد من إعداد المفتاح والجداول بشكل صحيح.</p>';
+            }
         }
 
         function createPostCard(post) {
@@ -395,15 +410,15 @@
                     <div class="flex items-center space-x-2 space-x-reverse">
                         <img src="${post.user_avatar || 'https://api.dicebear.com/7.x/bottts/svg?seed=User'}" class="w-8 h-8 rounded-full border">
                         <div>
-                            <h4 class="font-bold text-xs text-gray-900">${post.user_name}</h4>
-                            <p class="text-[10px] text-gray-400">${post.city_name}</p>
+                            <h4 class="font-bold text-xs text-gray-900">${post.user_name || 'غير معروف'}</h4>
+                            <p class="text-[10px] text-gray-400">${post.city_name || 'بغداد'}</p>
                         </div>
                     </div>
                 </div>
                 <div class="p-3 space-y-1.5">
                     <h3 class="post-title text-sm font-black text-gray-900">${post.title}</h3>
                     <p class="text-[11px] text-gray-600">${post.description || ''}</p>
-                    <div class="text-base font-black text-green-600">${post.price} د.ع</div>
+                    <div class="text-base font-black text-green-600">${post.price || 0} د.ع</div>
                 </div>
                 <div class="px-2.5 py-2 border-t bg-gray-50 flex items-center justify-between text-[11px]">
                     <button onclick="toggleComments('${post.id}')" class="flex items-center gap-1 border bg-white px-2.5 py-1 rounded-full font-bold">
@@ -425,51 +440,58 @@
             return div;
         }
 
-        // 3. استقبال التحديثات اللحظية للمنشورات والتعليقات
+        // 3. الاستماع للتحديثات اللحظية
         function setupRealtimeSubscriptions() {
-            supabase.channel('public:posts')
-                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, payload => {
-                    const container = document.getElementById('posts-container');
-                    container.insertBefore(createPostCard(payload.new), container.firstChild);
-                })
-                .subscribe();
+            try {
+                supabase.channel('public:posts')
+                    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, payload => {
+                        const container = document.getElementById('posts-container');
+                        if (container) {
+                            container.insertBefore(createPostCard(payload.new), container.firstChild);
+                        }
+                    })
+                    .subscribe();
 
-            supabase.channel('public:comments')
-                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'comments' }, payload => {
-                    const c = payload.new;
-                    const list = document.getElementById(`comments-list-${c.post_id}`);
-                    if (list) {
-                        list.innerHTML += `
-                            <div class="bg-white p-1.5 rounded border mb-1">
-                                <span class="font-bold text-blue-600">${c.user_name}:</span>
-                                <span class="text-gray-700">${c.text}</span>
-                            </div>
-                        `;
-                    }
-                })
-                .subscribe();
+                supabase.channel('public:comments')
+                    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'comments' }, payload => {
+                        const c = payload.new;
+                        const list = document.getElementById(`comments-list-${c.post_id}`);
+                        if (list) {
+                            list.innerHTML += `
+                                <div class="bg-white p-1.5 rounded border mb-1">
+                                    <span class="font-bold text-blue-600">${c.user_name}:</span>
+                                    <span class="text-gray-700">${c.text}</span>
+                                </div>
+                            `;
+                        }
+                    })
+                    .subscribe();
+            } catch (err) {
+                console.warn('تعذر تفعيل التحديثات اللحظية:', err);
+            }
         }
 
-        // 4. كتابة ونشر تعليق
+        // 4. تعليق جديد
         async function sendComment(postId) {
             if (!currentUser) return alert("يرجى تسجيل الدخول أولاً للتعليق!");
             const input = document.getElementById(`input-${postId}`);
             const text = input.value.trim();
             if (!text) return;
 
-            await supabase.from('comments').insert([
+            const { error } = await supabase.from('comments').insert([
                 { post_id: postId, user_id: currentUser.id, user_name: currentUser.name, text: text }
             ]);
 
-            input.value = '';
+            if (error) alert("حدث خطأ أثناء إضافة التعليق!");
+            else input.value = '';
         }
 
-        // 5. نشر إعلان جديد
+        // 5. إضافة إعلان جديد
         async function handleAddPost(e) {
             e.preventDefault();
             if (!currentUser) return alert("يرجى تسجيل الدخول أولاً لنشر إعلان!");
 
-            await supabase.from('posts').insert([
+            const { error } = await supabase.from('posts').insert([
                 {
                     title: document.getElementById('post-title-input').value,
                     category: document.getElementById('post-category-input').value,
@@ -482,11 +504,15 @@
                 }
             ]);
 
-            toggleModal('add-post-modal');
-            e.target.reset();
+            if (error) {
+                alert("حدث خطأ أثناء إضافة الإعلان، يرجى المحاولة لاحقاً.");
+            } else {
+                toggleModal('add-post-modal');
+                e.target.reset();
+            }
         }
 
-        // وظائف الواجهة المساعدة
+        // 6. أزرار وواجهات المستخدم
         function checkAuthAndAction(action) {
             if (!currentUser) {
                 alert("يرجى تسجيل الدخول أولاً!");
@@ -494,14 +520,29 @@
             } else { action(); }
         }
 
-        function toggleModal(id) { document.getElementById(id).classList.toggle('hidden'); }
-        function toggleComments(id) { document.getElementById(`comments-${id}`).classList.toggle('hidden'); }
+        function toggleModal(id) { 
+            const modal = document.getElementById(id);
+            if (modal) modal.classList.toggle('hidden'); 
+        }
+
+        function toggleComments(id) { 
+            const commentsDiv = document.getElementById(`comments-${id}`);
+            if (commentsDiv) commentsDiv.classList.toggle('hidden'); 
+        }
+
         function hideAllViews() {
             document.getElementById('main-view').classList.add('hidden');
             document.getElementById('profile-view').classList.add('hidden');
         }
-        function showMainView() { document.getElementById('main-view').classList.remove('hidden'); }
-        function showProfilePage() { hideAllViews(); document.getElementById('profile-view').classList.remove('hidden'); }
+
+        function showMainView() { 
+            document.getElementById('main-view').classList.remove('hidden'); 
+        }
+
+        function showProfilePage() { 
+            hideAllViews(); 
+            document.getElementById('profile-view').classList.remove('hidden'); 
+        }
 
         function selectCategory(cat) {
             selectedCategory = cat;
@@ -546,6 +587,19 @@
             } else {
                 navigator.clipboard.writeText(window.location.href);
                 alert('تم نسخ رابط المنشور!');
+            }
+        }
+
+        function toggleQuickBrowse() {
+            const mainPosts = document.getElementById('posts-container');
+            const qbView = document.getElementById('quick-browse-view');
+            
+            if (qbView.classList.contains('hidden')) {
+                mainPosts.classList.add('hidden');
+                qbView.classList.remove('hidden');
+            } else {
+                mainPosts.classList.remove('hidden');
+                qbView.classList.add('hidden');
             }
         }
     </script>
