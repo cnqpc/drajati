@@ -70,6 +70,23 @@
             color: white;
             font-weight: bold;
         }
+
+        /* حركات تأثير تطاير اللايكات */
+        @keyframes floatLike {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(0.8) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tw-translateX), var(--tw-translateY)) scale(1.4) rotate(var(--tw-rotate));
+            }
+        }
+        .like-particle {
+            position: absolute;
+            pointer-events: none;
+            animation: floatLike 0.75s ease-out forwards;
+        }
     </style>
 </head>
 <body class="text-gray-800">
@@ -77,7 +94,6 @@
     <!-- 1. الهيدر العلوي -->
     <header class="bg-[#1877f2]/95 backdrop-blur-md text-white sticky top-0 z-40 shadow-md">
         <div class="max-w-2xl mx-auto px-4 h-16 flex items-center justify-between">
-            <!-- الشعار مع الأيقونة المميزة الهوية -->
             <div class="flex items-center space-x-2 space-x-reverse cursor-pointer" onclick="hideProfilePage()">
                 <div class="w-10 h-10 bg-gradient-to-tr from-amber-400 to-orange-500 rounded-xl flex items-center justify-center text-white text-xl shadow-lg border border-white/20 transform -rotate-3">
                     <i class="fa-solid fa-motorcycle"></i>
@@ -85,19 +101,16 @@
                 <span class="font-black text-2xl tracking-tight text-white drop-shadow-sm">دراجتي</span>
             </div>
 
-            <!-- الأزرار اليسارية: اعرض دراجتك (باللهجة العراقية) + الإعدادات + البروفايل -->
             <div class="flex items-center space-x-2 space-x-reverse">
                 <button onclick="checkAuthAndAction(() => toggleModal('add-post-modal'))" class="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white px-3.5 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 shadow-lg shadow-green-500/20 btn-tap pulse-btn">
                     <i class="fa-solid fa-plus-circle text-sm"></i>
                     <span>اعرض دراجتك</span>
                 </button>
 
-                <!-- زر الإعدادات -->
                 <button onclick="toggleModal('settings-modal')" class="w-9 h-9 bg-white/15 hover:bg-white/25 rounded-full flex items-center justify-center text-white text-base btn-tap">
                     <i class="fa-solid fa-gear"></i>
                 </button>
 
-                <!-- البروفايل الشخصي -->
                 <div onclick="showProfilePage()" class="w-9 h-9 bg-white/20 border-2 border-white/40 rounded-full flex items-center justify-center cursor-pointer overflow-hidden shadow-sm btn-tap">
                     <img id="header-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=Guest" alt="Guest" class="w-full h-full object-cover">
                 </div>
@@ -114,7 +127,6 @@
                 <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-3 text-gray-400 text-xs"></i>
                 <input type="text" placeholder="دور على نوع الدراجة، سكوتر، بطحة..." class="w-full bg-white pl-3 pr-9 py-2 rounded-2xl border border-gray-200/80 text-xs outline-none shadow-sm focus:border-blue-500 transition">
             </div>
-            <!-- اختيار المحافظة -->
             <select class="bg-white border border-gray-200/80 rounded-2xl px-3 py-2 font-bold text-xs text-gray-700 outline-none shadow-sm">
                 <option value="">كل المحافظات</option>
                 <option>بغداد</option><option>البصرة</option><option>النجف</option>
@@ -142,7 +154,7 @@
                 </button>
             </div>
 
-            <!-- الشريحة الفرعية الخاصة بالأدوات الاحتياطية (تظهر عند اختيار الأدوات الاحتياطية) -->
+            <!-- الشريحة الفرعية الخاصة بالأدوات الاحتياطية -->
             <div id="sub-parts-bar" class="hidden mt-2 pt-2 border-t flex items-center gap-2 text-[11px] slide-up">
                 <span class="font-bold text-gray-500">نوع الأدوات:</span>
                 <button onclick="filterSubPart(this)" class="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-lg font-bold border border-blue-200">قطع نارية</button>
@@ -174,11 +186,12 @@
                 </div>
             </div>
 
-            <!-- أزرار التفاعل (مع تصحيح زر المراسلة والإبقاء على زر الإعجاب) -->
-            <div class="px-2 py-1 flex justify-between items-center text-gray-600 border-t border-gray-100 text-xs font-bold">
-                <button onclick="checkAuthAndAction(() => togglePostLike(this))" class="flex-1 py-2 flex items-center justify-center space-x-1 space-x-reverse hover:bg-gray-50 rounded-xl btn-tap">
-                    <i class="fa-regular fa-thumbs-up text-base"></i>
-                    <span class="like-btn-text">إعجاب (12)</span>
+            <!-- أزرار التفاعل (زر الإعجاب تم استبداله بأيقونة اللايك فقط + تأثير التطاير) -->
+            <div class="px-2 py-1 flex justify-between items-center text-gray-600 border-t border-gray-100 text-xs font-bold relative">
+                <!-- زر اللايك (أيقونة فقط) مع التأثير -->
+                <button onclick="checkAuthAndAction(() => triggerLikeEffect(this))" class="flex-1 py-2 flex items-center justify-center space-x-1 space-x-reverse hover:bg-gray-50 rounded-xl btn-tap relative overflow-visible group">
+                    <i class="like-icon fa-regular fa-thumbs-up text-lg transition-transform group-active:scale-125"></i>
+                    <span class="like-count text-xs text-gray-500 mr-1 font-bold">(12)</span>
                 </button>
                 
                 <button onclick="toggleComments('comments-1')" class="flex-1 py-2 flex items-center justify-center space-x-1 space-x-reverse hover:bg-gray-50 rounded-xl btn-tap">
@@ -191,14 +204,13 @@
                     <span>مشاركة</span>
                 </button>
 
-                <!-- زر المراسلة المصحح بالكامل -->
                 <button onclick="openChat('علي العراقي', '07700000000')" class="flex-1 py-2 text-blue-600 flex items-center justify-center space-x-1 space-x-reverse hover:bg-blue-50 rounded-xl font-bold btn-tap">
                     <i class="fa-solid fa-paper-plane text-base"></i>
                     <span>مراسلة</span>
                 </button>
             </div>
 
-            <!-- قسم التعليقات (تم حذف نص "اضغط مرتين لرؤية الإيموجي") -->
+            <!-- قسم التعليقات -->
             <div id="comments-1" class="bg-gray-50/80 p-3.5 border-t hidden text-xs space-y-3">
                 <div id="comments-list-1" class="space-y-2">
                     <div class="bg-white p-3 rounded-2xl shadow-sm border border-gray-100 relative cursor-pointer" ondblclick="toggleEmojiBar(this)">
@@ -212,13 +224,18 @@
                             <button onclick="toggleReplyBox('reply-box-1')" class="text-blue-600 font-bold hover:underline btn-tap">
                                 <i class="fa-solid fa-reply ml-1"></i>رد
                             </button>
+                            <!-- الإيموجي المختار أسفل التعليق مباشرة -->
+                            <div class="active-reaction-badge hidden bg-gray-100 px-2 py-0.5 rounded-full border text-[11px] flex items-center gap-1 shadow-xs">
+                                <span class="reaction-emoji"></span>
+                                <span class="reaction-count font-bold text-gray-600 text-[10px]">1</span>
+                            </div>
                         </div>
 
-                        <!-- شريط الإيموجي دون نص إرشادي -->
+                        <!-- شريط التفاعلات بالإيموجي -->
                         <div class="emoji-bar hidden mt-2 pt-2 border-t flex items-center gap-4 text-sm emoji-pop">
-                            <button onclick="selectExclusiveEmoji(this)" class="emoji-btn font-bold text-gray-400 hover:scale-125 transition">👍 <span class="count">0</span></button>
-                            <button onclick="selectExclusiveEmoji(this)" class="emoji-btn font-bold text-gray-400 hover:scale-125 transition">😂 <span class="count">0</span></button>
-                            <button onclick="selectExclusiveEmoji(this)" class="emoji-btn font-bold text-gray-400 hover:scale-125 transition">👎 <span class="count">0</span></button>
+                            <button onclick="selectExclusiveEmoji(this, '👍')" class="emoji-btn font-bold text-gray-400 hover:scale-125 transition">👍</button>
+                            <button onclick="selectExclusiveEmoji(this, '😂')" class="emoji-btn font-bold text-gray-400 hover:scale-125 transition">😂</button>
+                            <button onclick="selectExclusiveEmoji(this, '👎')" class="emoji-btn font-bold text-gray-400 hover:scale-125 transition">👎</button>
                         </div>
 
                         <div id="reply-box-1" class="hidden mt-2 pt-2 border-t flex gap-2">
@@ -236,7 +253,7 @@
         </div>
     </main>
 
-    <!-- 3. نافذة المراسلة المباشرة المصححة -->
+    <!-- 3. نافذة المراسلة المباشرة -->
     <div id="chat-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
         <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[450px]">
             <div class="bg-[#1877f2] text-white p-3.5 flex justify-between items-center">
@@ -417,7 +434,7 @@
         </div>
     </div>
 
-    <!-- السكريبت والوظائف -->
+    <!-- السكريبت والوظائف Modyfied Script -->
     <script>
         let currentUser = null;
 
@@ -433,7 +450,72 @@
             }
         }
 
-        // اختيار الفئات
+        // 1. تأثير انتشار وتطاير اللايكات مثل فيسبوك
+        function triggerLikeEffect(btn) {
+            const icon = btn.querySelector('.like-icon');
+            const countSpan = btn.querySelector('.like-count');
+            const isLiked = icon.classList.contains('fa-solid');
+
+            if (!isLiked) {
+                // تفعيل الإعجاب
+                icon.classList.remove('fa-regular', 'text-gray-600');
+                icon.classList.add('fa-solid', 'text-blue-600', 'scale-125');
+                countSpan.innerText = "(13)";
+                countSpan.classList.add('text-blue-600');
+
+                // إنشاء تأثير تطاير اللايكات
+                for (let i = 0; i < 6; i++) {
+                    const particle = document.createElement('i');
+                    particle.className = 'fa-solid fa-thumbs-up text-blue-500 like-particle text-sm';
+                    
+                    const x = (Math.random() - 0.5) * 80;
+                    const y = - (Math.random() * 50 + 30);
+                    const rotate = (Math.random() - 0.5) * 60;
+
+                    particle.style.setProperty('--tw-translateX', `${x}px`);
+                    particle.style.setProperty('--tw-translateY', `${y}px`);
+                    particle.style.setProperty('--tw-rotate', `${rotate}deg`);
+                    particle.style.left = '45%';
+                    particle.style.top = '20%';
+
+                    btn.appendChild(particle);
+
+                    setTimeout(() => particle.remove(), 750);
+                }
+            } else {
+                // إلغاء الإعجاب
+                icon.classList.remove('fa-solid', 'text-blue-600', 'scale-125');
+                icon.classList.add('fa-regular', 'text-gray-600');
+                countSpan.innerText = "(12)";
+                countSpan.classList.remove('text-blue-600');
+            }
+        }
+
+        // 2. إظهار وتحديد الإيموجي أسفل التعليق مباشرة
+        function selectExclusiveEmoji(clickedBtn, emojiChar) {
+            const parentCard = clickedBtn.closest('.bg-white');
+            const badge = parentCard.querySelector('.active-reaction-badge');
+            const emojiSpan = badge.querySelector('.reaction-emoji');
+            
+            const isAlreadySelected = clickedBtn.classList.contains('text-blue-600');
+            const parentBar = clickedBtn.parentElement;
+
+            parentBar.querySelectorAll('.emoji-btn').forEach(b => {
+                b.classList.remove('text-blue-600', 'scale-125');
+                b.classList.add('text-gray-400');
+            });
+
+            if (isAlreadySelected) {
+                badge.classList.add('hidden');
+            } else {
+                clickedBtn.classList.add('text-blue-600', 'scale-125');
+                clickedBtn.classList.remove('text-gray-400');
+                emojiSpan.innerText = emojiChar;
+                badge.classList.remove('hidden');
+            }
+        }
+
+        // بقية الوظائف الأساسية
         function selectCategory(cat, btn) {
             document.querySelectorAll('.category-tab').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -454,7 +536,6 @@
             btn.className = "px-2.5 py-1 bg-blue-50 text-blue-600 rounded-lg font-bold border border-blue-200";
         }
 
-        // إطلاق نافذة المراسلة
         function openChat(sellerName, phone) {
             document.getElementById('chat-seller-name').innerText = "مراسلة: " + sellerName;
             toggleModal('chat-modal');
@@ -499,12 +580,6 @@
             toggleModal('auth-modal');
         }
 
-        function togglePostLike(btn) {
-            const isLiked = btn.classList.toggle('text-blue-600');
-            const textSpan = btn.querySelector('.like-btn-text');
-            textSpan.innerText = isLiked ? "تم الإعجاب (13)" : "إعجاب (12)";
-        }
-
         function toggleComments(id) {
             document.getElementById(id).classList.toggle('hidden');
         }
@@ -512,30 +587,6 @@
         function toggleEmojiBar(commentElem) {
             const bar = commentElem.querySelector('.emoji-bar');
             bar.classList.toggle('hidden');
-        }
-
-        function selectExclusiveEmoji(clickedBtn) {
-            const parentBar = clickedBtn.parentElement;
-            const allBtns = parentBar.querySelectorAll('.emoji-btn');
-            
-            allBtns.forEach(btn => {
-                if (btn !== clickedBtn) {
-                    btn.classList.remove('text-blue-600', 'scale-125');
-                    btn.classList.add('text-gray-400');
-                    btn.querySelector('.count').innerText = "0";
-                }
-            });
-
-            const isActive = clickedBtn.classList.contains('text-blue-600');
-            if (isActive) {
-                clickedBtn.classList.remove('text-blue-600', 'scale-125');
-                clickedBtn.classList.add('text-gray-400');
-                clickedBtn.querySelector('.count').innerText = "0";
-            } else {
-                clickedBtn.classList.add('text-blue-600', 'scale-125');
-                clickedBtn.classList.remove('text-gray-400');
-                clickedBtn.querySelector('.count').innerText = "1";
-            }
         }
 
         function toggleReplyBox(boxId) {
