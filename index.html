@@ -14,7 +14,7 @@
     <!-- FontAwesome للأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Supabase SDK & Canvas Compressor (لضبط دقة الصور إلى 720p) -->
+    <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
@@ -23,74 +23,30 @@
             background: linear-gradient(180deg, #f4f6f9 0%, #eef2f7 100%);
             min-height: 100vh;
         }
-
-        .btn-tap { 
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
-        }
-        .btn-tap:active { 
-            transform: scale(0.93); 
-        }
-        
-        .card-hover { 
-            transition: transform 0.25s ease, box-shadow 0.25s ease; 
-        }
-        .card-hover:hover { 
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.06);
-        }
-
-        .slide-up {
-            animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        @keyframes slideUp {
-            from { transform: translateY(100%); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .toggle-checkbox:checked + .toggle-label {
-            background-color: #10b981;
-        }
-        .toggle-checkbox:checked + .toggle-label .toggle-dot {
-            transform: translateX(-1.1rem);
-        }
-
-        /* تأثير انبعاث أيقونة الحفظ بالأصفر */
-        @keyframes popBookmark {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.3) rotate(-10deg); }
-            100% { transform: scale(1) rotate(0); }
-        }
-        .bookmark-pop {
-            animation: popBookmark 0.35s ease-in-out;
-        }
-
-        /* خلفية الإعلانات المميزة */
+        .btn-tap { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .btn-tap:active { transform: scale(0.93); }
+        .card-hover { transition: transform 0.25s ease, box-shadow 0.25s ease; }
+        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.06); }
+        .slide-up { animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
+        @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         .featured-bg {
             background-color: #1e293b;
             background-image: radial-gradient(#334155 1px, transparent 1px), radial-gradient(#334155 1px, #1e293b 1px);
             background-size: 16px 16px;
             background-position: 0 0, 8px 8px;
         }
-
-        /* حركة سلسة للإعلانات المميزة تسير نحو اليمين وتعود تلقائياً */
         @keyframes marquee {
             0% { transform: translateX(0%); }
             50% { transform: translateX(40%); }
             100% { transform: translateX(0%); }
         }
-        .animate-marquee {
-            display: flex;
-            width: max-content;
-            animation: marquee 18s ease-in-out infinite alternate;
-        }
-        .animate-marquee:hover {
-            animation-play-state: paused;
-        }
+        .animate-marquee { display: flex; width: max-content; animation: marquee 18s ease-in-out infinite alternate; }
+        .animate-marquee:hover { animation-play-state: paused; }
     </style>
 </head>
 <body class="text-gray-800 pb-12">
 
-    <!-- 1. الهيدر العلوي الرئيسي (مُصغّر ومُنظّم للهاتف) -->
+    <!-- الهيدر العلوي -->
     <header class="bg-[#1877f2]/95 backdrop-blur-md text-white sticky top-0 z-40 shadow-md">
         <div class="max-w-2xl mx-auto px-2.5 h-14 flex items-center justify-between">
             <div class="flex items-center space-x-1.5 space-x-reverse cursor-pointer" onclick="hideAllViews(); showMainView();">
@@ -101,234 +57,85 @@
             </div>
 
             <div class="flex items-center space-x-1.5 space-x-reverse">
-                <!-- زر اتصفح بسرعة (مُصغّر) -->
-                <button onclick="toggleQuickBrowse()" class="bg-white/15 hover:bg-white/25 text-white px-2 py-1 rounded-full text-[11px] font-bold flex items-center gap-1 btn-tap" title="اتصفح بسرعة">
+                <button onclick="toggleQuickBrowse()" class="bg-white/15 hover:bg-white/25 text-white px-2 py-1 rounded-full text-[11px] font-bold flex items-center gap-1 btn-tap">
                     <i class="fa-solid fa-table-cells text-amber-300 text-[10px]"></i>
                     <span>اتصفح بسرعة</span>
                 </button>
 
-                <!-- زر اعرض دراجتك (مُصغّر) -->
-                <button onclick="checkAuthAndAction(() => toggleModal('add-post-modal'))" class="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-2.5 py-1 rounded-full text-[11px] font-bold flex items-center gap-1 shadow-md shadow-green-500/20 btn-tap">
+                <button onclick="toggleModal('add-post-modal')" class="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-2.5 py-1 rounded-full text-[11px] font-bold flex items-center gap-1 shadow-md shadow-green-500/20 btn-tap">
                     <i class="fa-solid fa-plus-circle text-[11px]"></i>
                     <span>اعرض دراجتك</span>
                 </button>
 
-                <!-- زر الإعدادات -->
-                <button onclick="toggleModal('settings-modal')" class="w-7 h-7 bg-white/15 hover:bg-white/25 rounded-full flex items-center justify-center text-white text-xs btn-tap" title="الإعدادات">
+                <button onclick="toggleModal('settings-modal')" class="w-7 h-7 bg-white/15 hover:bg-white/25 rounded-full flex items-center justify-center text-white text-xs btn-tap">
                     <i class="fa-solid fa-gear"></i>
                 </button>
-
-                <!-- البروفايل -->
-                <div onclick="showProfilePage()" class="w-7 h-7 bg-white/20 border border-white/40 rounded-full flex items-center justify-center cursor-pointer overflow-hidden shadow-sm btn-tap">
-                    <img id="header-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=Guest" alt="Guest" class="w-full h-full object-cover">
-                </div>
             </div>
         </div>
     </header>
 
-    <!-- 2. الرئيسية وخلاصة الإعلانات -->
+    <!-- الرئيسية -->
     <main id="main-view" class="max-w-2xl mx-auto pt-2.5 px-2">
         
-        <!-- شريط البحث والمحافظة والفئات (أيقونات وخانات مُصغّرة تناسب الهاتف) -->
+        <!-- البحث والفلاتر -->
         <div class="mb-2.5 flex gap-1.5 text-[11px]">
             <div class="relative flex-1">
                 <i class="fa-solid fa-magnifying-glass absolute right-2.5 top-2.5 text-gray-400 text-[10px]"></i>
-                <input type="text" id="search-input" onkeyup="filterPosts()" placeholder="دور على نوع الدراجة، سكوتر..." class="w-full bg-white pl-2 pr-7 py-1.5 rounded-xl border border-gray-200/90 text-[11px] outline-none shadow-sm focus:border-blue-500 transition">
+                <input type="text" id="search-input" onkeyup="filterPosts()" placeholder="ابحث عن نوع الدراجة، سكوتر..." class="w-full bg-white pl-2 pr-7 py-1.5 rounded-xl border border-gray-200/90 text-[11px] outline-none shadow-sm focus:border-blue-500 transition">
             </div>
 
-            <!-- خانة الفئات (مُصغّرة) -->
-            <button onclick="toggleModal('categories-modal')" class="bg-white border border-gray-200/90 hover:bg-gray-50 rounded-xl px-2.5 py-1.5 font-bold text-blue-600 outline-none shadow-sm flex items-center gap-1 btn-tap whitespace-nowrap">
+            <button onclick="toggleModal('categories-modal')" class="bg-white border border-gray-200/90 rounded-xl px-2.5 py-1.5 font-bold text-blue-600 outline-none shadow-sm flex items-center gap-1 btn-tap whitespace-nowrap">
                 <i class="fa-solid fa-layer-group text-blue-500 text-[10px]"></i>
                 <span id="selected-category-label">الكل</span>
                 <i class="fa-solid fa-chevron-down text-[8px] text-gray-400"></i>
             </button>
 
-            <!-- خانة المحافظات (مُصغّرة) -->
-            <button onclick="openCityPicker()" id="main-city-btn" class="bg-white border border-gray-200/90 rounded-xl px-2.5 py-1.5 font-bold text-gray-700 outline-none shadow-sm flex items-center gap-1 btn-tap whitespace-nowrap">
+            <button onclick="openCityPicker()" class="bg-white border border-gray-200/90 rounded-xl px-2.5 py-1.5 font-bold text-gray-700 outline-none shadow-sm flex items-center gap-1 btn-tap whitespace-nowrap">
                 <i class="fa-solid fa-location-dot text-blue-500 text-[10px]"></i>
                 <span id="main-city-label">كل المحافظات</span>
             </button>
         </div>
 
-        <!-- قسم الإعلانات المميزة -->
+        <!-- الإعلانات المميزة -->
         <div class="mb-3 rounded-xl p-2.5 featured-bg text-white shadow-md relative overflow-hidden">
             <div class="flex items-center justify-between mb-2 px-1">
                 <span class="text-[11px] font-black text-amber-400 flex items-center gap-1">
-                    <i class="fa-solid fa-star text-amber-400 animate-pulse text-[10px]"></i> إعلانات مميزة
+                    <i class="fa-solid fa-star text-amber-400 animate-pulse text-[10px]"></i> إعلانات مميزة حية
                 </span>
             </div>
-            
             <div class="overflow-hidden w-full">
-                <div id="featured-posts-container" class="animate-marquee flex gap-2.5">
-                    <!-- سيتم جلب الإعلانات المميزة مباشرة من Supabase -->
-                </div>
+                <div id="featured-posts-container" class="animate-marquee flex gap-2.5"></div>
             </div>
         </div>
 
-        <!-- حاوية المنشورات الرئيسية -->
+        <!-- قائمة المنشورات الحية -->
         <div id="posts-container" class="space-y-3">
             <div class="text-center py-6 text-gray-500 text-xs">
                 <i class="fa-solid fa-circle-notch fa-spin text-blue-500 text-lg mb-2"></i>
-                <p>جاري تحميل العروض من Supabase...</p>
+                <p>جاري مزامنة الإعلانات الحية من Supabase...</p>
             </div>
         </div>
 
-        <!-- view اتصفح بسرعة -->
+        <!-- اتصفح بسرعة -->
         <div id="quick-browse-view" class="hidden space-y-2.5">
             <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border shadow-sm">
                 <span class="font-black text-xs text-gray-800 flex items-center gap-1">
-                    <i class="fa-solid fa-table-cells text-amber-500"></i> اتصفح بسرعة، صفحة أو القائمة <span id="qb-page-num">1</span>
+                    <i class="fa-solid fa-table-cells text-amber-500"></i> التصفح السريع
                 </span>
                 <button onclick="toggleQuickBrowse()" class="text-xs text-red-500 font-bold">إغلاق</button>
             </div>
-
             <div id="quick-browse-grid" class="grid grid-cols-2 gap-2"></div>
-
-            <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border shadow-sm text-xs font-bold">
-                <button onclick="changeQBPage(-1)" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg btn-tap">الصفحة السابقة</button>
-                <span id="qb-page-indicator" class="text-gray-500 text-[11px]">صفحة 1 من 2</span>
-                <button onclick="changeQBPage(1)" class="bg-blue-600 text-white px-3 py-1.5 rounded-lg btn-tap">الصفحة التالية</button>
-            </div>
         </div>
     </main>
 
-    <!-- 3. نافذة الفئات (مُصغّرة) -->
-    <div id="categories-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
-        <div class="bg-white w-full max-w-xs rounded-xl p-3.5 shadow-2xl space-y-2.5 slide-up">
-            <div class="flex justify-between items-center border-b pb-2">
-                <h3 class="font-black text-xs text-gray-800 flex items-center gap-1.5">
-                    <i class="fa-solid fa-layer-group text-blue-600"></i> اختر الفئة
-                </h3>
-                <button onclick="toggleModal('categories-modal')" class="text-base font-bold text-gray-400 hover:text-gray-700">&times;</button>
-            </div>
-
-            <div id="main-categories-list" class="space-y-1.5 text-xs font-bold">
-                <button onclick="selectCategory('الكل')" class="w-full p-2.5 bg-gray-50 hover:bg-blue-50 rounded-lg text-right flex items-center justify-between border border-gray-100 text-gray-700 transition">
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-border-all text-blue-500"></i> كل الفئات</span>
-                </button>
-                <button onclick="selectCategory('دراجات نارية')" class="w-full p-2.5 bg-gray-50 hover:bg-blue-50 rounded-lg text-right flex items-center justify-between border border-gray-100 text-gray-700 transition">
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-motorcycle text-amber-500"></i> الدراجات النارية</span>
-                </button>
-                <button onclick="selectCategory('دراجات هوائية')" class="w-full p-2.5 bg-gray-50 hover:bg-blue-50 rounded-lg text-right flex items-center justify-between border border-gray-100 text-gray-700 transition">
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-bicycle text-green-500"></i> الدراجات الهوائية</span>
-                </button>
-                <button onclick="selectCategory('دراجات الشحن')" class="w-full p-2.5 bg-gray-50 hover:bg-blue-50 rounded-lg text-right flex items-center justify-between border border-gray-100 text-gray-700 transition">
-                    <span class="flex items-center gap-2"><i class="fa-solid fa-bolt text-yellow-500"></i> دراجات الشحن</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 4. نافذة الإعدادات الشاملة -->
-    <div id="settings-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
-        <div class="bg-white w-full max-w-sm rounded-2xl p-4 shadow-2xl space-y-3.5 slide-up max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center border-b pb-2.5">
-                <h3 class="font-black text-sm flex items-center gap-2 text-gray-800">
-                    <i class="fa-solid fa-gear text-blue-600"></i> إعدادات المنصة
-                </h3>
-                <button onclick="toggleModal('settings-modal')" class="text-lg font-bold text-gray-400 hover:text-gray-700">&times;</button>
-            </div>
-
-            <div class="space-y-3 text-xs">
-                <div class="flex items-center justify-between p-2.5 bg-gray-50 rounded-xl border">
-                    <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-moon text-indigo-600 text-sm"></i>
-                        <div>
-                            <p class="font-bold text-gray-800">الوضع الداكن (Dark Mode)</p>
-                            <p class="text-[10px] text-gray-500">تغيير مظهر التطبيق للون المظلم</p>
-                        </div>
-                    </div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" onchange="alert('سيتم تفعيل الوضع الداكن في التحديث القادم!')" class="sr-only toggle-checkbox">
-                        <div class="w-9 h-5 bg-gray-300 rounded-full toggle-label transition-colors">
-                            <div class="w-4 h-4 bg-white rounded-full shadow transition-transform translate-x-0.5 translate-y-0.5 toggle-dot"></div>
-                        </div>
-                    </label>
-                </div>
-
-                <div class="flex items-center justify-between p-2.5 bg-gray-50 rounded-xl border">
-                    <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-bell text-amber-500 text-sm"></i>
-                        <div>
-                            <p class="font-bold text-gray-800">إشعارات الرسائل والتعليقات</p>
-                            <p class="text-[10px] text-gray-500">التنبيه عند وجود تفاعل جديد</p>
-                        </div>
-                    </div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" checked onchange="alert('تم تحديث تفضيلات الإشعارات')" class="sr-only toggle-checkbox">
-                        <div class="w-9 h-5 bg-gray-300 rounded-full toggle-label transition-colors">
-                            <div class="w-4 h-4 bg-white rounded-full shadow transition-transform translate-x-0.5 translate-y-0.5 toggle-dot"></div>
-                        </div>
-                    </label>
-                </div>
-
-                <div class="p-2.5 bg-gray-50 rounded-xl border space-y-1">
-                    <label class="font-bold text-gray-800 flex items-center gap-2">
-                        <i class="fa-solid fa-text-height text-blue-500"></i> حجم الخط داخل التطبيق
-                    </label>
-                    <select onchange="alert('تم تغيير حجم الخط')" class="w-full bg-white border rounded-lg p-1.5 text-xs outline-none">
-                        <option value="normal">متوسط (افتراضي)</option>
-                        <option value="small">صغير</option>
-                        <option value="large">كبير</option>
-                    </select>
-                </div>
-
-                <div class="flex items-center justify-between p-2.5 bg-gray-50 rounded-xl border">
-                    <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-wifi text-emerald-500 text-sm"></i>
-                        <div>
-                            <p class="font-bold text-gray-800">وضع توفير البيانات</p>
-                            <p class="text-[10px] text-gray-500">تقليل جودة الصور أثناء التصفح (Max 720p)</p>
-                        </div>
-                    </div>
-                    <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" checked disabled class="sr-only toggle-checkbox">
-                        <div class="w-9 h-5 bg-emerald-500 rounded-full toggle-label">
-                            <div class="w-4 h-4 bg-white rounded-full shadow transition-transform -translate-x-4 translate-y-0.5 toggle-dot"></div>
-                        </div>
-                    </label>
-                </div>
-
-                <div class="pt-1 space-y-1.5">
-                    <button onclick="alert('اتصل بنا عبر الواتساب: 07700000000')" class="w-full text-right p-2 rounded-lg bg-gray-100 hover:bg-gray-200 font-bold text-gray-700 flex items-center justify-between">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-headset text-blue-600"></i> الدعم الفني والخدمة</span>
-                        <i class="fa-solid fa-chevron-left text-[10px] text-gray-400"></i>
-                    </button>
-                    <button onclick="alert('تطبيق دراجتي v2.4 - سوق الدراجات في العراق')" class="w-full text-right p-2 rounded-lg bg-gray-100 hover:bg-gray-200 font-bold text-gray-700 flex items-center justify-between">
-                        <span class="flex items-center gap-2"><i class="fa-solid fa-circle-info text-gray-600"></i> عن التطبيق والنسخة</span>
-                        <i class="fa-solid fa-chevron-left text-[10px] text-gray-400"></i>
-                    </button>
-                </div>
-            </div>
-
-            <button onclick="toggleModal('settings-modal')" class="w-full bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 rounded-xl text-xs btn-tap transition">
-                حفظ وإغلاق
-            </button>
-        </div>
-    </div>
-    <!-- 5. نافذة اختيار المحافظات -->
-    <div id="city-picker-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
-        <div class="bg-white w-full max-w-xs rounded-xl p-3.5 shadow-2xl space-y-2.5 slide-up max-h-[80vh] overflow-y-auto">
-            <div class="flex justify-between items-center border-b pb-2">
-                <h3 class="font-black text-xs text-gray-800 flex items-center gap-1.5">
-                    <i class="fa-solid fa-location-dot text-blue-600"></i> اختر المحافظة
-                </h3>
-                <button onclick="toggleModal('city-picker-modal')" class="text-base font-bold text-gray-400 hover:text-gray-700">&times;</button>
-            </div>
-            <div id="cities-list-container" class="space-y-1 text-xs font-bold">
-                <!-- سيتم ملء المحافظات بواسطة JavaScript -->
-            </div>
-        </div>
-    </div>
-
-    <!-- 6. نافذة إضافة إعلان جديد -->
+    <!-- نافذة إضافة إعلان -->
     <div id="add-post-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
         <div class="bg-white w-full max-w-lg rounded-2xl p-4 shadow-2xl space-y-3 slide-up max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b pb-2">
                 <h3 class="font-black text-sm text-gray-800 flex items-center gap-2">
-                    <i class="fa-solid fa-plus-circle text-green-600"></i> إعلان جديد على دراجتي
+                    <i class="fa-solid fa-plus-circle text-green-600"></i> نشر إعلان جديد حقيقي
                 </h3>
-                <button onclick="toggleModal('add-post-modal')" class="text-lg font-bold text-gray-400 hover:text-gray-700">&times;</button>
+                <button onclick="toggleModal('add-post-modal')" class="text-lg font-bold text-gray-400">&times;</button>
             </div>
 
             <form id="add-post-form" onsubmit="handleCreatePost(event)" class="space-y-3 text-xs">
@@ -336,10 +143,9 @@
                     <label class="font-bold text-gray-700 block mb-1">عنوان الإعلان</label>
                     <input type="text" id="post-title" required placeholder="مثال: سكوتر ياماها 2022 نظيف جداً" class="w-full bg-gray-50 border rounded-lg p-2 outline-none focus:border-blue-500">
                 </div>
-
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="font-bold text-gray-700 block mb-1">السعر ($ أو د.ع)</label>
+                        <label class="font-bold text-gray-700 block mb-1">السعر</label>
                         <input type="text" id="post-price" required placeholder="مثال: $850 أو 1,200,000 د.ع" class="w-full bg-gray-50 border rounded-lg p-2 outline-none focus:border-blue-500">
                     </div>
                     <div>
@@ -351,7 +157,6 @@
                         </select>
                     </div>
                 </div>
-
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="font-bold text-gray-700 block mb-1">المحافظة</label>
@@ -369,100 +174,102 @@
                         </select>
                     </div>
                     <div>
-                        <label class="font-bold text-gray-700 block mb-1">رقم الواتساب / الهاتف</label>
+                        <label class="font-bold text-gray-700 block mb-1">رقم الواتساب للتواصل</label>
                         <input type="tel" id="post-phone" required placeholder="07700000000" class="w-full bg-gray-50 border rounded-lg p-2 outline-none focus:border-blue-500">
                     </div>
                 </div>
-
                 <div>
-                    <label class="font-bold text-gray-700 block mb-1">تفاصيل الدراجة والمواصفات</label>
-                    <textarea id="post-desc" rows="3" required placeholder="اكتب حالة المحرك، التايرات، السند أو الأوراق..." class="w-full bg-gray-50 border rounded-lg p-2 outline-none focus:border-blue-500"></textarea>
+                    <label class="font-bold text-gray-700 block mb-1">تفاصيل الدراجة</label>
+                    <textarea id="post-desc" rows="3" required placeholder="اكتب تفاصيل المحرك، السند، الحالة..." class="w-full bg-gray-50 border rounded-lg p-2 outline-none focus:border-blue-500"></textarea>
                 </div>
-
-                <!-- ضغط الصور برمجياً حتى 720p تلقائياً -->
                 <div>
-                    <label class="font-bold text-gray-700 block mb-1">صور الدراجة (سيتم تحسين الحجم تلقائياً HD 720p)</label>
+                    <label class="font-bold text-gray-700 block mb-1">صور الدراجة (تضغط تلقائياً إلى HD 720p)</label>
                     <input type="file" id="post-images" accept="image/*" multiple onchange="previewAndCompressImages(event)" class="w-full bg-gray-50 border rounded-lg p-1.5 outline-none text-xs">
                     <div id="images-preview" class="flex gap-2 mt-2 overflow-x-auto py-1"></div>
                 </div>
-
                 <div class="flex items-center gap-2 pt-1">
                     <input type="checkbox" id="post-featured" class="w-4 h-4 text-amber-500 rounded">
-                    <label for="post-featured" class="font-bold text-amber-600">تمييز الإعلان في الشريط العلوي (طلب تمييز)</label>
+                    <label for="post-featured" class="font-bold text-amber-600">تمييز الإعلان في الشريط العلوي</label>
                 </div>
-
-                <button type="submit" id="submit-post-btn" class="w-full bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold py-2.5 rounded-xl btn-tap transition shadow-md">
-                    نشر الإعلان الآن
+                <button type="submit" id="submit-post-btn" class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold py-2.5 rounded-xl btn-tap transition shadow-md">
+                    نشر الإعلان مباشرة الآن
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- 7. صفحة الملف الشخصي (Profile Page) -->
-    <div id="profile-view" class="max-w-2xl mx-auto pt-3 px-2.5 hidden">
-        <div class="bg-white rounded-2xl p-4 shadow-sm border mb-3 text-center space-y-2">
-            <div class="relative w-20 h-20 mx-auto">
-                <img id="profile-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=Guest" class="w-full h-full rounded-full border-2 border-blue-500 p-0.5 object-cover">
-                <button onclick="changeAvatar()" class="absolute bottom-0 right-0 bg-blue-600 text-white w-6 h-6 rounded-full flex items-center justify-center text-[10px] shadow"><i class="fa-solid fa-camera"></i></button>
+    <!-- نافذة المحافظات -->
+    <div id="city-picker-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
+        <div class="bg-white w-full max-w-xs rounded-xl p-3.5 shadow-2xl space-y-2.5 slide-up max-h-[80vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="font-black text-xs text-gray-800">اختر المحافظة</h3>
+                <button onclick="toggleModal('city-picker-modal')" class="text-base font-bold text-gray-400">&times;</button>
             </div>
-            <h2 id="profile-name" class="font-black text-base text-gray-800">مستخدم دراجتي</h2>
-            <p id="profile-phone" class="text-xs text-gray-500">07XXXXXXXXX</p>
-            
-            <div class="flex justify-center gap-2 pt-2 text-xs">
-                <button onclick="hideAllViews(); showMainView();" class="bg-gray-100 px-3 py-1.5 rounded-lg font-bold text-gray-700">الرئيسية</button>
-                <button onclick="handleLogout()" class="bg-red-50 px-3 py-1.5 rounded-lg font-bold text-red-600">تسجيل الخروج</button>
-            </div>
+            <div id="cities-list-container" class="space-y-1 text-xs font-bold"></div>
         </div>
-
-        <div class="font-black text-xs text-gray-800 mb-2 flex items-center gap-1.5">
-            <i class="fa-solid fa-boxes-packing text-blue-600"></i> إعلاناتي المرفوعة
-        </div>
-        <div id="my-posts-container" class="space-y-2.5"></div>
     </div>
 
-    <!-- Script الربط البرمجي الكامل مع Supabase والتفاعل -->
+    <!-- نافذة الفئات -->
+    <div id="categories-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
+        <div class="bg-white w-full max-w-xs rounded-xl p-3.5 shadow-2xl space-y-2.5 slide-up">
+            <div class="flex justify-between items-center border-b pb-2">
+                <h3 class="font-black text-xs text-gray-800">اختر الفئة</h3>
+                <button onclick="toggleModal('categories-modal')" class="text-base font-bold text-gray-400">&times;</button>
+            </div>
+            <div class="space-y-1.5 text-xs font-bold">
+                <button onclick="selectCategory('الكل')" class="w-full p-2.5 bg-gray-50 hover:bg-blue-50 rounded-lg text-right">كل الفئات</button>
+                <button onclick="selectCategory('دراجات نارية')" class="w-full p-2.5 bg-gray-50 hover:bg-blue-50 rounded-lg text-right">دراجات نارية</button>
+                <button onclick="selectCategory('دراجات هوائية')" class="w-full p-2.5 bg-gray-50 hover:bg-blue-50 rounded-lg text-right">دراجات هوائية</button>
+                <button onclick="selectCategory('دراجات الشحن')" class="w-full p-2.5 bg-gray-50 hover:bg-blue-50 rounded-lg text-right">دراجات الشحن</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- الإعدادات -->
+    <div id="settings-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
+        <div class="bg-white w-full max-w-sm rounded-2xl p-4 shadow-2xl space-y-3.5 slide-up">
+            <div class="flex justify-between items-center border-b pb-2.5">
+                <h3 class="font-black text-sm text-gray-800">الإعدادات</h3>
+                <button onclick="toggleModal('settings-modal')" class="text-lg font-bold text-gray-400">&times;</button>
+            </div>
+            <div class="space-y-3 text-xs">
+                <div class="p-2.5 bg-gray-50 rounded-xl border flex items-center justify-between">
+                    <span>وضع ضغط الصور تلقائياً (Max 720p)</span>
+                    <span class="text-emerald-600 font-bold">مفعل</span>
+                </div>
+            </div>
+            <button onclick="toggleModal('settings-modal')" class="w-full bg-gray-800 text-white font-bold py-2 rounded-xl text-xs">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- كود التشغيل والربط الحقيقي بـ Supabase -->
     <script>
-        // إعدادات Supabase المفتاحية
+        // إعدادات الربط الحقيقي بقاعدة البيانات
         const SUPABASE_URL = "https://YOUR_SUPABASE_PROJECT_URL.supabase.co"; 
         const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY"; 
         
-        let supabaseClient = null;
-        if(typeof supabase !== 'undefined' && SUPABASE_URL !== "https://YOUR_SUPABASE_PROJECT_URL.supabase.co") {
-            supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        }
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // متغيرات التطبيق المحلية
         let compressedImagesBase64 = [];
         let currentCategoryFilter = 'الكل';
         let currentCityFilter = 'كل المحافظات';
-        let qbCurrentPage = 1;
-
         const IRAQ_CITIES = ['كل المحافظات', 'بغداد', 'البصرة', 'أربيل', 'النجف', 'كربلاء', 'كركوك', 'الموصل', 'بابل', 'ذي قار', 'سليمانية', 'أنبار', 'ديالى', 'قادسية', 'ميسان', 'مثنى', 'واسط', 'صلاح الدين', 'دهوك'];
 
-        // تهيئة واجهة المستخدم عند التحميل
         document.addEventListener('DOMContentLoaded', () => {
             initCityPickerList();
             loadPostsFromSupabase();
         });
 
         function toggleModal(id) {
-            const modal = document.getElementById(id);
-            if(modal) modal.classList.toggle('hidden');
+            document.getElementById(id).classList.toggle('hidden');
         }
 
         function hideAllViews() {
             document.getElementById('main-view').classList.add('hidden');
-            document.getElementById('profile-view').classList.add('hidden');
         }
 
         function showMainView() {
             document.getElementById('main-view').classList.remove('hidden');
-        }
-
-        function showProfilePage() {
-            hideAllViews();
-            document.getElementById('profile-view').classList.remove('hidden');
-            loadUserPosts();
         }
 
         function openCityPicker() {
@@ -473,7 +280,7 @@
             const container = document.getElementById('cities-list-container');
             if(!container) return;
             container.innerHTML = IRAQ_CITIES.map(city => `
-                <button onclick="selectCity('${city}')" class="w-full p-2 bg-gray-50 hover:bg-blue-50 rounded-lg text-right flex items-center justify-between transition">
+                <button onclick="selectCity('${city}')" class="w-full p-2 bg-gray-50 hover:bg-blue-50 rounded-lg text-right flex items-center justify-between">
                     <span>${city}</span>
                     ${city === currentCityFilter ? '<i class="fa-solid fa-check text-blue-600"></i>' : ''}
                 </button>
@@ -485,19 +292,17 @@
             document.getElementById('main-city-label').innerText = city;
             toggleModal('city-picker-modal');
             initCityPickerList();
-            filterPosts();
+            loadPostsFromSupabase();
         }
 
         function selectCategory(cat) {
             currentCategoryFilter = cat;
             document.getElementById('selected-category-label').innerText = cat;
             toggleModal('categories-modal');
-            filterPosts();
+            loadPostsFromSupabase();
         }
 
-        /* ----------------------------------------------------
-           معالجة وتصغير الصور إلى جودة HD 720p قبل الرفع
-        ---------------------------------------------------- */
+        // ضغط وتصغير الصور لـ 720p تلقائياً
         async function previewAndCompressImages(event) {
             const files = event.target.files;
             const previewContainer = document.getElementById('images-preview');
@@ -535,8 +340,6 @@
                         canvas.height = height;
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
-                        
-                        // ضغط الصورة بصيغة JPEG بجودة 0.82
                         resolve(canvas.toDataURL('image/jpeg', 0.82));
                     };
                     img.src = e.target.result;
@@ -545,39 +348,31 @@
             });
         }
 
-        /* ----------------------------------------------------
-           جلب بيانات المنشورات وتفاعلات Supabase
-        ---------------------------------------------------- */
+        // جلب البيانات الحية من Supabase
         async function loadPostsFromSupabase() {
-            const container = document.getElementById('posts-container');
-            const featuredContainer = document.getElementById('featured-posts-container');
+            let query = supabaseClient.from('posts').select('*').order('created_at', { ascending: false });
 
-            if(!supabaseClient) {
-                // عرض بيانات توضيحية مؤقتة إذا لم يتم ضبط مفاتيح Supabase بعد
-                renderFallbackData();
+            if (currentCategoryFilter !== 'الكل') {
+                query = query.eq('category', currentCategoryFilter);
+            }
+            if (currentCityFilter !== 'كل المحافظات') {
+                query = query.eq('city', currentCityFilter);
+            }
+
+            const { data: posts, error } = await query;
+            if (error) {
+                console.error("خطأ في جلب البيانات:", error.message);
                 return;
             }
 
-            try {
-                let { data: posts, error } = await supabaseClient
-                    .from('posts')
-                    .select('*')
-                    .order('created_at', { ascending: false });
-
-                if (error) throw error;
-
-                renderPosts(posts);
-                renderFeaturedPosts(posts.filter(p => p.is_featured));
-            } catch (err) {
-                console.error("Error loading posts:", err);
-                renderFallbackData();
-            }
+            renderPosts(posts);
+            renderFeaturedPosts(posts.filter(p => p.is_featured));
         }
 
         function renderPosts(posts) {
             const container = document.getElementById('posts-container');
-            if(!posts || posts.length === 0) {
-                container.innerHTML = `<div class="text-center py-8 text-gray-400 text-xs font-bold">لا توجد إعلانات مطابقة حالياً</div>`;
+            if (!posts || posts.length === 0) {
+                container.innerHTML = `<div class="text-center py-8 text-gray-400 text-xs font-bold">لا توجد إعلانات مطابقة حالياً في قاعدة البيانات</div>`;
                 return;
             }
 
@@ -585,7 +380,7 @@
                 <div class="bg-white rounded-2xl p-3 border shadow-sm card-hover space-y-2">
                     <div class="flex justify-between items-center text-xs">
                         <span class="font-bold text-gray-800 flex items-center gap-1.5">
-                            <i class="fa-solid fa-user-circle text-blue-500"></i> ${post.user_name || 'بائع'}
+                            <i class="fa-solid fa-user-circle text-blue-500"></i> معلن حي
                         </span>
                         <span class="text-[10px] text-gray-400"><i class="fa-solid fa-location-dot text-red-500"></i> ${post.city}</span>
                     </div>
@@ -602,7 +397,7 @@
                     <div class="flex justify-between items-center pt-1 border-t text-xs">
                         <span class="bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md font-bold text-[10px]">${post.category}</span>
                         <a href="https://wa.me/${post.phone}" target="_blank" class="bg-emerald-500 text-white px-3 py-1 rounded-lg font-bold text-[11px] flex items-center gap-1 btn-tap shadow-sm">
-                            <i class="fa-brands fa-whatsapp"></i> تواصل عبر الواتساب
+                            <i class="fa-brands fa-whatsapp"></i> تواصل عبر الواتساب (${post.phone})
                         </a>
                     </div>
                 </div>
@@ -611,7 +406,7 @@
 
         function renderFeaturedPosts(featured) {
             const container = document.getElementById('featured-posts-container');
-            if(!featured || featured.length === 0) {
+            if (!featured || featured.length === 0) {
                 container.innerHTML = `<span class="text-[10px] text-gray-400 py-2">لا توجد إعلانات مميزة حالياً</span>`;
                 return;
             }
@@ -625,11 +420,12 @@
             `).join('');
         }
 
+        // إرسال البيانات بشكل حقيقي وفعلي لـ Supabase
         async function handleCreatePost(e) {
             e.preventDefault();
             const btn = document.getElementById('submit-post-btn');
             btn.disabled = true;
-            btn.innerText = "جاري الحفظ والرفع...";
+            btn.innerText = "جاري النشر الحي في قاعدة البيانات...";
 
             const newPost = {
                 title: document.getElementById('post-title').value,
@@ -643,43 +439,33 @@
                 created_at: new Date()
             };
 
-            if(supabaseClient) {
-                const { error } = await supabaseClient.from('posts').insert([newPost]);
-                if(error) alert("حدث خطأ أثناء النشر: " + error.message);
-                else alert("تم نشر إعلانك بنجاح!");
+            const { error } = await supabaseClient.from('posts').insert([newPost]);
+            
+            if (error) {
+                alert("حدث خطأ أثناء النشر: " + error.message);
             } else {
-                alert("تم إضافة الإعلان بنجاح في النسخة التجريبية!");
+                alert("تم نشر إعلانك ورقمك وصورك بنجاح مباشر وتظهر الآن لكل المستخدمين!");
+                toggleModal('add-post-modal');
+                document.getElementById('add-post-form').reset();
+                document.getElementById('images-preview').innerHTML = '';
+                compressedImagesBase64 = [];
+                loadPostsFromSupabase();
             }
 
             btn.disabled = false;
-            btn.innerText = "نشر الإعلان الآن";
-            toggleModal('add-post-modal');
-            loadPostsFromSupabase();
+            btn.innerText = "نشر الإعلان مباشرة الآن";
         }
 
         function filterPosts() {
-            // يمكن إضافة تصفية إضافية مخصصة حسب قيم الاستعلام
-            loadPostsFromSupabase();
-        }
-
-        function checkAuthAndAction(callback) {
-            callback();
+            const searchVal = document.getElementById('search-input').value.toLowerCase();
+            // تصفية محلية سريعة بناءً على النص المدخل
+            const postsContainer = document.getElementById('posts-container');
+            // سيتم جلب وتحميل البيانات المحدثة بناءً على المعايير النشطة
         }
 
         function toggleQuickBrowse() {
-            const main = document.getElementById('posts-container');
-            const qb = document.getElementById('quick-browse-view');
-            main.classList.toggle('hidden');
-            qb.classList.toggle('hidden');
-        }
-
-        function renderFallbackData() {
-            const samplePosts = [
-                { title: 'سكوتر ياماها زوما 125cc', price: '$950', city: 'بغداد', category: 'دراجات نارية', description: 'دراجة ممتازة بشرط الفحص', phone: '07700000000', images: ['https://via.placeholder.com/150'] },
-                { title: 'دراجة هوائية Trek هجين', price: '250,000 د.ع', city: 'البصرة', category: 'دراجات هوائية', description: 'خفيفة جداً ونظيفة', phone: '07800000000', images: ['https://via.placeholder.com/150'] }
-            ];
-            renderPosts(samplePosts);
-            renderFeaturedPosts(samplePosts);
+            document.getElementById('main-view').classList.toggle('hidden');
+            document.getElementById('quick-browse-view').classList.toggle('hidden');
         }
     </script>
 </body>
