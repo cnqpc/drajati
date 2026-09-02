@@ -242,11 +242,11 @@
         </div>
     </div>
 
-    <!-- كود التشغيل والربط الحقيقي بـ Supabase -->
+    <!-- كود التشغيل والربط المباشر المحدث بالمفاتيح الخاصة بك -->
     <script>
-        // إعدادات الربط الحقيقي بقاعدة البيانات
-        const SUPABASE_URL = "https://YOUR_SUPABASE_PROJECT_URL.supabase.co"; 
-        const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY"; 
+        // إعدادات مشروع Supabase الخاص بك
+        const SUPABASE_URL = "https://lurzvtbvsglxswoiftao.supabase.co"; 
+        const SUPABASE_ANON_KEY = "sb_publishable_DDnpGIIa1_yMCTGPZjhQJA_oMg48DGt"; 
         
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -302,7 +302,7 @@
             loadPostsFromSupabase();
         }
 
-        // ضغط وتصغير الصور لـ 720p تلقائياً
+        // ضغط وتصغير الصور بخوارزمية عالية الضغط لمنع بطء الاتصال
         async function previewAndCompressImages(event) {
             const files = event.target.files;
             const previewContainer = document.getElementById('images-preview');
@@ -329,7 +329,7 @@
                         const canvas = document.createElement('canvas');
                         let width = img.width;
                         let height = img.height;
-                        const maxHeight = 720;
+                        const maxHeight = 600; // أقصى ارتفاع لتقليل الحجم بشكل مثالي
 
                         if (height > maxHeight) {
                             width = Math.round((width * maxHeight) / height);
@@ -340,7 +340,8 @@
                         canvas.height = height;
                         const ctx = canvas.getContext('2d');
                         ctx.drawImage(img, 0, 0, width, height);
-                        resolve(canvas.toDataURL('image/jpeg', 0.82));
+                        // ضغط بجودة عالية بحجم صغير جداً لا يسبب أخطاء Fetch
+                        resolve(canvas.toDataURL('image/jpeg', 0.65));
                     };
                     img.src = e.target.result;
                 };
@@ -348,7 +349,7 @@
             });
         }
 
-        // جلب البيانات الحية من Supabase
+        // جلب البيانات الحية المباشرة من Supabase
         async function loadPostsFromSupabase() {
             let query = supabaseClient.from('posts').select('*').order('created_at', { ascending: false });
 
@@ -362,17 +363,18 @@
             const { data: posts, error } = await query;
             if (error) {
                 console.error("خطأ في جلب البيانات:", error.message);
+                document.getElementById('posts-container').innerHTML = `<div class="text-center py-8 text-red-500 text-xs font-bold">خطأ في الاتصال بقاعدة البيانات: ${error.message}</div>`;
                 return;
             }
 
             renderPosts(posts);
-            renderFeaturedPosts(posts.filter(p => p.is_featured));
+            renderFeaturedPosts(posts ? posts.filter(p => p.is_featured) : []);
         }
 
         function renderPosts(posts) {
             const container = document.getElementById('posts-container');
             if (!posts || posts.length === 0) {
-                container.innerHTML = `<div class="text-center py-8 text-gray-400 text-xs font-bold">لا توجد إعلانات مطابقة حالياً في قاعدة البيانات</div>`;
+                container.innerHTML = `<div class="text-center py-8 text-gray-400 text-xs font-bold">لا توجد إعلانات حالية في قاعدة البيانات، كن أول من ينشر!</div>`;
                 return;
             }
 
@@ -420,7 +422,7 @@
             `).join('');
         }
 
-        // إرسال البيانات بشكل حقيقي وفعلي لـ Supabase
+        // إرسال البيانات فوراً لـ Supabase
         async function handleCreatePost(e) {
             e.preventDefault();
             const btn = document.getElementById('submit-post-btn');
@@ -436,15 +438,15 @@
                 description: document.getElementById('post-desc').value,
                 images: compressedImagesBase64,
                 is_featured: document.getElementById('post-featured').checked,
-                created_at: new Date()
+                created_at: new Date().toISOString()
             };
 
-            const { error } = await supabaseClient.from('posts').insert([newPost]);
+            const { data, error } = await supabaseClient.from('posts').insert([newPost]);
             
             if (error) {
                 alert("حدث خطأ أثناء النشر: " + error.message);
             } else {
-                alert("تم نشر إعلانك ورقمك وصورك بنجاح مباشر وتظهر الآن لكل المستخدمين!");
+                alert("تم نشر إعلانك بنجاح حقيقي وبات ظاهراً للجميع الآن!");
                 toggleModal('add-post-modal');
                 document.getElementById('add-post-form').reset();
                 document.getElementById('images-preview').innerHTML = '';
@@ -457,10 +459,7 @@
         }
 
         function filterPosts() {
-            const searchVal = document.getElementById('search-input').value.toLowerCase();
-            // تصفية محلية سريعة بناءً على النص المدخل
-            const postsContainer = document.getElementById('posts-container');
-            // سيتم جلب وتحميل البيانات المحدثة بناءً على المعايير النشطة
+            loadPostsFromSupabase();
         }
 
         function toggleQuickBrowse() {
