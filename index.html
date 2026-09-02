@@ -4,127 +4,123 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>دراجتي - سوق الدراجات الأول في العراق</title>
-    <!-- خط القاهرة Cairo Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome للأيقونات -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Supabase SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
         body { 
             font-family: 'Cairo', system-ui, -apple-system, sans-serif; 
-            background: linear-gradient(180deg, #f4f6f9 0%, #eef2f7 100%);
+            background-color: #f0f2f5;
             min-height: 100vh;
         }
-        .btn-tap { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
-        .btn-tap:active { transform: scale(0.93); }
-        .card-hover { transition: transform 0.25s ease, box-shadow 0.25s ease; }
-        .card-hover:hover { transform: translateY(-2px); box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.06); }
+        .btn-tap { transition: transform 0.15s ease, opacity 0.15s ease; }
+        .btn-tap:active { transform: scale(0.92); }
+        
+        /* تأثيرات الحركة والتفاعل */
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3) rotate(-10deg); }
+            100% { transform: scale(1); }
+        }
+        .animate-pop { animation: pop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
+        @keyframes swing {
+            0%, 100% { transform: rotate(0deg); }
+            20% { transform: rotate(15deg); }
+            60% { transform: rotate(-15deg); }
+        }
+        .animate-swing { animation: swing 0.4s ease-in-out; }
+
         .slide-up { animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        .featured-bg {
-            background-color: #1e293b;
-            background-image: radial-gradient(#334155 1px, transparent 1px), radial-gradient(#334155 1px, #1e293b 1px);
-            background-size: 16px 16px;
-            background-position: 0 0, 8px 8px;
+        
+        /* كبسولات التفاعل */
+        .interaction-capsule {
+            background-color: #f0f2f5;
+            transition: all 0.2s ease;
         }
-        @keyframes marquee {
-            0% { transform: translateX(0%); }
-            50% { transform: translateX(40%); }
-            100% { transform: translateX(0%); }
+        .interaction-capsule:hover {
+            background-color: #e4e6eb;
         }
-        .animate-marquee { display: flex; width: max-content; animation: marquee 18s ease-in-out infinite alternate; }
-        .animate-marquee:hover { animation-play-state: paused; }
     </style>
 </head>
 <body class="text-gray-800 pb-12">
 
     <!-- الهيدر العلوي -->
-    <header class="bg-[#1877f2]/95 backdrop-blur-md text-white sticky top-0 z-40 shadow-md">
-        <div class="max-w-2xl mx-auto px-2.5 h-14 flex items-center justify-between">
-            <div class="flex items-center space-x-1.5 space-x-reverse cursor-pointer" onclick="hideAllViews(); showMainView();">
-                <div class="w-8 h-8 bg-gradient-to-tr from-amber-400 to-orange-500 rounded-lg flex items-center justify-center text-white text-base shadow-md border border-white/20 transform -rotate-3">
+    <header class="bg-[#1877f2] text-white sticky top-0 z-40 shadow-md">
+        <div class="max-w-xl mx-auto px-3 h-14 flex items-center justify-between">
+            <div class="flex items-center space-x-2 space-x-reverse cursor-pointer" onclick="showMainView()">
+                <div class="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center text-white text-base shadow">
                     <i class="fa-solid fa-motorcycle"></i>
                 </div>
-                <span class="font-black text-lg tracking-tight text-white drop-shadow-sm">دراجتي</span>
+                <span class="font-black text-lg tracking-tight">دراجتي</span>
             </div>
 
-            <div class="flex items-center space-x-1.5 space-x-reverse">
-                <button onclick="toggleQuickBrowse()" class="bg-white/15 hover:bg-white/25 text-white px-2 py-1 rounded-full text-[11px] font-bold flex items-center gap-1 btn-tap">
-                    <i class="fa-solid fa-table-cells text-amber-300 text-[10px]"></i>
-                    <span>اتصفح بسرعة</span>
+            <div class="flex items-center space-x-2 space-x-reverse">
+                <button onclick="toggleModal('add-post-modal')" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1 shadow btn-tap">
+                    <i class="fa-solid fa-plus-circle"></i>
+                    <span>إعلان جديد</span>
                 </button>
 
-                <button onclick="toggleModal('add-post-modal')" class="bg-gradient-to-r from-emerald-500 to-green-600 text-white px-2.5 py-1 rounded-full text-[11px] font-bold flex items-center gap-1 shadow-md shadow-green-500/20 btn-tap">
-                    <i class="fa-solid fa-plus-circle text-[11px]"></i>
-                    <span>اعرض دراجتك</span>
-                </button>
-
-                <button onclick="toggleModal('settings-modal')" class="w-7 h-7 bg-white/15 hover:bg-white/25 rounded-full flex items-center justify-center text-white text-xs btn-tap">
-                    <i class="fa-solid fa-gear"></i>
+                <button onclick="showProfileView()" class="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white text-sm btn-tap" title="الملف الشخصي والمحفوظات">
+                    <i class="fa-solid fa-user"></i>
                 </button>
             </div>
         </div>
     </header>
 
     <!-- الرئيسية -->
-    <main id="main-view" class="max-w-2xl mx-auto pt-2.5 px-2">
-        
+    <main id="main-view" class="max-w-xl mx-auto pt-3 px-2">
         <!-- البحث والفلاتر -->
-        <div class="mb-2.5 flex gap-1.5 text-[11px]">
+        <div class="mb-3 flex gap-2 text-xs bg-white p-2 rounded-xl shadow-sm border border-gray-200">
             <div class="relative flex-1">
-                <i class="fa-solid fa-magnifying-glass absolute right-2.5 top-2.5 text-gray-400 text-[10px]"></i>
-                <input type="text" id="search-input" onkeyup="filterPosts()" placeholder="ابحث عن نوع الدراجة، سكوتر..." class="w-full bg-white pl-2 pr-7 py-1.5 rounded-xl border border-gray-200/90 text-[11px] outline-none shadow-sm focus:border-blue-500 transition">
+                <i class="fa-solid fa-magnifying-glass absolute right-2.5 top-2.5 text-gray-400"></i>
+                <input type="text" id="search-input" onkeyup="filterPosts()" placeholder="ابحث عن دراجة..." class="w-full bg-gray-100 pl-2 pr-8 py-1.5 rounded-lg outline-none focus:bg-white focus:ring-1 focus:ring-blue-500">
             </div>
-
-            <button onclick="toggleModal('categories-modal')" class="bg-white border border-gray-200/90 rounded-xl px-2.5 py-1.5 font-bold text-blue-600 outline-none shadow-sm flex items-center gap-1 btn-tap whitespace-nowrap">
-                <i class="fa-solid fa-layer-group text-blue-500 text-[10px]"></i>
+            <button onclick="toggleModal('categories-modal')" class="bg-gray-100 border rounded-lg px-2.5 py-1.5 font-bold text-gray-700 flex items-center gap-1 btn-tap">
                 <span id="selected-category-label">الكل</span>
-                <i class="fa-solid fa-chevron-down text-[8px] text-gray-400"></i>
-            </button>
-
-            <button onclick="openCityPicker()" class="bg-white border border-gray-200/90 rounded-xl px-2.5 py-1.5 font-bold text-gray-700 outline-none shadow-sm flex items-center gap-1 btn-tap whitespace-nowrap">
-                <i class="fa-solid fa-location-dot text-blue-500 text-[10px]"></i>
-                <span id="main-city-label">كل المحافظات</span>
+                <i class="fa-solid fa-chevron-down text-[10px]"></i>
             </button>
         </div>
 
-        <!-- الإعلانات المميزة -->
-        <div class="mb-3 rounded-xl p-2.5 featured-bg text-white shadow-md relative overflow-hidden">
-            <div class="flex items-center justify-between mb-2 px-1">
-                <span class="text-[11px] font-black text-amber-400 flex items-center gap-1">
-                    <i class="fa-solid fa-star text-amber-400 animate-pulse text-[10px]"></i> إعلانات مميزة حية
-                </span>
+        <!-- قائمة المنشورات -->
+        <div id="posts-container">
+            <div class="text-center py-8 text-gray-500 text-xs">
+                <i class="fa-solid fa-spinner fa-spin text-blue-500 text-xl mb-2"></i>
+                <p>جاري تحميل المنشورات...</p>
             </div>
-            <div class="overflow-hidden w-full">
-                <div id="featured-posts-container" class="animate-marquee flex gap-2.5"></div>
+        </div>
+    </main>
+
+    <!-- واجهة الملف الشخصي / المحفوظات -->
+    <main id="profile-view" class="max-w-xl mx-auto pt-3 px-2 hidden">
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 mb-4">
+            <div class="flex items-center justify-between border-b pb-3 mb-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-black text-sm text-gray-800">حسابي الشخصي</h3>
+                        <p class="text-[11px] text-gray-500">المعرف: <span id="user-id-display" class="font-mono"></span></p>
+                    </div>
+                </div>
+                <button onclick="showMainView()" class="text-xs bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg font-bold">العودة للرئيسية</button>
+            </div>
+            
+            <div class="flex gap-2">
+                <button onclick="switchProfileTab('saved')" id="tab-saved-btn" class="flex-1 py-2 bg-blue-50 text-blue-600 rounded-lg font-bold text-xs flex items-center justify-center gap-2 border border-blue-200">
+                    <i class="fa-solid fa-bookmark"></i> المحفوظات
+                </button>
             </div>
         </div>
 
-        <!-- قائمة المنشورات الحية -->
-        <div id="posts-container" class="space-y-3">
-            <div class="text-center py-6 text-gray-500 text-xs">
-                <i class="fa-solid fa-circle-notch fa-spin text-blue-500 text-lg mb-2"></i>
-                <p>جاري مزامنة الإعلانات الحية من Supabase...</p>
-            </div>
-        </div>
-
-        <!-- اتصفح بسرعة -->
-        <div id="quick-browse-view" class="hidden space-y-2.5">
-            <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border shadow-sm">
-                <span class="font-black text-xs text-gray-800 flex items-center gap-1">
-                    <i class="fa-solid fa-table-cells text-amber-500"></i> التصفح السريع
-                </span>
-                <button onclick="toggleQuickBrowse()" class="text-xs text-red-500 font-bold">إغلاق</button>
-            </div>
-            <div id="quick-browse-grid" class="grid grid-cols-2 gap-2"></div>
+        <div id="saved-posts-container">
+            <!-- يتم تحميل المنشورات المحفوظة هنا -->
         </div>
     </main>
 
@@ -132,21 +128,18 @@
     <div id="add-post-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
         <div class="bg-white w-full max-w-lg rounded-2xl p-4 shadow-2xl space-y-3 slide-up max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center border-b pb-2">
-                <h3 class="font-black text-sm text-gray-800 flex items-center gap-2">
-                    <i class="fa-solid fa-plus-circle text-green-600"></i> نشر إعلان جديد حقيقي
-                </h3>
+                <h3 class="font-black text-sm text-gray-800">نشر إعلان جديد</h3>
                 <button onclick="toggleModal('add-post-modal')" class="text-lg font-bold text-gray-400">&times;</button>
             </div>
-
             <form id="add-post-form" onsubmit="handleCreatePost(event)" class="space-y-3 text-xs">
                 <div>
                     <label class="font-bold text-gray-700 block mb-1">عنوان الإعلان</label>
-                    <input type="text" id="post-title" required placeholder="مثال: سكوتر ياماها 2022 نظيف جداً" class="w-full bg-gray-50 border rounded-lg p-2 outline-none focus:border-blue-500">
+                    <input type="text" id="post-title" required placeholder="سكوتر ياماها 2022" class="w-full bg-gray-50 border rounded-lg p-2 outline-none focus:border-blue-500">
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="font-bold text-gray-700 block mb-1">السعر</label>
-                        <input type="text" id="post-price" required placeholder="مثال: $850 أو 1,200,000 د.ع" class="w-full bg-gray-50 border rounded-lg p-2 outline-none focus:border-blue-500">
+                        <input type="text" id="post-price" required placeholder="$850" class="w-full bg-gray-50 border rounded-lg p-2 outline-none focus:border-blue-500">
                     </div>
                     <div>
                         <label class="font-bold text-gray-700 block mb-1">الفئة</label>
@@ -166,270 +159,509 @@
                             <option value="أربيل">أربيل</option>
                             <option value="النجف">النجف</option>
                             <option value="كربلاء">كربلاء</option>
-                            <option value="كركوك">كركوك</option>
-                            <option value="الموصل">الموصل</option>
-                            <option value="بابل">بابل</option>
-                            <option value="ذي قار">ذي قار</option>
-                            <option value="سليمانية">سليمانية</option>
                         </select>
                     </div>
                     <div>
-                        <label class="font-bold text-gray-700 block mb-1">رقم الواتساب للتواصل</label>
+                        <label class="font-bold text-gray-700 block mb-1">رقم الواتساب</label>
                         <input type="tel" id="post-phone" required placeholder="07700000000" class="w-full bg-gray-50 border rounded-lg p-2 outline-none focus:border-blue-500">
                     </div>
                 </div>
                 <div>
                     <label class="font-bold text-gray-700 block mb-1">تفاصيل الدراجة</label>
-                    <textarea id="post-desc" rows="3" required placeholder="اكتب تفاصيل المحرك، السند، الحالة..." class="w-full bg-gray-50 border rounded-lg p-2 outline-none focus:border-blue-500"></textarea>
+                    <textarea id="post-desc" rows="2" required placeholder="تفاصيل المحرك والحالة..." class="w-full bg-gray-50 border rounded-lg p-2 outline-none focus:border-blue-500"></textarea>
                 </div>
                 <div>
-                    <label class="font-bold text-gray-700 block mb-1">صور الدراجة (تضغط تلقائياً إلى HD 720p)</label>
-                    <input type="file" id="post-images" accept="image/*" multiple onchange="previewAndCompressImages(event)" class="w-full bg-gray-50 border rounded-lg p-1.5 outline-none text-xs">
-                    <div id="images-preview" class="flex gap-2 mt-2 overflow-x-auto py-1"></div>
+                    <label class="font-bold text-gray-700 block mb-1">الصورة</label>
+                    <input type="file" id="post-images" accept="image/*" onchange="previewAndCompressImages(event)" class="w-full bg-gray-50 border rounded-lg p-1 text-xs">
+                    <div id="images-preview" class="flex gap-2 mt-2"></div>
                 </div>
-                <div class="flex items-center gap-2 pt-1">
-                    <input type="checkbox" id="post-featured" class="w-4 h-4 text-amber-500 rounded">
-                    <label for="post-featured" class="font-bold text-amber-600">تمييز الإعلان في الشريط العلوي</label>
-                </div>
-                <button type="submit" id="submit-post-btn" class="w-full bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold py-2.5 rounded-xl btn-tap transition shadow-md">
-                    نشر الإعلان مباشرة الآن
+                <button type="submit" id="submit-post-btn" class="w-full bg-blue-600 text-white font-bold py-2.5 rounded-xl btn-tap">نشر الآن</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- نافذة التعليقات -->
+    <div id="comments-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-3">
+        <div class="bg-white w-full max-w-lg rounded-t-2xl sm:rounded-2xl p-4 shadow-2xl space-y-3 slide-up h-[75vh] flex flex-col">
+            <div class="flex justify-between items-center border-b pb-2 flex-shrink-0">
+                <h3 class="font-black text-xs text-gray-800 flex items-center gap-1.5">
+                    <i class="fa-regular fa-comment text-blue-500"></i> التعليقات
+                </h3>
+                <button onclick="toggleModal('comments-modal')" class="text-base font-bold text-gray-400">&times;</button>
+            </div>
+            
+            <div id="comments-list" class="flex-1 overflow-y-auto space-y-2 py-2 text-xs">
+                <!-- تحميل التعليقات -->
+            </div>
+
+            <form onsubmit="handleAddComment(event)" class="flex gap-2 pt-2 border-t flex-shrink-0">
+                <input type="hidden" id="active-post-id">
+                <input type="text" id="comment-input" required placeholder="اكتب تعليقاً..." class="flex-1 bg-gray-100 border rounded-full px-4 py-2 text-xs outline-none focus:bg-white focus:border-blue-500">
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-full font-bold text-xs btn-tap flex items-center justify-center">
+                    <i class="fa-solid fa-paper-plane"></i>
                 </button>
             </form>
         </div>
     </div>
 
-    <!-- نافذة المحافظات -->
-    <div id="city-picker-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
-        <div class="bg-white w-full max-w-xs rounded-xl p-3.5 shadow-2xl space-y-2.5 slide-up max-h-[80vh] overflow-y-auto">
-            <div class="flex justify-between items-center border-b pb-2">
-                <h3 class="font-black text-xs text-gray-800">اختر المحافظة</h3>
-                <button onclick="toggleModal('city-picker-modal')" class="text-base font-bold text-gray-400">&times;</button>
-            </div>
-            <div id="cities-list-container" class="space-y-1 text-xs font-bold"></div>
-        </div>
-    </div>
-
-    <!-- نافذة الفئات -->
+    <!-- الفئات -->
     <div id="categories-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
-        <div class="bg-white w-full max-w-xs rounded-xl p-3.5 shadow-2xl space-y-2.5 slide-up">
+        <div class="bg-white w-full max-w-xs rounded-xl p-3.5 shadow-2xl space-y-2 slide-up text-xs font-bold">
             <div class="flex justify-between items-center border-b pb-2">
-                <h3 class="font-black text-xs text-gray-800">اختر الفئة</h3>
-                <button onclick="toggleModal('categories-modal')" class="text-base font-bold text-gray-400">&times;</button>
+                <h3>اختر الفئة</h3>
+                <button onclick="toggleModal('categories-modal')" class="text-base">&times;</button>
             </div>
-            <div class="space-y-1.5 text-xs font-bold">
-                <button onclick="selectCategory('الكل')" class="w-full p-2.5 bg-gray-50 hover:bg-blue-50 rounded-lg text-right">كل الفئات</button>
-                <button onclick="selectCategory('دراجات نارية')" class="w-full p-2.5 bg-gray-50 hover:bg-blue-50 rounded-lg text-right">دراجات نارية</button>
-                <button onclick="selectCategory('دراجات هوائية')" class="w-full p-2.5 bg-gray-50 hover:bg-blue-50 rounded-lg text-right">دراجات هوائية</button>
-                <button onclick="selectCategory('دراجات الشحن')" class="w-full p-2.5 bg-gray-50 hover:bg-blue-50 rounded-lg text-right">دراجات الشحن</button>
-            </div>
+            <button onclick="selectCategory('الكل')" class="w-full p-2 bg-gray-50 hover:bg-blue-50 rounded-lg text-right">الكل</button>
+            <button onclick="selectCategory('دراجات نارية')" class="w-full p-2 bg-gray-50 hover:bg-blue-50 rounded-lg text-right">دراجات نارية</button>
+            <button onclick="selectCategory('دراجات هوائية')" class="w-full p-2 bg-gray-50 hover:bg-blue-50 rounded-lg text-right">دراجات هوائية</button>
+            <button onclick="selectCategory('دراجات الشحن')" class="w-full p-2 bg-gray-50 hover:bg-blue-50 rounded-lg text-right">دراجات الشحن</button>
         </div>
     </div>
 
-    <!-- الإعدادات -->
-    <div id="settings-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
-        <div class="bg-white w-full max-w-sm rounded-2xl p-4 shadow-2xl space-y-3.5 slide-up">
-            <div class="flex justify-between items-center border-b pb-2.5">
-                <h3 class="font-black text-sm text-gray-800">الإعدادات</h3>
-                <button onclick="toggleModal('settings-modal')" class="text-lg font-bold text-gray-400">&times;</button>
-            </div>
-            <div class="space-y-3 text-xs">
-                <div class="p-2.5 bg-gray-50 rounded-xl border flex items-center justify-between">
-                    <span>وضع ضغط الصور تلقائياً (Max 720p)</span>
-                    <span class="text-emerald-600 font-bold">مفعل</span>
-                </div>
-            </div>
-            <button onclick="toggleModal('settings-modal')" class="w-full bg-gray-800 text-white font-bold py-2 rounded-xl text-xs">إغلاق</button>
-        </div>
-    </div>
-
-    <!-- كود التشغيل والربط المباشر المحدث بالمفاتيح الخاصة بك -->
+    <!-- سكريبت التشغيل المكتمل -->
     <script>
-        // إعدادات مشروع Supabase الخاص بك
         const SUPABASE_URL = "https://lurzvtbvsglxswoiftao.supabase.co"; 
         const SUPABASE_ANON_KEY = "sb_publishable_DDnpGIIa1_yMCTGPZjhQJA_oMg48DGt"; 
-        
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // إنشاء هويّة للمستخدم الحالي في المتصفح لتحديد الملكية والمحفوظات
+        let CURRENT_USER_ID = localStorage.getItem('my_app_user_id');
+        if (!CURRENT_USER_ID) {
+            CURRENT_USER_ID = 'user_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('my_app_user_id', CURRENT_USER_ID);
+        }
 
         let compressedImagesBase64 = [];
         let currentCategoryFilter = 'الكل';
-        let currentCityFilter = 'كل المحافظات';
-        const IRAQ_CITIES = ['كل المحافظات', 'بغداد', 'البصرة', 'أربيل', 'النجف', 'كربلاء', 'كركوك', 'الموصل', 'بابل', 'ذي قار', 'سليمانية', 'أنبار', 'ديالى', 'قادسية', 'ميسان', 'مثنى', 'واسط', 'صلاح الدين', 'دهوك'];
+        let allPostsData = [];
+        let savedPostsSet = new Set();
 
         document.addEventListener('DOMContentLoaded', () => {
-            initCityPickerList();
+            document.getElementById('user-id-display').innerText = CURRENT_USER_ID;
+            fetchSavedPostsIds();
             loadPostsFromSupabase();
         });
+
+        // توليد تأثيرات صوتية تفاعلية لطيفة وبسيطة باستخدام Web Audio API
+        function playAudioEffect(type) {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                if (type === 'like') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(400, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(800, ctx.currentTime + 0.12);
+                    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.12);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.12);
+                } else if (type === 'comment') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(600, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.1);
+                    gain.gain.setValueAtTime(0.12, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.1);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.1);
+                } else if (type === 'save') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(520, ctx.currentTime);
+                    osc.frequency.setValueAtTime(650, ctx.currentTime + 0.08);
+                    gain.gain.setValueAtTime(0.12, ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.18);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.18);
+                }
+            } catch(e) { console.log('Audio error:', e); }
+        }
 
         function toggleModal(id) {
             document.getElementById(id).classList.toggle('hidden');
         }
 
-        function hideAllViews() {
+        function toggleMenu(menuId) {
+            document.querySelectorAll('[id^="menu-"]').forEach(el => {
+                if(el.id !== menuId) el.classList.add('hidden');
+            });
+            const menu = document.getElementById(menuId);
+            if(menu) menu.classList.toggle('hidden');
+        }
+
+        function showProfileView() {
             document.getElementById('main-view').classList.add('hidden');
+            document.getElementById('profile-view').classList.remove('hidden');
+            loadSavedPosts();
         }
 
         function showMainView() {
+            document.getElementById('profile-view').classList.add('hidden');
             document.getElementById('main-view').classList.remove('hidden');
-        }
-
-        function openCityPicker() {
-            toggleModal('city-picker-modal');
-        }
-
-        function initCityPickerList() {
-            const container = document.getElementById('cities-list-container');
-            if(!container) return;
-            container.innerHTML = IRAQ_CITIES.map(city => `
-                <button onclick="selectCity('${city}')" class="w-full p-2 bg-gray-50 hover:bg-blue-50 rounded-lg text-right flex items-center justify-between">
-                    <span>${city}</span>
-                    ${city === currentCityFilter ? '<i class="fa-solid fa-check text-blue-600"></i>' : ''}
-                </button>
-            `).join('');
-        }
-
-        function selectCity(city) {
-            currentCityFilter = city;
-            document.getElementById('main-city-label').innerText = city;
-            toggleModal('city-picker-modal');
-            initCityPickerList();
-            loadPostsFromSupabase();
         }
 
         function selectCategory(cat) {
             currentCategoryFilter = cat;
             document.getElementById('selected-category-label').innerText = cat;
             toggleModal('categories-modal');
-            loadPostsFromSupabase();
+            renderPosts(allPostsData);
         }
 
-        // ضغط وتصغير الصور بخوارزمية عالية الضغط لمنع بطء الاتصال
-        async function previewAndCompressImages(event) {
-            const files = event.target.files;
-            const previewContainer = document.getElementById('images-preview');
-            previewContainer.innerHTML = '';
-            compressedImagesBase64 = [];
-
-            for (let file of files) {
-                const resizedBase64 = await resizeImageTo720p(file);
-                compressedImagesBase64.push(resizedBase64);
-
-                const img = document.createElement('img');
-                img.src = resizedBase64;
-                img.className = 'w-16 h-16 object-cover rounded-lg border shadow-sm';
-                previewContainer.appendChild(img);
-            }
-        }
-
-        function resizeImageTo720p(file) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const img = new Image();
-                    img.onload = function() {
-                        const canvas = document.createElement('canvas');
-                        let width = img.width;
-                        let height = img.height;
-                        const maxHeight = 600; // أقصى ارتفاع لتقليل الحجم بشكل مثالي
-
-                        if (height > maxHeight) {
-                            width = Math.round((width * maxHeight) / height);
-                            height = maxHeight;
-                        }
-
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, width, height);
-                        // ضغط بجودة عالية بحجم صغير جداً لا يسبب أخطاء Fetch
-                        resolve(canvas.toDataURL('image/jpeg', 0.65));
-                    };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            });
-        }
-
-        // جلب البيانات الحية المباشرة من Supabase
+        // جلب الإعلانات من قاعدة البيانات
         async function loadPostsFromSupabase() {
-            let query = supabaseClient.from('posts').select('*').order('created_at', { ascending: false });
+            const { data: posts, error } = await supabaseClient
+                .from('posts')
+                .select('*')
+                .order('created_at', { ascending: false });
 
-            if (currentCategoryFilter !== 'الكل') {
-                query = query.eq('category', currentCategoryFilter);
-            }
-            if (currentCityFilter !== 'كل المحافظات') {
-                query = query.eq('city', currentCityFilter);
-            }
-
-            const { data: posts, error } = await query;
             if (error) {
-                console.error("خطأ في جلب البيانات:", error.message);
-                document.getElementById('posts-container').innerHTML = `<div class="text-center py-8 text-red-500 text-xs font-bold">خطأ في الاتصال بقاعدة البيانات: ${error.message}</div>`;
+                document.getElementById('posts-container').innerHTML = `<div class="text-center py-6 text-red-500 text-xs font-bold">خطأ في التحميل: ${error.message}</div>`;
                 return;
             }
 
-            renderPosts(posts);
-            renderFeaturedPosts(posts ? posts.filter(p => p.is_featured) : []);
+            allPostsData = posts || [];
+            renderPosts(allPostsData);
         }
 
+        // جلب معرفات العناصر المحفوظة
+        async function fetchSavedPostsIds() {
+            const { data } = await supabaseClient
+                .from('saved_posts')
+                .select('post_id')
+                .eq('user_id', CURRENT_USER_ID);
+            
+            if(data) {
+                savedPostsSet = new Set(data.map(item => item.post_id));
+            }
+        }
+
+        // عرض المنشورات بتصميم الفيسبوك المربع
         function renderPosts(posts) {
             const container = document.getElementById('posts-container');
-            if (!posts || posts.length === 0) {
-                container.innerHTML = `<div class="text-center py-8 text-gray-400 text-xs font-bold">لا توجد إعلانات حالية في قاعدة البيانات، كن أول من ينشر!</div>`;
+            
+            let filtered = posts;
+            if (currentCategoryFilter !== 'الكل') {
+                filtered = posts.filter(p => p.category === currentCategoryFilter);
+            }
+
+            const searchVal = document.getElementById('search-input')?.value.toLowerCase();
+            if (searchVal) {
+                filtered = filtered.filter(p => p.title.toLowerCase().includes(searchVal) || p.description?.toLowerCase().includes(searchVal));
+            }
+
+            if (!filtered || filtered.length === 0) {
+                container.innerHTML = `<div class="text-center py-10 text-gray-400 text-xs">لا توجد منشورات حالياً</div>`;
                 return;
             }
 
-            container.innerHTML = posts.map(post => `
-                <div class="bg-white rounded-2xl p-3 border shadow-sm card-hover space-y-2">
-                    <div class="flex justify-between items-center text-xs">
-                        <span class="font-bold text-gray-800 flex items-center gap-1.5">
-                            <i class="fa-solid fa-user-circle text-blue-500"></i> معلن حي
-                        </span>
-                        <span class="text-[10px] text-gray-400"><i class="fa-solid fa-location-dot text-red-500"></i> ${post.city}</span>
-                    </div>
+            container.innerHTML = filtered.map(post => {
+                const isOwner = post.user_id === CURRENT_USER_ID;
+                const likesList = post.likes_users || [];
+                const isLiked = likesList.includes(CURRENT_USER_ID);
+                const isSaved = savedPostsSet.has(post.id);
 
-                    <div class="flex gap-2.5">
-                        <img src="${(post.images && post.images[0]) ? post.images[0] : 'https://via.placeholder.com/150'}" class="w-24 h-24 object-cover rounded-xl border flex-shrink-0">
-                        <div class="flex-1 space-y-1">
-                            <h4 class="font-black text-xs text-gray-800 line-clamp-1">${post.title}</h4>
-                            <p class="text-amber-600 font-extrabold text-xs">${post.price}</p>
-                            <p class="text-[11px] text-gray-500 line-clamp-2">${post.description}</p>
+                return `
+                <div class="bg-white mb-4 shadow-sm border-y sm:border sm:rounded-xl overflow-hidden">
+                    <!-- الهيدر العلوي للمنشور (اسم المعلن + ثلاث نقاط جهة اليسار) -->
+                    <div class="p-3 flex justify-between items-center relative">
+                        <div class="flex items-center gap-2">
+                            <div class="w-9 h-9 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                                <i class="fa-solid fa-motorcycle"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-xs text-gray-900 leading-tight">${post.title}</h4>
+                                <div class="flex items-center gap-2 text-[10px] text-gray-500 mt-0.5">
+                                    <span class="text-blue-600 font-semibold">${post.city}</span>
+                                    <span>•</span>
+                                    <span>${post.category}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- الثلاث نقاط أقصى اليسار -->
+                        <div class="relative">
+                            <button onclick="toggleMenu('menu-${post.id}')" class="w-8 h-8 hover:bg-gray-100 rounded-full flex items-center justify-center text-gray-500 btn-tap">
+                                <i class="fa-solid fa-ellipsis-vertical"></i>
+                            </button>
+
+                            <!-- قائمة الخيارات -->
+                            <div id="menu-${post.id}" class="hidden absolute left-0 top-9 bg-white border border-gray-100 shadow-xl rounded-xl py-1 w-32 z-30 text-xs">
+                                ${isOwner ? `
+                                    <button onclick="deletePost(${post.id})" class="w-full px-3 py-2 text-right text-red-600 hover:bg-red-50 font-bold flex items-center gap-2">
+                                        <i class="fa-regular fa-trash-can"></i> حذف
+                                    </button>
+                                ` : `
+                                    <button onclick="reportPost(${post.id}, '${post.title}')" class="w-full px-3 py-2 text-right text-amber-600 hover:bg-amber-50 font-bold flex items-center gap-2">
+                                        <i class="fa-regular fa-flag"></i> إبلاغ
+                                    </button>
+                                `}
+                            </div>
                         </div>
                     </div>
 
-                    <div class="flex justify-between items-center pt-1 border-t text-xs">
-                        <span class="bg-blue-50 text-blue-600 px-2 py-0.5 rounded-md font-bold text-[10px]">${post.category}</span>
-                        <a href="https://wa.me/${post.phone}" target="_blank" class="bg-emerald-500 text-white px-3 py-1 rounded-lg font-bold text-[11px] flex items-center gap-1 btn-tap shadow-sm">
-                            <i class="fa-brands fa-whatsapp"></i> تواصل عبر الواتساب (${post.phone})
-                        </a>
+                    <!-- التفاصيل والسعر -->
+                    <div class="px-3 pb-2 text-xs text-gray-700 space-y-1">
+                        <p class="font-black text-emerald-600 text-sm">${post.price}</p>
+                        <p class="leading-relaxed text-gray-600">${post.description || ''}</p>
                     </div>
+
+                    <!-- الصورة بمقاس مربع عالي الدقة (كفيسبوك) -->
+                    ${(post.images && post.images[0]) ? `
+                        <div class="w-full aspect-square bg-gray-100 overflow-hidden">
+                            <img src="${post.images[0]}" class="w-full h-full object-cover">
+                        </div>
+                    ` : ''}
+
+                    <!-- أزرار التفاعل والسعر داخل كبسولات -->
+                    <div class="p-2.5 flex items-center justify-between border-t border-gray-100 text-xs">
+                        <!-- كبسولات التفاعل الأربعة -->
+                        <div class="flex items-center gap-1.5">
+                            <!-- كبسولة الاعجاب -->
+                            <button onclick="handleLike(${post.id}, this)" class="interaction-capsule px-3 py-1.5 rounded-full flex items-center gap-1.5 btn-tap font-bold ${isLiked ? 'text-red-500 bg-red-50' : 'text-gray-600'}">
+                                <i class="${isLiked ? 'fa-solid' : 'fa-regular'} fa-heart icon-heart text-sm"></i>
+                                <span class="like-count">${post.likes_count || 0}</span>
+                            </button>
+
+                            <!-- كبسولة التعليقات -->
+                            <button onclick="openCommentsModal(${post.id}, this)" class="interaction-capsule px-3 py-1.5 rounded-full flex items-center gap-1.5 text-gray-600 btn-tap font-bold">
+                                <i class="fa-regular fa-comment icon-comment text-sm"></i>
+                                <span>تعليق</span>
+                            </button>
+
+                            <!-- كبسولة المشاركة -->
+                            <button onclick="sharePost('${post.title}', ${post.id})" class="interaction-capsule px-3 py-1.5 rounded-full flex items-center gap-1.5 text-gray-600 btn-tap font-bold">
+                                <i class="fa-solid fa-share-nodes text-sm"></i>
+                                <span>مشاركة</span>
+                            </button>
+                        </div>
+
+                        <!-- كبسولة الحفظ بعيدة أقصى اليسار -->
+                        <button onclick="toggleSavePost(${post.id}, this)" class="interaction-capsule p-2 rounded-full text-gray-600 hover:text-blue-600 btn-tap ${isSaved ? 'text-blue-600 bg-blue-50' : ''}" title="حفظ المنشور">
+                            <i class="${isSaved ? 'fa-solid' : 'fa-regular'} fa-bookmark icon-bookmark text-sm"></i>
+                        </button>
+                    </div>
+
+                    <!-- فاصل رمادي فاتح بسيط بين المنشورات -->
+                    <div class="h-2 bg-gray-200/60 w-full"></div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
-        function renderFeaturedPosts(featured) {
-            const container = document.getElementById('featured-posts-container');
-            if (!featured || featured.length === 0) {
-                container.innerHTML = `<span class="text-[10px] text-gray-400 py-2">لا توجد إعلانات مميزة حالياً</span>`;
+        // التفاعل مع زر الإعجاب
+        async function handleLike(postId, btnEl) {
+            playAudioEffect('like');
+            const icon = btnEl.querySelector('.icon-heart');
+            const countEl = btnEl.querySelector('.like-count');
+            
+            icon.classList.add('animate-pop');
+            setTimeout(() => icon.classList.remove('animate-pop'), 400);
+
+            const post = allPostsData.find(p => p.id === postId);
+            if(!post) return;
+
+            let likesList = post.likes_users || [];
+            let currentLikes = post.likes_count || 0;
+
+            const userIndex = likesList.indexOf(CURRENT_USER_ID);
+            if (userIndex === -1) {
+                likesList.push(CURRENT_USER_ID);
+                currentLikes += 1;
+                btnEl.classList.add('text-red-500', 'bg-red-50');
+                btnEl.classList.remove('text-gray-600');
+                icon.classList.replace('fa-regular', 'fa-solid');
+            } else {
+                likesList.splice(userIndex, 1);
+                currentLikes = Math.max(0, currentLikes - 1);
+                btnEl.classList.remove('text-red-500', 'bg-red-50');
+                btnEl.classList.add('text-gray-600');
+                icon.classList.replace('fa-solid', 'fa-regular');
+            }
+
+            post.likes_count = currentLikes;
+            post.likes_users = likesList;
+            countEl.innerText = currentLikes;
+
+            await supabaseClient.from('posts').update({
+                likes_count: currentLikes,
+                likes_users: likesList
+            }).eq('id', postId);
+        }
+
+        // الحفظ في البروفايل
+        async function toggleSavePost(postId, btnEl) {
+            playAudioEffect('save');
+            const icon = btnEl.querySelector('.icon-bookmark');
+
+            if (savedPostsSet.has(postId)) {
+                savedPostsSet.delete(postId);
+                btnEl.classList.remove('text-blue-600', 'bg-blue-50');
+                icon.classList.replace('fa-solid', 'fa-regular');
+
+                await supabaseClient.from('saved_posts')
+                    .delete()
+                    .eq('user_id', CURRENT_USER_ID)
+                    .eq('post_id', postId);
+            } else {
+                savedPostsSet.add(postId);
+                btnEl.classList.add('text-blue-600', 'bg-blue-50');
+                icon.classList.replace('fa-regular', 'fa-solid');
+
+                await supabaseClient.from('saved_posts').insert([{
+                    user_id: CURRENT_USER_ID,
+                    post_id: postId
+                }]);
+            }
+        }
+
+        // تحميل المنشورات المحفوظة
+        async function loadSavedPosts() {
+            const container = document.getElementById('saved-posts-container');
+            container.innerHTML = `<div class="text-center py-6 text-xs text-gray-500">جاري تحميل المحفوظات...</div>`;
+
+            const { data } = await supabaseClient
+                .from('saved_posts')
+                .select('post_id, posts(*)')
+                .eq('user_id', CURRENT_USER_ID);
+
+            if(!data || data.length === 0) {
+                container.innerHTML = `<div class="text-center py-8 text-gray-400 text-xs">لا توجد عناصر محفوظة لديك</div>`;
                 return;
             }
 
-            container.innerHTML = featured.map(post => `
-                <div class="bg-slate-800/90 border border-slate-700 rounded-xl p-1.5 w-36 flex-shrink-0 space-y-1">
-                    <img src="${(post.images && post.images[0]) ? post.images[0] : 'https://via.placeholder.com/150'}" class="w-full h-16 object-cover rounded-lg">
-                    <p class="font-bold text-[10px] text-white line-clamp-1">${post.title}</p>
-                    <p class="text-amber-400 font-black text-[10px]">${post.price}</p>
+            const savedPosts = data.map(d => d.posts).filter(Boolean);
+            renderPostsCustom(savedPosts, container);
+        }
+
+        function renderPostsCustom(posts, container) {
+            container.innerHTML = posts.map(post => `
+                <div class="bg-white p-3 rounded-xl border mb-3 flex gap-3 items-center">
+                    <img src="${(post.images && post.images[0]) ? post.images[0] : 'https://via.placeholder.com/100'}" class="w-16 h-16 object-cover rounded-lg">
+                    <div class="flex-1">
+                        <h4 class="font-bold text-xs">${post.title}</h4>
+                        <p class="text-emerald-600 font-bold text-xs">${post.price}</p>
+                        <p class="text-[10px] text-gray-400">${post.city}</p>
+                    </div>
+                    <a href="https://wa.me/${post.phone}" target="_blank" class="bg-emerald-500 text-white p-2 rounded-lg text-xs"><i class="fa-brands fa-whatsapp"></i></a>
                 </div>
             `).join('');
         }
 
-        // إرسال البيانات فوراً لـ Supabase
+        // فتح التعليقات
+        async function openCommentsModal(postId, btnEl) {
+            playAudioEffect('comment');
+            const icon = btnEl.querySelector('.icon-comment');
+            if(icon) {
+                icon.classList.add('animate-swing');
+                setTimeout(() => icon.classList.remove('animate-swing'), 400);
+            }
+
+            document.getElementById('active-post-id').value = postId;
+            toggleModal('comments-modal');
+            loadComments(postId);
+        }
+
+        async function loadComments(postId) {
+            const listEl = document.getElementById('comments-list');
+            listEl.innerHTML = `<p class="text-center text-gray-400">جاري التحميل...</p>`;
+
+            const { data: comments } = await supabaseClient
+                .from('comments')
+                .select('*')
+                .eq('post_id', postId)
+                .order('created_at', { ascending: true });
+
+            if(!comments || comments.length === 0) {
+                listEl.innerHTML = `<p class="text-center text-gray-400 py-4">لا توجد تعليقات بعد، كن الأول!</p>`;
+                return;
+            }
+
+            listEl.innerHTML = comments.map(c => `
+                <div class="bg-gray-50 p-2.5 rounded-xl border border-gray-100">
+                    <p class="text-gray-800 font-medium">${c.text}</p>
+                </div>
+            `).join('');
+        }
+
+        async function handleAddComment(e) {
+            e.preventDefault();
+            const postId = document.getElementById('active-post-id').value;
+            const input = document.getElementById('comment-input');
+            const text = input.value.trim();
+            if(!text) return;
+
+            input.value = '';
+            await supabaseClient.from('comments').insert([{ post_id: postId, text }]);
+            loadComments(postId);
+        }
+
+        // حذف المنشور
+        async function deletePost(postId) {
+            if(!confirm("هل أنت تأكد من إزالة المنشور؟")) return;
+            
+            await supabaseClient.from('posts').delete().eq('id', postId);
+            allPostsData = allPostsData.filter(p => p.id !== postId);
+            renderPosts(allPostsData);
+        }
+
+        // الإبلاغ وتلقائياً توجيه الجيميل
+        function reportPost(postId, title) {
+            const myEmail = "1212OPOZZZ@gmail.com";
+            const subject = encodeURIComponent(`إبلاغ عن منشور برقم: ${postId}`);
+            const body = encodeURIComponent(`مرحباً، أود الإبلاغ عن المنشور التالي: "${title}" (المعرف: ${postId}) بسبب مخالفته للشروط.`);
+            
+            window.location.href = `mailto:${myEmail}?subject=${subject}&body=${body}`;
+        }
+
+        // المشاركة
+        function sharePost(title, id) {
+            const shareUrl = window.location.href;
+            if (navigator.share) {
+                navigator.share({
+                    title: title,
+                    text: `شاهد هذا الإعلان على دراجتي: ${title}`,
+                    url: shareUrl,
+                }).catch(() => {});
+            } else {
+                navigator.clipboard.writeText(shareUrl);
+                alert("تم نسخ رابط المنشور بنجاح!");
+            }
+        }
+
+        // ضغط وتخزين الصور
+        async function previewAndCompressImages(event) {
+            const file = event.target.files[0];
+            if(!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = 600;
+                    canvas.height = 600;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, 600, 600);
+                    compressedImagesBase64 = [canvas.toDataURL('image/jpeg', 0.7)];
+                    
+                    document.getElementById('images-preview').innerHTML = `<img src="${compressedImagesBase64[0]}" class="w-16 h-16 object-cover rounded-lg border">`;
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // إضافة منشور جديد
         async function handleCreatePost(e) {
             e.preventDefault();
             const btn = document.getElementById('submit-post-btn');
             btn.disabled = true;
-            btn.innerText = "جاري النشر الحي في قاعدة البيانات...";
+            btn.innerText = "جاري النشر...";
 
             const newPost = {
+                user_id: CURRENT_USER_ID,
                 title: document.getElementById('post-title').value,
                 price: document.getElementById('post-price').value,
                 category: document.getElementById('post-category').value,
@@ -437,16 +669,16 @@
                 phone: document.getElementById('post-phone').value,
                 description: document.getElementById('post-desc').value,
                 images: compressedImagesBase64,
-                is_featured: document.getElementById('post-featured').checked,
-                created_at: new Date().toISOString()
+                likes_count: 0,
+                likes_users: []
             };
 
-            const { data, error } = await supabaseClient.from('posts').insert([newPost]);
+            const { error } = await supabaseClient.from('posts').insert([newPost]);
             
             if (error) {
-                alert("حدث خطأ أثناء النشر: " + error.message);
+                alert("حدث خطأ: " + error.message);
             } else {
-                alert("تم نشر إعلانك بنجاح حقيقي وبات ظاهراً للجميع الآن!");
+                alert("تم نشر الإعلان بنجاح!");
                 toggleModal('add-post-modal');
                 document.getElementById('add-post-form').reset();
                 document.getElementById('images-preview').innerHTML = '';
@@ -455,16 +687,11 @@
             }
 
             btn.disabled = false;
-            btn.innerText = "نشر الإعلان مباشرة الآن";
+            btn.innerText = "نشر الآن";
         }
 
         function filterPosts() {
-            loadPostsFromSupabase();
-        }
-
-        function toggleQuickBrowse() {
-            document.getElementById('main-view').classList.toggle('hidden');
-            document.getElementById('quick-browse-view').classList.toggle('hidden');
+            renderPosts(allPostsData);
         }
     </script>
 </body>
