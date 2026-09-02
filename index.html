@@ -52,15 +52,20 @@
         .card-header { padding: 12px; display: flex; align-items: center; justify-content: space-between; }
         .user-info { display: flex; align-items: center; gap: 10px; }
         .user-avatar { width: 40px; height: 40px; border-radius: 50%; }
-        .card-img-container { width: 100%; height: 250px; background: #000; }
-        .card-img-container img { width: 100%; height: 100%; object-fit: cover; }
+        
+        /* تعديل حاوية وعرض الصورة لتظهر كاملة وبدون قص أو ضبابية */
+        .card-img-container { width: 100%; height: 300px; background: #111; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative; }
+        .card-img-container img { width: 100%; height: 100%; object-fit: contain; }
+
         .card-body { padding: 12px; }
         .card-title { font-size: 16px; font-weight: bold; }
         .card-price { font-size: 18px; font-weight: 800; color: var(--primary); margin: 4px 0; }
         .card-desc { font-size: 13px; color: var(--text-light); margin-bottom: 10px; }
 
-        .card-actions { display: flex; gap: 12px; border-top: 1px solid var(--border); padding-top: 8px; }
+        .card-actions { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 8px; }
         .action-btn { background: none; border: none; color: var(--text-light); cursor: pointer; display: flex; align-items: center; gap: 4px; }
+        .delete-btn { color: #d9534f; background: rgba(217, 83, 79, 0.1); border: none; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .delete-btn:hover { background: rgba(217, 83, 79, 0.2); }
 
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 16px; }
         .modal.active { display: flex; }
@@ -114,7 +119,7 @@
         <div class="modal-content">
             <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
                 <h3>إضافة إعلان جديد</h3>
-                <button onclick="closeModal('addPostModal')" style="background:none; border:none; font-size:18px;">&times;</button>
+                <button onclick="closeModal('addPostModal')" style="background:none; border:none; font-size:18px; cursor:pointer;">&times;</button>
             </div>
             <form id="addPostForm" onsubmit="handleAddPost(event)">
                 <div class="form-group">
@@ -177,7 +182,7 @@
             if (city) query = query.eq('city', city);
             if (search) query = query.ilike('title', `%${search}%`);
 
-            const { data, error } = await query;
+            const { data, error } + await query;
             if (error) console.error(error);
             else renderPosts(data || []);
         }
@@ -212,6 +217,9 @@
                             <button class="action-btn" onclick="toggleLike(${post.id}, ${post.likes})">
                                 <i class="fa-regular fa-heart"></i> ${post.likes || 0}
                             </button>
+                            <button class="delete-btn" onclick="deletePost(${post.id})">
+                                <i class="fa-solid fa-trash"></i> حذف
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -229,18 +237,15 @@
                 const file = fileInput.files[0];
                 const fileName = `${Date.now()}_${file.name}`;
 
-                // 1. رفع الصورة إلى Supabase Storage
                 const { data: imgData, error: imgError } = await db.storage
                     .from('post-images')
                     .upload(fileName, file);
 
                 if (imgError) throw imgError;
 
-                // الحصول على رابط الصورة
                 const { data: publicUrlData } = db.storage.from('post-images').getPublicUrl(fileName);
                 const imgUrl = publicUrlData.publicUrl;
 
-                // 2. إدخال بيانات الإعلان في الجدول
                 const { error } = await db.from('posts').insert([{
                     user_name: currentUser.name,
                     user_avatar: currentUser.avatar,
@@ -265,6 +270,17 @@
             }
         }
 
+        async function deletePost(id) {
+            if (confirm("هل أنت متأكد من حذف هذا الإعلان؟")) {
+                const { error } = await db.from('posts').delete().eq('id', id);
+                if (error) {
+                    alert("فشل الحذف: " + error.message);
+                } else {
+                    fetchPosts();
+                }
+            }
+        }
+
         async function toggleLike(id, currentLikes) {
             await db.from('posts').update({ likes: (currentLikes || 0) + 1 }).eq('id', id);
             fetchPosts();
@@ -273,7 +289,6 @@
         function openModal(id) { document.getElementById(id).classList.add('active'); }
         function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-        // الاستماع الفوري للتحديثات (Realtime)
         db.channel('posts_channel').on('postgres_changes', { event: '*', schema: 'public', table: 'posts' }, () => {
             fetchPosts();
         }).subscribe();
