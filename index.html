@@ -95,8 +95,6 @@
     <!-- Header / شريط الملاحة العلوي -->
     <header class="bg-brand-500 dark:bg-gray-800 text-white sticky top-0 z-40 shadow-lg transition-colors duration-200">
         <div class="max-w-xl mx-auto px-3 h-14 flex items-center justify-between">
-            
-            <!-- اللوجو واسم التطبيق -->
             <div class="flex items-center gap-2.5 cursor-pointer" onclick="navigateTo('main-view')">
                 <div class="w-9 h-9 bg-amber-500 rounded-xl flex items-center justify-center text-white text-lg shadow-md transform -rotate-3 hover:rotate-0 transition">
                     <i class="fa-solid fa-motorcycle"></i>
@@ -107,33 +105,27 @@
                 </div>
             </div>
 
-            <!-- أزرار التحكم السريعة -->
             <div class="flex items-center gap-1.5">
-                <!-- تبديل المظهر -->
                 <button onclick="toggleDarkMode()" class="w-9 h-9 bg-white/15 hover:bg-white/25 rounded-full flex items-center justify-center text-white text-xs btn-tap transition" title="تبديل المظهر">
                     <i class="fa-solid fa-moon dark:hidden"></i>
                     <i class="fa-solid fa-sun hidden dark:block text-amber-300"></i>
                 </button>
 
-                <!-- زر الإشعارات -->
                 <button onclick="toggleModal('notifications-modal')" class="w-9 h-9 bg-white/15 hover:bg-white/25 rounded-full flex items-center justify-center text-white text-xs btn-tap relative transition" title="الإشعارات">
                     <i class="fa-solid fa-bell text-sm"></i>
                     <span id="unread-badge" class="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full hidden"></span>
                 </button>
 
-                <!-- زر إضافة إعلان جديد -->
                 <button onclick="openAddPostModal()" class="bg-emerald-500 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-full flex items-center gap-1.5 text-xs font-bold shadow-md btn-tap transition">
                     <i class="fa-solid fa-plus text-xs"></i>
                     <span>أعرض دراجتك</span>
                 </button>
             </div>
-
         </div>
     </header>
-    <!-- الواجهة الرئيسية (Main View Container) -->
-    <main id="main-view" class="max-w-xl mx-auto px-3 pt-3 space-y-3">
 
-        <!-- شريط البحث السريع والفلترة -->
+    <!-- الواجهة الرئيسية -->
+    <main id="main-view" class="max-w-xl mx-auto px-3 pt-3 space-y-3">
         <div class="bg-white dark:bg-gray-800 p-2.5 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700/60 flex items-center gap-2">
             <div class="flex-1 bg-gray-100 dark:bg-gray-700/50 rounded-xl flex items-center px-3 py-1.5 border border-transparent focus-within:border-brand-500 transition">
                 <i class="fa-solid fa-magnifying-glass text-gray-400 text-xs ml-2"></i>
@@ -148,7 +140,6 @@
             </button>
         </div>
 
-        <!-- شريط اختيار المحافظة (الترشيح الجغرافي) -->
         <div class="space-y-1.5">
             <div class="flex items-center justify-between px-1">
                 <span class="text-[11px] font-bold text-gray-500 dark:text-gray-400 flex items-center gap-1">
@@ -158,70 +149,38 @@
             </div>
             
             <div class="flex items-center gap-1.5 overflow-x-auto custom-scrollbar pb-1 text-xs font-semibold">
-                <button onclick="selectCity('الكل')" class="city-btn active bg-brand-500 text-white px-3 py-1.5 rounded-xl whitespace-nowrap shadow-sm btn-tap">
-                    الكل 🇮🇶
-                </button>
-                <button onclick="selectCity('بغداد')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">
-                    بغداد
-                </button>
-                <button onclick="selectCity('البصرة')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">
-                    البصرة
-                </button>
-                <button onclick="selectCity('أربيل')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">
-                    أربيل
-                </button>
-                <button onclick="selectCity('النجف')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">
-                    النجف
-                </button>
-                <button onclick="selectCity('كربلاء')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">
-                    كربلاء
-                </button>
-                <button onclick="selectCity('بابل')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">
-                    بابل
-                </button>
-                <button onclick="selectCity('نينوى')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">
-                    نينوى
-                </button>
-                <button onclick="selectCity('ذي قار')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">
-                    ذي قار
-                </button>
+                <button onclick="selectCity('الكل')" class="city-btn active bg-brand-500 text-white px-3 py-1.5 rounded-xl whitespace-nowrap shadow-sm btn-tap">الكل 🇮🇶</button>
+                <button onclick="selectCity('بغداد')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">بغداد</button>
+                <button onclick="selectCity('البصرة')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">البصرة</button>
+                <button onclick="selectCity('أربيل')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">أربيل</button>
+                <button onclick="selectCity('النجف')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">النجف</button>
+                <button onclick="selectCity('كربلاء')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">كربلاء</button>
+                <button onclick="selectCity('بابل')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">بابل</button>
+                <button onclick="selectCity('نينوى')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">نينوى</button>
+                <button onclick="selectCity('ذي قار')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">ذي قار</button>
             </div>
         </div>
 
-        <!-- شريط الأقسام السريعة التفاعلي (Categories Shortcut Bar) -->
         <div class="grid grid-cols-4 gap-2 pt-1">
             <button onclick="filterByCategory('سكوتر')" class="bg-white dark:bg-gray-800 p-2.5 rounded-2xl border border-gray-100 dark:border-gray-700/60 shadow-sm flex flex-col items-center justify-center gap-1 btn-tap hover:border-brand-500 transition">
-                <div class="w-8 h-8 rounded-full bg-blue-50 dark:bg-blue-900/30 text-brand-500 flex items-center justify-center text-sm">
-                    <i class="fa-solid fa-charging-station"></i>
-                </div>
+                <div class="w-8 h-8 rounded-full bg-blue-50 dark:bg-blue-900/30 text-brand-500 flex items-center justify-center text-sm"><i class="fa-solid fa-charging-station"></i></div>
                 <span class="text-[10px] font-bold text-gray-700 dark:text-gray-300">سكوترات</span>
             </button>
-
             <button onclick="filterByCategory('دراجات بطح')" class="bg-white dark:bg-gray-800 p-2.5 rounded-2xl border border-gray-100 dark:border-gray-700/60 shadow-sm flex flex-col items-center justify-center gap-1 btn-tap hover:border-brand-500 transition">
-                <div class="w-8 h-8 rounded-full bg-red-50 dark:bg-red-900/30 text-red-500 flex items-center justify-center text-sm">
-                    <i class="fa-solid fa-gauge-high"></i>
-                </div>
+                <div class="w-8 h-8 rounded-full bg-red-50 dark:bg-red-900/30 text-red-500 flex items-center justify-center text-sm"><i class="fa-solid fa-gauge-high"></i></div>
                 <span class="text-[10px] font-bold text-gray-700 dark:text-gray-300">بطح (Sport)</span>
             </button>
-
             <button onclick="filterByCategory('دراجات شحن')" class="bg-white dark:bg-gray-800 p-2.5 rounded-2xl border border-gray-100 dark:border-gray-700/60 shadow-sm flex flex-col items-center justify-center gap-1 btn-tap hover:border-brand-500 transition">
-                <div class="w-8 h-8 rounded-full bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500 flex items-center justify-center text-sm">
-                    <i class="fa-solid fa-bolt"></i>
-                </div>
+                <div class="w-8 h-8 rounded-full bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500 flex items-center justify-center text-sm"><i class="fa-solid fa-bolt"></i></div>
                 <span class="text-[10px] font-bold text-gray-700 dark:text-gray-300">كهربائية</span>
             </button>
-
             <button onclick="filterByCategory('أدوات وتعديل')" class="bg-white dark:bg-gray-800 p-2.5 rounded-2xl border border-gray-100 dark:border-gray-700/60 shadow-sm flex flex-col items-center justify-center gap-1 btn-tap hover:border-brand-500 transition">
-                <div class="w-8 h-8 rounded-full bg-amber-50 dark:bg-amber-900/30 text-amber-500 flex items-center justify-center text-sm">
-                    <i class="fa-solid fa-wrench"></i>
-                </div>
+                <div class="w-8 h-8 rounded-full bg-amber-50 dark:bg-amber-900/30 text-amber-500 flex items-center justify-center text-sm"><i class="fa-solid fa-wrench"></i></div>
                 <span class="text-[10px] font-bold text-gray-700 dark:text-gray-300">قطع غيار</span>
             </button>
         </div>
-        <!-- حاوية عرض المنشورات والإعلانات (Posts Feed) -->
+
         <div id="posts-container" class="space-y-3 pt-2">
-            
-            <!-- هيكل التحميل الوهمي (Skeleton Loading) أثناء جلب البيانات -->
             <div id="loading-skeleton" class="space-y-3">
                 <div class="bg-white dark:bg-gray-800 rounded-2xl p-3 shadow-sm border border-gray-100 dark:border-gray-700/60 space-y-3">
                     <div class="flex items-center justify-between">
@@ -239,37 +198,25 @@
                         <div class="h-4 w-3/4 rounded skeleton-loader"></div>
                         <div class="h-3 w-full rounded skeleton-loader"></div>
                     </div>
-                    <div class="flex justify-between items-center pt-2 border-t dark:border-gray-700/60">
-                        <div class="h-6 w-20 rounded-lg skeleton-loader"></div>
-                        <div class="h-6 w-20 rounded-lg skeleton-loader"></div>
-                    </div>
                 </div>
             </div>
 
-            <!-- شبكة البطاقات الديناميكية (يتم تعبئتها بواسطة JavaScript) -->
             <div id="posts-feed" class="space-y-3"></div>
 
-            <!-- رسالة عدم وجود نتائج -->
             <div id="no-results" class="hidden text-center py-12 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700/60 shadow-sm space-y-2">
                 <div class="w-14 h-14 bg-blue-50 dark:bg-blue-900/30 text-brand-500 rounded-full flex items-center justify-center text-2xl mx-auto">
                     <i class="fa-solid fa-motorcycle"></i>
                 </div>
                 <h3 class="font-black text-sm text-gray-800 dark:text-gray-100">لا توجد دراجات معروضة حالياً</h3>
                 <p class="text-xs text-gray-500 dark:text-gray-400 max-w-xs mx-auto">جرب تغيير معايير البحث أو اختيار محافظة أخرى لعرض النتائج.</p>
-                <button onclick="resetFilters()" class="mt-2 bg-brand-500 text-white text-xs font-bold px-4 py-2 rounded-xl btn-tap">
-                    إعادة ضبط الفلاتر
-                </button>
+                <button onclick="resetFilters()" class="mt-2 bg-brand-500 text-white text-xs font-bold px-4 py-2 rounded-xl btn-tap">إعادة ضبط الفلاتر</button>
             </div>
-
         </div>
-
     </main>
 
-    <!-- قالب بطاقة الإعلان التوضيحي (قالب HTML مرجعي للمحرك) -->
+    <!-- قالب بطاقة الإعلان -->
     <template id="post-card-template">
         <article class="post-card bg-white dark:bg-gray-800 rounded-2xl p-3 shadow-sm border border-gray-100 dark:border-gray-700/60 space-y-2.5 transition hover:shadow-md relative overflow-hidden">
-            
-            <!-- شريط رأس البطاقة (صاحب الإعلان والمحافظة) -->
             <div class="flex items-center justify-between text-xs">
                 <div class="flex items-center gap-2">
                     <img class="user-avatar w-8 h-8 rounded-full border dark:border-gray-600 object-cover" src="" alt="المستخدم">
@@ -283,549 +230,122 @@
                 </div>
                 <div class="flex items-center gap-1">
                     <span class="post-condition text-[10px] font-bold px-2 py-0.5 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"></span>
-                    <button class="options-btn p-1.5 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 btn-tap">
-                        <i class="fa-solid fa-ellipsis-vertical text-xs"></i>
-                    </button>
                 </div>
             </div>
 
-            <!-- صورة الدراجة -->
             <div class="post-image-container relative rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-700/50 aspect-video flex items-center justify-center">
                 <img class="post-image w-full h-full object-cover rounded-xl transition duration-300 group-hover:scale-105" src="" alt="صورة الدراجة">
                 <span class="post-price absolute bottom-2 right-2 bg-black/75 text-amber-400 font-black text-xs px-2.5 py-1 rounded-lg backdrop-blur-sm border border-white/10"></span>
             </div>
 
-            <!-- عنوان وتفاصيل الإعلان -->
             <div class="space-y-1">
                 <h3 class="post-title font-black text-sm text-gray-800 dark:text-gray-100 line-clamp-1"></h3>
                 <p class="post-desc text-xs text-gray-600 dark:text-gray-300 line-clamp-2 leading-relaxed"></p>
             </div>
 
-            <!-- أزرار التفاعل والإجراءات السريعة -->
             <div class="flex items-center justify-between border-t dark:border-gray-700/60 pt-2 text-xs">
                 <div class="flex items-center gap-3">
                     <button class="like-btn flex items-center gap-1 text-gray-500 dark:text-gray-400 btn-tap">
                         <i class="fa-regular fa-heart text-sm"></i>
                         <span class="likes-count text-[11px] font-bold">0</span>
                     </button>
-
                     <button class="comment-btn flex items-center gap-1 text-gray-500 dark:text-gray-400 btn-tap">
                         <i class="fa-regular fa-comment text-sm"></i>
-                        <span class="comments-count text-[11px] font-bold">0</span>
                     </button>
-
                     <button class="save-btn text-gray-500 dark:text-gray-400 btn-tap">
                         <i class="fa-regular fa-bookmark text-sm"></i>
                     </button>
                 </div>
-
                 <div class="flex items-center gap-1.5">
                     <a class="whatsapp-btn hidden bg-emerald-500 hover:bg-emerald-600 text-white px-2.5 py-1 rounded-xl font-bold text-[10px] flex items-center gap-1 btn-tap shadow-sm" href="" target="_blank">
                         <i class="fa-brands fa-whatsapp text-xs"></i> واتساب
                     </a>
-                    <a class="call-btn hidden bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1 rounded-xl font-bold text-[10px] flex items-center gap-1 btn-tap shadow-sm" href="">
-                        <i class="fa-solid fa-phone text-[10px]"></i> اتصال
-                    </a>
                 </div>
             </div>
-
         </article>
     </template>
-    <!-- واجهة الملف الشخصي والحساب الشخصي (Profile View Container) -->
-    <main id="profile-view" class="max-w-xl mx-auto px-3 pt-3 space-y-3 hidden">
 
-        <!-- بطاقة تعريف المستخدم والإحصائيات -->
+    <!-- واجهة الملف الشخصي -->
+    <main id="profile-view" class="max-w-xl mx-auto px-3 pt-3 space-y-3 hidden">
         <div class="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700/60 space-y-4">
-            
-            <!-- معلومات الحساب والهوية الرقمية -->
             <div id="user-info-card" class="flex items-center justify-between border-b dark:border-gray-700/60 pb-3">
                 <div class="flex items-center gap-3">
-                    <div class="relative">
-                        <img id="profile-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=moped" class="w-12 h-12 rounded-full border-2 border-brand-500 p-0.5 object-cover bg-gray-50 dark:bg-gray-700">
-                        <span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-white dark:border-gray-800 rounded-full"></span>
-                    </div>
+                    <img id="profile-avatar" src="" class="w-12 h-12 rounded-full border-2 border-brand-500 p-0.5 object-cover bg-gray-50 dark:bg-gray-700">
                     <div>
-                        <div class="flex items-center gap-1.5">
-                            <h3 id="profile-name" class="font-black text-sm text-gray-800 dark:text-gray-100">مستخدم دراجتي</h3>
-                            <i id="verified-badge" class="fa-solid fa-circle-check text-brand-500 text-xs hidden" title="حساب موثق"></i>
-                        </div>
-                        <span id="profile-phone" class="text-xs text-gray-500 dark:text-gray-400 block font-semibold">07XXXXXXXXX</span>
+                        <h3 id="profile-name" class="font-black text-sm text-gray-800 dark:text-gray-100">مستخدم دراجتي</h3>
+                        <span id="profile-phone" class="text-xs text-gray-500 dark:text-gray-400 block font-semibold">بغداد</span>
                         <span id="profile-device-id" class="text-[9px] text-gray-400 block font-mono">ID: --</span>
                     </div>
                 </div>
-
-                <button onclick="editProfileModal()" class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-700 dark:text-gray-200 text-xs font-bold px-3 py-1.5 rounded-xl btn-tap transition flex items-center gap-1">
-                    <i class="fa-solid fa-user-pen text-xs"></i>
-                    <span>تعديل</span>
-                </button>
+                <button onclick="editProfileModal()" class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs font-bold px-3 py-1.5 rounded-xl btn-tap flex items-center gap-1">تعديل</button>
             </div>
 
-            <!-- شبكة الإحصائيات (User Metrics) -->
             <div class="grid grid-cols-3 gap-2 text-center">
-                <div class="bg-gray-50 dark:bg-gray-700/40 p-2.5 rounded-xl border border-gray-100 dark:border-gray-600/40">
+                <div class="bg-gray-50 dark:bg-gray-700/40 p-2.5 rounded-xl border border-gray-100">
                     <span id="stat-my-posts-count" class="block font-black text-brand-500 text-base leading-tight">0</span>
-                    <span class="text-[10px] font-bold text-gray-500 dark:text-gray-400">إعلاناتي</span>
+                    <span class="text-[10px] font-bold text-gray-500">إعلاناتي</span>
                 </div>
-
-                <div class="bg-gray-50 dark:bg-gray-700/40 p-2.5 rounded-xl border border-gray-100 dark:border-gray-600/40">
+                <div class="bg-gray-50 dark:bg-gray-700/40 p-2.5 rounded-xl border border-gray-100">
                     <span id="stat-saved-count" class="block font-black text-amber-500 text-base leading-tight">0</span>
-                    <span class="text-[10px] font-bold text-gray-500 dark:text-gray-400">المفضلة</span>
+                    <span class="text-[10px] font-bold text-gray-500">المفضلة</span>
                 </div>
-
-                <div class="bg-gray-50 dark:bg-gray-700/40 p-2.5 rounded-xl border border-gray-100 dark:border-gray-600/40">
+                <div class="bg-gray-50 dark:bg-gray-700/40 p-2.5 rounded-xl border border-gray-100">
                     <span id="stat-views-count" class="block font-black text-emerald-500 text-base leading-tight">0</span>
-                    <span class="text-[10px] font-bold text-gray-500 dark:text-gray-400">المشاهدات</span>
+                    <span class="text-[10px] font-bold text-gray-500">المشاهدات</span>
                 </div>
             </div>
 
-            <!-- أزرار التنقل السريعة داخل الملف الشخصي -->
             <div class="flex gap-2">
-                <button onclick="switchProfileTab('my-posts')" id="tab-btn-my-posts" class="flex-1 py-2 bg-brand-500 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 btn-tap shadow-sm transition">
-                    <i class="fa-solid fa-motorcycle"></i> إعلاناتي المعروضة
-                </button>
-                <button onclick="switchProfileTab('saved-posts')" id="tab-btn-saved" class="flex-1 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 btn-tap transition">
-                    <i class="fa-solid fa-bookmark text-amber-500"></i> المفضلة
-                </button>
+                <button onclick="switchProfileTab('my-posts')" id="tab-btn-my-posts" class="flex-1 py-2 bg-brand-500 text-white rounded-xl font-bold text-xs btn-tap">إعلاناتي المعروضة</button>
+                <button onclick="switchProfileTab('saved-posts')" id="tab-btn-saved" class="flex-1 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-bold text-xs btn-tap">المفضلة</button>
             </div>
-
         </div>
 
-        <!-- عنوان القائمة المعروضة -->
-        <div class="flex items-center justify-between px-1 pt-1">
-            <h3 id="profile-tab-title" class="font-black text-xs text-gray-700 dark:text-gray-300 flex items-center gap-1.5">
-                <i class="fa-solid fa-list-ul text-brand-500"></i> الإعلانات الخاصة بي
-            </h3>
-            <span id="profile-items-count" class="text-[10px] font-bold bg-brand-50 dark:bg-brand-900/40 text-brand-500 px-2 py-0.5 rounded-md">0 عنصر</span>
-        </div>
-
-        <!-- حاوية عرض منشورات الملف الشخصي -->
-        <div id="profile-posts-container" class="space-y-3">
-            <!-- يتم تعبئة الإعلانات الخاصة بالمستخدم أو المحفوظات هنا -->
-        </div>
-
+        <div id="profile-posts-container" class="space-y-3"></div>
     </main>
-    <!-- نافذة إضافة إعلان جديد (Add Post Modal) -->
-    <div id="add-post-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4 transition-opacity">
-        <div class="bg-white dark:bg-gray-800 w-full max-w-lg rounded-t-2xl sm:rounded-2xl p-4 shadow-2xl space-y-3 slide-up max-h-[90vh] overflow-y-auto border border-gray-100 dark:border-gray-700/60 custom-scrollbar">
-            
-            <div class="flex justify-between items-center border-b dark:border-gray-700/60 pb-2">
-                <h3 class="font-black text-xs text-gray-800 dark:text-gray-100 flex items-center gap-1.5">
-                    <i class="fa-solid fa-plus-circle text-emerald-500 text-sm"></i> أعرض دراجتك للبيع
-                </h3>
-                <button onclick="toggleModal('add-post-modal')" class="text-lg font-bold text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 btn-tap">&times;</button>
-            </div>
 
-            <form onsubmit="handleCreatePost(event)" class="space-y-3 text-xs">
-                
-                <!-- عنوان الإعلان -->
-                <div>
-                    <label class="block text-[11px] font-bold mb-1 text-gray-700 dark:text-gray-300">عنوان الإعلان *</label>
-                    <input type="text" id="post-title" required placeholder="مثال: دايو 60 أصلية نظيفة جداً" class="w-full bg-gray-100 dark:bg-gray-700/50 dark:text-white px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 outline-none focus:ring-2 focus:ring-brand-500 transition">
-                </div>
-
-                <!-- السعر والعملة -->
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-[11px] font-bold mb-1 text-gray-700 dark:text-gray-300">السعر *</label>
-                        <input type="number" id="post-price" required placeholder="مثال: 450" class="w-full bg-gray-100 dark:bg-gray-700/50 dark:text-white px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 outline-none focus:ring-2 focus:ring-brand-500 transition">
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-bold mb-1 text-gray-700 dark:text-gray-300">العملة *</label>
-                        <select id="post-currency" class="w-full bg-gray-100 dark:bg-gray-700/50 dark:text-white px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 outline-none font-bold">
-                            <option value="$">دولار ($)</option>
-                            <option value="د.ع">دينار عراقي (د.ع)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- المحافظة والفئة -->
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-[11px] font-bold mb-1 text-gray-700 dark:text-gray-300">المحافظة *</label>
-                        <select id="post-city" class="w-full bg-gray-100 dark:bg-gray-700/50 dark:text-white px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 outline-none">
-                            <option value="بغداد">بغداد</option>
-                            <option value="البصرة">البصرة</option>
-                            <option value="أربيل">أربيل</option>
-                            <option value="النجف">النجف</option>
-                            <option value="كربلاء">كربلاء</option>
-                            <option value="بابل">بابل</option>
-                            <option value="نينوى">نينوى</option>
-                            <option value="ذي قار">ذي قار</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-bold mb-1 text-gray-700 dark:text-gray-300">الفئة *</label>
-                        <select id="post-category" class="w-full bg-gray-100 dark:bg-gray-700/50 dark:text-white px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 outline-none">
-                            <option value="سكوتر">سكوتر</option>
-                            <option value="دراجات بطح">دراجات بطح (Sport)</option>
-                            <option value="دراجات شحن">دراجات كهربائية / شحن</option>
-                            <option value="ستوتات وكتكوتة">ستوتة / تفصيلة</option>
-                            <option value="أدوات وتعديل">أدوات احتياطية وقيم</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- حالة الدراجة ووسائل التواصل -->
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <label class="block text-[11px] font-bold mb-1 text-gray-700 dark:text-gray-300">الحالة</label>
-                        <select id="post-condition" class="w-full bg-gray-100 dark:bg-gray-700/50 dark:text-white px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 outline-none">
-                            <option value="مستعمل">مستعمل</option>
-                            <option value="جديد">جديد (زيرو)</option>
-                            <option value="للأدوات">للأدوات والتقصيص</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-[11px] font-bold mb-1 text-gray-700 dark:text-gray-300">رقم الواتساب</label>
-                        <input type="tel" id="post-whatsapp" placeholder="07700000000" class="w-full bg-gray-100 dark:bg-gray-700/50 dark:text-white px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 outline-none">
-                    </div>
-                </div>
-
-                <!-- رابط الصورة والوصف -->
-                <div>
-                    <label class="block text-[11px] font-bold mb-1 text-gray-700 dark:text-gray-300">رابط صورة الدراجة</label>
-                    <input type="url" id="post-image" placeholder="https://..." class="w-full bg-gray-100 dark:bg-gray-700/50 dark:text-white px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 outline-none">
-                </div>
-
-                <div>
-                    <label class="block text-[11px] font-bold mb-1 text-gray-700 dark:text-gray-300">التفاصيل والوصف *</label>
-                    <textarea id="post-desc" rows="3" required placeholder="اذكر حالة المحرك، الموديل، الأوراق، ونظافة الدراجة..." class="w-full bg-gray-100 dark:bg-gray-700/50 dark:text-white px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 outline-none resize-none"></textarea>
-                </div>
-
-                <button type="submit" id="submit-post-btn" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black py-2.5 rounded-xl shadow-md btn-tap transition text-xs">
-                    نشر الإعلان الآن
-                </button>
-            </form>
-
-        </div>
-    </div>
-
-    <!-- نافذة الفئات وتحديد الخيارات (Categories Filter Modal) -->
-    <div id="categories-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-gray-800 w-full max-w-xs rounded-2xl p-4 shadow-2xl space-y-3 border border-gray-100 dark:border-gray-700/60 slide-up">
-            <div class="flex justify-between items-center border-b dark:border-gray-700/60 pb-2">
-                <h3 class="font-black text-xs text-gray-800 dark:text-gray-100 flex items-center gap-1.5">
-                    <i class="fa-solid fa-layer-group text-brand-500"></i> اختار الفئة
-                </h3>
-                <button onclick="toggleModal('categories-modal')" class="text-base font-bold text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 btn-tap">&times;</button>
-            </div>
-            
-            <div class="space-y-1 text-xs font-bold">
-                <button onclick="filterByCategory('الكل')" class="w-full text-right p-2.5 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/50 text-gray-800 dark:text-gray-200 flex items-center justify-between btn-tap">
-                    <span>جميع الفئات</span>
-                    <i class="fa-solid fa-border-all opacity-50"></i>
-                </button>
-                <button onclick="filterByCategory('سكوتر')" class="w-full text-right p-2.5 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/50 text-gray-800 dark:text-gray-200 flex items-center justify-between btn-tap">
-                    <span>سكوترات</span>
-                    <i class="fa-solid fa-charging-station opacity-50"></i>
-                </button>
-                <button onclick="filterByCategory('دراجات بطح')" class="w-full text-right p-2.5 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/50 text-gray-800 dark:text-gray-200 flex items-center justify-between btn-tap">
-                    <span>دراجات بطح (Sport)</span>
-                    <i class="fa-solid fa-gauge-high opacity-50"></i>
-                </button>
-                <button onclick="filterByCategory('دراجات شحن')" class="w-full text-right p-2.5 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/50 text-gray-800 dark:text-gray-200 flex items-center justify-between btn-tap">
-                    <span>دراجات كهربائية / شحن</span>
-                    <i class="fa-solid fa-bolt opacity-50"></i>
-                </button>
-                <button onclick="filterByCategory('ستوتات وكتكوتة')" class="w-full text-right p-2.5 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/50 text-gray-800 dark:text-gray-200 flex items-center justify-between btn-tap">
-                    <span>ستوتة / تفصيلة</span>
-                    <i class="fa-solid fa-truck-pickup opacity-50"></i>
-                </button>
-                <button onclick="filterByCategory('أدوات وتعديل')" class="w-full text-right p-2.5 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700/50 text-gray-800 dark:text-gray-200 flex items-center justify-between btn-tap">
-                    <span>قطع غيار وأدوات</span>
-                    <i class="fa-solid fa-wrench opacity-50"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-    <!-- نافذة التعليقات الاستفسارية (Comments Modal) -->
-    <div id="comments-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
-        <div class="bg-white dark:bg-gray-800 w-full max-w-md rounded-t-2xl sm:rounded-2xl p-4 shadow-2xl space-y-3 slide-up h-[80vh] flex flex-col border border-gray-100 dark:border-gray-700/60">
-            
-            <div class="flex justify-between items-center border-b dark:border-gray-700/60 pb-2">
-                <h3 class="font-black text-xs text-gray-800 dark:text-gray-100 flex items-center gap-1.5">
-                    <i class="fa-solid fa-comments text-brand-500"></i> التعليقات والاستفسارات
-                </h3>
-                <button onclick="toggleModal('comments-modal')" class="text-lg font-bold text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 btn-tap">&times;</button>
-            </div>
-
-            <!-- قائمة عرض التعليقات -->
-            <div id="comments-list" class="flex-1 overflow-y-auto space-y-2.5 text-xs py-1 custom-scrollbar">
-                <!-- يتم التحميل ديناميكياً بواسطة السكريبت -->
-            </div>
-
-            <!-- نموذج إضافة تعليق جديد -->
-            <form onsubmit="handleAddComment(event)" class="flex gap-2 border-t dark:border-gray-700/60 pt-2.5">
-                <input type="hidden" id="active-comment-post-id">
-                <input type="text" id="comment-input" required placeholder="اكتب استفسارك عن الدراجة..." class="flex-1 bg-gray-100 dark:bg-gray-700/50 dark:text-white px-3 py-2 rounded-xl text-xs outline-none border border-transparent focus:border-brand-500 transition">
-                <button type="submit" class="bg-brand-500 hover:bg-brand-600 text-white font-bold px-4 py-2 rounded-xl text-xs btn-tap transition shadow-sm">
-                    إرسال
-                </button>
-            </form>
-
-        </div>
-    </div>
-
-    <!-- نافذة المحادثات والرسائل المباشرة (Direct Chat Modal) -->
-    <div id="chat-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
-        <div class="bg-white dark:bg-gray-800 w-full max-w-md rounded-t-2xl sm:rounded-2xl p-4 shadow-2xl space-y-3 slide-up h-[85vh] flex flex-col border border-gray-100 dark:border-gray-700/60">
-            
-            <!-- هيدر المحادثة -->
-            <div class="flex justify-between items-center border-b dark:border-gray-700/60 pb-2.5">
-                <div class="flex items-center gap-2">
-                    <img id="chat-receiver-avatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=seller" class="w-8 h-8 rounded-full border dark:border-gray-600 object-cover">
-                    <div>
-                        <h4 id="chat-receiver-name" class="font-black text-xs text-gray-800 dark:text-gray-100 leading-tight">صاحب الإعلان</h4>
-                        <span id="chat-post-title" class="text-[9px] text-gray-400 block line-clamp-1">بخصوص الدراجة</span>
-                    </div>
-                </div>
-                <button onclick="toggleModal('chat-modal')" class="text-lg font-bold text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 btn-tap">&times;</button>
-            </div>
-
-            <!-- قائمة الرسائل -->
-            <div id="chat-messages-container" class="flex-1 overflow-y-auto space-y-2 text-xs py-1 custom-scrollbar">
-                <!-- يتم تحميل الرسائل المباشرة هنا -->
-            </div>
-
-            <!-- نموذج إرسال رسالة خاصة -->
-            <form onsubmit="handleSendMessage(event)" class="flex gap-2 border-t dark:border-gray-700/60 pt-2.5">
-                <input type="hidden" id="chat-receiver-id">
-                <input type="hidden" id="chat-post-id">
-                <input type="text" id="chat-input" required placeholder="اكتب رسالتك الخاصة للبائع..." class="flex-1 bg-gray-100 dark:bg-gray-700/50 dark:text-white px-3 py-2 rounded-xl text-xs outline-none border border-transparent focus:border-brand-500 transition">
-                <button type="submit" class="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-4 py-2 rounded-xl text-xs btn-tap transition shadow-sm">
-                    <i class="fa-solid fa-paper-plane"></i>
-                </button>
-            </form>
-
-        </div>
-    </div>
-
-    <!-- نافذة الإشعارات والتنبيهات (Notifications Modal) -->
-    <div id="notifications-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-gray-800 w-full max-w-sm rounded-2xl p-4 shadow-2xl space-y-3 border border-gray-100 dark:border-gray-700/60 slide-up max-h-[70vh] flex flex-col">
-            
-            <div class="flex justify-between items-center border-b dark:border-gray-700/60 pb-2">
-                <h3 class="font-black text-xs text-gray-800 dark:text-gray-100 flex items-center gap-1.5">
-                    <i class="fa-solid fa-bell text-amber-500"></i> التنبيهات الإشعارات
-                </h3>
-                <button onclick="toggleModal('notifications-modal')" class="text-base font-bold text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 btn-tap">&times;</button>
-            </div>
-
-            <div id="notifications-list" class="flex-1 overflow-y-auto space-y-2 text-xs custom-scrollbar">
-                <div class="text-center py-8 text-gray-400">
-                    <i class="fa-solid fa-bell-slash text-2xl mb-2 block opacity-50"></i>
-                    <span>لا توجد إشعارات جديدة حالياً</span>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <!-- نافذة تأكيد الحذف (Delete Confirmation Modal) -->
-    <div id="delete-confirm-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-gray-800 w-full max-w-xs rounded-2xl p-4 shadow-2xl space-y-3 border border-gray-100 dark:border-gray-700/60 text-center slide-up">
-            <input type="hidden" id="delete-target-post-id">
-            <div class="w-12 h-12 bg-red-100 dark:bg-red-900/30 text-red-500 rounded-full flex items-center justify-center text-xl mx-auto">
-                <i class="fa-solid fa-trash-can"></i>
-            </div>
-            <h4 class="font-black text-xs text-gray-800 dark:text-gray-100">تأكيد حذف الإعلان</h4>
-            <p class="text-[11px] text-gray-500 dark:text-gray-400">هل أنت تأكد من رغبتك في حذف هذا الإعلان؟ لا يمكنك التراجع عن هذا الإجراء.</p>
-            <div class="flex gap-2 pt-1">
-                <button onclick="executeConfirmDelete()" class="flex-1 bg-red-500 hover:bg-red-600 text-white font-bold py-2 rounded-xl text-xs btn-tap transition">حذف</button>
-                <button onclick="toggleModal('delete-confirm-modal')" class="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 font-bold py-2 rounded-xl text-xs btn-tap transition">إلغاء</button>
-            </div>
-        </div>
-    </div>
-    <!-- شريط الملاحة السفلي (Bottom Navigation Bar) -->
+    <!-- شريط الملاحة السفلي -->
     <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700/60 z-40 shadow-lg">
         <div class="max-w-xl mx-auto flex items-center justify-around h-16 px-2">
-            
             <button onclick="navigateTo('main-view')" id="nav-home-btn" class="nav-btn text-brand-500 flex flex-col items-center justify-center gap-1 w-16 btn-tap">
                 <i class="fa-solid fa-house text-lg"></i>
                 <span class="text-[10px] font-bold">الرئيسية</span>
             </button>
-
             <button onclick="filterByCategory('سكوتر')" class="nav-btn text-gray-400 dark:text-gray-500 flex flex-col items-center justify-center gap-1 w-16 btn-tap hover:text-brand-500">
                 <i class="fa-solid fa-charging-station text-lg"></i>
                 <span class="text-[10px] font-bold">سكوترات</span>
             </button>
-
             <button onclick="openAddPostModal()" class="flex flex-col items-center justify-center -mt-5 btn-tap">
                 <div class="w-12 h-12 bg-emerald-500 text-white rounded-full flex items-center justify-center text-xl shadow-lg border-4 border-white dark:border-gray-800">
                     <i class="fa-solid fa-plus"></i>
                 </div>
                 <span class="text-[9px] font-bold text-gray-600 dark:text-gray-300 mt-0.5">أعرض إعلان</span>
             </button>
-
             <button onclick="openInboxModal()" class="nav-btn text-gray-400 dark:text-gray-500 flex flex-col items-center justify-center gap-1 w-16 btn-tap hover:text-brand-500">
                 <i class="fa-solid fa-comments text-lg"></i>
                 <span class="text-[10px] font-bold">الرسائل</span>
             </button>
-
             <button onclick="navigateTo('profile-view')" id="nav-profile-btn" class="nav-btn text-gray-400 dark:text-gray-500 flex flex-col items-center justify-center gap-1 w-16 btn-tap hover:text-brand-500">
                 <i class="fa-solid fa-user text-lg"></i>
                 <span class="text-[10px] font-bold">حسابي</span>
             </button>
-
         </div>
     </nav>
 
-    <!-- البرمجة السلوكية للربط مع قاعدة البيانات والتحكم بالنظام -->
+    <!-- الجافاسكريبت الرئيسي الموحد -->
     <script>
-        // 1. إعدادات وقيم الاتصال بقاعدة البيانات (Supabase Configuration)
-        <script>
-    // 1. إعدادات وقيم الاتصال بقاعدة البيانات الخاصة بك
-    const SUPABASE_URL = "https://lurzvtbvsglxswoiftao.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx1cnp2dGJ2c2dseHN3b2lmdGFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgyMzUzNjcsImV4cCI6MjEwMzgxMTM2N30.JrbwksyvYCF_3uSdrRFEtEMTt9CQLa0vGguCv9GHnB8";
-    
-    // تهيئة عميل Supabase بأمان
-    var supabaseClient = null;
-    
-    try {
-        if (typeof supabase !== 'undefined') {
-            supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            console.log("تم الاتصال بـ Supabase بنجاح!");
-        } else {
-            console.error("مكتبة Supabase غير محملة في الصفحة!");
-        }
-    } catch (err) {
-        console.error("خطأ أثناء التهيئة:", err);
-    }
-</script>
-        
-        // تهيئة عميل Supabase
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        // 2. حالة التطبيق والمستخدم الحالية (Global App State)
-        let currentUser = null;
-        let allPosts = [];
-        let filteredPosts = [];
-        let currentCityFilter = 'الكل';
-        let currentCategoryFilter = 'الكل';
-        let activeProfileTab = 'my-posts';
-        let savedPostIds = new Set();
-
-        // 3. المحرك الرئيسي عند تحميل الصفحة
-        document.addEventListener('DOMContentLoaded', async () => {
-            initTheme();
-            await initAppUser();
-            await fetchPosts();
-            setupRealtimeSubscriptions();
-        });
-
-        // 4. نظام التعرف التلقائي على الجهاز والهوية الفريدة (Device ID Identifier)
-        async function initAppUser() {
-            let deviceId = localStorage.getItem('darajati_device_id');
-            if (!deviceId) {
-                deviceId = 'DEV_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now();
-                localStorage.setItem('darajati_device_id', deviceId);
-            }
-
-            try {
-                // التحقق من وجود المستخدم في الجدول عبر معرف الجهاز
-                let { data: user, error } = await supabaseClient
-                    .from('users')
-                    .select('*')
-                    .eq('device_id', deviceId)
-                    .maybeSingle();
-
-                if (!user) {
-                    // إنشاء حساب تلقائي مجهول سريح للمستخدم الجديد
-                    const newUserData = {
-                        id: crypto.randomUUID ? crypto.randomUUID() : undefined,
-                        device_id: deviceId,
-                        name: 'عضو دراجتي ' + Math.floor(1000 + Math.random() * 9000),
-                        city: 'بغداد',
-                        avatar_url: `https://api.dicebear.com/7.x/bottts/svg?seed=${deviceId}`
-                    };
-
-                    const { data: createdUser, err: createErr } = await supabaseClient
-                        .from('users')
-                        .insert([newUserData])
-                        .select()
-                        .single();
-
-                    if (!createErr && createdUser) {
-                        currentUser = createdUser;
-                    }
-                } else {
-                    currentUser = user;
-                }
-
-                updateProfileUI();
-                await fetchSavedPostIds();
-
-            } catch (err) {
-                console.error("خطأ أثناء التهيئة التلقائية للمستخدم:", err);
-            }
-        }
-
-        // 5. إدارة المظهر الداكن والفيزيائي (Dark Mode Engine)
-        function initTheme() {
-            const isDark = localStorage.getItem('darajati_theme') === 'dark';
-            if (isDark) {
-                document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
-            }
-        }
-
-        function toggleDarkMode() {
-            const isDark = document.documentElement.classList.toggle('dark');
-            localStorage.setItem('darajati_theme', isDark ? 'dark' : 'light');
-        }
-
-        // 6. نظام التنقل بين الشاشات الرئيسية
-        function navigateTo(viewId) {
-            document.getElementById('main-view').classList.add('hidden');
-            document.getElementById('profile-view').classList.add('hidden');
-
-            document.getElementById(viewId).classList.remove('hidden');
-
-<!-- شريط الملاحة السفلي (Bottom Navigation Bar) -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700/60 z-40 shadow-lg">
-        <div class="max-w-xl mx-auto flex items-center justify-around h-16 px-2">
-            
-            <button onclick="navigateTo('main-view')" id="nav-home-btn" class="nav-btn text-brand-500 flex flex-col items-center justify-center gap-1 w-16 btn-tap">
-                <i class="fa-solid fa-house text-lg"></i>
-                <span class="text-[10px] font-bold">الرئيسية</span>
-            </button>
-
-            <button onclick="filterByCategory('سكوتر')" class="nav-btn text-gray-400 dark:text-gray-500 flex flex-col items-center justify-center gap-1 w-16 btn-tap hover:text-brand-500">
-                <i class="fa-solid fa-charging-station text-lg"></i>
-                <span class="text-[10px] font-bold">سكوترات</span>
-            </button>
-
-            <button onclick="openAddPostModal()" class="flex flex-col items-center justify-center -mt-5 btn-tap">
-                <div class="w-12 h-12 bg-emerald-500 text-white rounded-full flex items-center justify-center text-xl shadow-lg border-4 border-white dark:border-gray-800">
-                    <i class="fa-solid fa-plus"></i>
-                </div>
-                <span class="text-[9px] font-bold text-gray-600 dark:text-gray-300 mt-0.5">أعرض إعلان</span>
-            </button>
-
-            <button onclick="openInboxModal()" class="nav-btn text-gray-400 dark:text-gray-500 flex flex-col items-center justify-center gap-1 w-16 btn-tap hover:text-brand-500">
-                <i class="fa-solid fa-comments text-lg"></i>
-                <span class="text-[10px] font-bold">الرسائل</span>
-            </button>
-
-            <button onclick="navigateTo('profile-view')" id="nav-profile-btn" class="nav-btn text-gray-400 dark:text-gray-500 flex flex-col items-center justify-center gap-1 w-16 btn-tap hover:text-brand-500">
-                <i class="fa-solid fa-user text-lg"></i>
-                <span class="text-[10px] font-bold">حسابي</span>
-            </button>
-
-        </div>
-    </nav>
-
-    <!-- البرمجة السلوكية للربط مع قاعدة البيانات والتحكم بالنظام -->
-    <script>
-        // 1. إعدادات وقيم الاتصال بقاعدة البيانات الخاصة بمشروعك (Supabase Configuration)
         const SUPABASE_URL = "https://lurzvtbvsglxswoiftao.supabase.co";
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx1cnp2dGJ2c2dseHN3b2lmdGFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgyMzUzNjcsImV4cCI6MjEwMzgxMTM2N30.JrbwksyvYCF_3uSdrRFEtEMTt9CQLa0vGguCv9GHnB8";
         
-        // تهيئة عميل Supabase
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        var supabaseClient = null;
+        try {
+            if (typeof supabase !== 'undefined') {
+                supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            }
+        } catch (err) {
+            console.error("خطأ في التهيئة:", err);
+        }
 
-        // 2. حالة التطبيق والمستخدم الحالية (Global App State)
         let currentUser = null;
         let allPosts = [];
         let filteredPosts = [];
@@ -834,15 +354,12 @@
         let activeProfileTab = 'my-posts';
         let savedPostIds = new Set();
 
-        // 3. المحرك الرئيسي عند تحميل الصفحة
         document.addEventListener('DOMContentLoaded', async () => {
             initTheme();
             await initAppUser();
             await fetchPosts();
-            setupRealtimeSubscriptions();
         });
 
-        // 4. نظام التعرف التلقائي على الجهاز والهوية الفريدة (Device ID Identifier)
         async function initAppUser() {
             let deviceId = localStorage.getItem('darajati_device_id');
             if (!deviceId) {
@@ -851,51 +368,40 @@
             }
 
             try {
-                // التحقق من وجود المستخدم في الجدول عبر معرف الجهاز
-                let { data: user, error } = await supabaseClient
+                let { data: user } = await supabaseClient
                     .from('users')
                     .select('*')
                     .eq('device_id', deviceId)
                     .maybeSingle();
 
                 if (!user) {
-                    // إنشاء حساب تلقائي مجهول سريع للمستخدم الجديد
                     const newUserData = {
-                        id: crypto.randomUUID ? crypto.randomUUID() : undefined,
                         device_id: deviceId,
                         name: 'عضو دراجتي ' + Math.floor(1000 + Math.random() * 9000),
                         city: 'بغداد',
                         avatar_url: `https://api.dicebear.com/7.x/bottts/svg?seed=${deviceId}`
                     };
 
-                    const { data: createdUser, err: createErr } = await supabaseClient
+                    const { data: createdUser } = await supabaseClient
                         .from('users')
                         .insert([newUserData])
                         .select()
                         .single();
 
-                    if (!createErr && createdUser) {
-                        currentUser = createdUser;
-                    }
+                    currentUser = createdUser;
                 } else {
                     currentUser = user;
                 }
 
                 updateProfileUI();
-                await fetchSavedPostIds();
-
             } catch (err) {
-                console.error("خطأ أثناء التهيئة التلقائية للمستخدم:", err);
+                console.error("خطأ التلقائي:", err);
             }
         }
 
-        // 5. إدارة المظهر الداكن والفيزيائي (Dark Mode Engine)
         function initTheme() {
-            const isDark = localStorage.getItem('darajati_theme') === 'dark';
-            if (isDark) {
+            if (localStorage.getItem('darajati_theme') === 'dark') {
                 document.documentElement.classList.add('dark');
-            } else {
-                document.documentElement.classList.remove('dark');
             }
         }
 
@@ -904,82 +410,52 @@
             localStorage.setItem('darajati_theme', isDark ? 'dark' : 'light');
         }
 
-        // 6. نظام التنقل بين الشاشات الرئيسية
         function navigateTo(viewId) {
             document.getElementById('main-view').classList.add('hidden');
             document.getElementById('profile-view').classList.add('hidden');
-
             document.getElementById(viewId).classList.remove('hidden');
 
-            // تحديث ألوان شريط الملاحة السفلي
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('text-brand-500');
-                btn.classList.add('text-gray-400', 'dark:text-gray-500');
+                btn.classList.add('text-gray-400');
             });
 
             if (viewId === 'main-view') {
                 document.getElementById('nav-home-btn').classList.add('text-brand-500');
-                document.getElementById('nav-home-btn').classList.remove('text-gray-400', 'dark:text-gray-500');
             } else if (viewId === 'profile-view') {
                 document.getElementById('nav-profile-btn').classList.add('text-brand-500');
-                document.getElementById('nav-profile-btn').classList.remove('text-gray-400', 'dark:text-gray-500');
                 renderProfileView();
             }
-
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // 7. التحكم في فتح وإغلاق النوافذ المنبثقة (Modals Control)
-        function toggleModal(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.toggle('hidden');
-            }
-        }
-    </script>
-    // 8. جلب جميع المنشورات والإعلانات من قاعدة البيانات (Supabase Fetching)
         async function fetchPosts() {
             const skeleton = document.getElementById('loading-skeleton');
-            const feed = document.getElementById('posts-feed');
-            const noResults = document.getElementById('no-results');
-
-            if (skeleton) skeleton.classList.remove('hidden');
-            if (noResults) noResults.classList.add('hidden');
-
             try {
                 const { data, error } = await supabaseClient
                     .from('posts')
                     .select('*')
                     .order('created_at', { ascending: false });
 
-                if (error) throw error;
-
-                allPosts = data || [];
-                applyFilters();
-
+                if (!error) {
+                    allPosts = data || [];
+                    applyFilters();
+                }
             } catch (err) {
-                console.error("خطأ أثناء جلب المنشورات:", err);
+                console.error("خطأ جلب البيانات:", err);
             } finally {
                 if (skeleton) skeleton.classList.add('hidden');
             }
         }
 
-        // 9. تطبيق جميع الفلاتر (البحث، المحافظة، الفئة)
         function applyFilters() {
             const searchVal = document.getElementById('search-input')?.value.trim().toLowerCase() || '';
 
             filteredPosts = allPosts.filter(post => {
-                // تصفية حسب المحافظة
                 const matchCity = (currentCityFilter === 'الكل') || (post.city === currentCityFilter);
-                
-                // تصفية حسب الفئة
                 const matchCategory = (currentCategoryFilter === 'الكل') || (post.category === currentCategoryFilter);
-                
-                // تصفية حسب نص البحث
                 const matchSearch = !searchVal || 
                     (post.title && post.title.toLowerCase().includes(searchVal)) ||
-                    (post.description && post.description.toLowerCase().includes(searchVal)) ||
-                    (post.price && post.price.toString().includes(searchVal));
+                    (post.description && post.description.toLowerCase().includes(searchVal));
 
                 return matchCity && matchCategory && matchSearch;
             });
@@ -987,113 +463,46 @@
             renderPostsFeed(filteredPosts);
         }
 
-        // 10. عرض المنشورات وتعبئة القالب الديناميكي (Render Posts UI)
         function renderPostsFeed(posts) {
             const feed = document.getElementById('posts-feed');
-            const noResults = document.getElementById('no-results');
             const template = document.getElementById('post-card-template');
 
             if (!feed || !template) return;
             feed.innerHTML = '';
 
-            if (!posts || posts.length === 0) {
-                if (noResults) noResults.classList.remove('hidden');
-                return;
-            }
-
-            if (noResults) noResults.classList.add('hidden');
-
             posts.forEach(post => {
                 const clone = template.content.cloneNode(true);
-                const card = clone.querySelector('.post-card');
-
-                // تعبئة بيانات الناشر
-                const avatar = clone.querySelector('.user-avatar');
-                avatar.src = post.user_avatar || 'https://api.dicebear.com/7.x/bottts/svg?seed=moped';
+                clone.querySelector('.user-avatar').src = post.user_avatar || 'https://api.dicebear.com/7.x/bottts/svg?seed=moped';
                 clone.querySelector('.user-name').textContent = post.user_name || 'مستخدم دراجتي';
                 clone.querySelector('.post-city').textContent = post.city || 'بغداد';
                 clone.querySelector('.time-ago').textContent = formatTimeAgo(post.created_at);
                 clone.querySelector('.post-condition').textContent = post.condition || 'مستعمل';
-
-                // تعبئة تفاصيل الدراجة
-                const img = clone.querySelector('.post-image');
-                img.src = (post.images && post.images.length > 0) ? post.images[0] : 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80';
+                clone.querySelector('.post-image').src = (post.images && post.images.length > 0) ? post.images[0] : 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80';
                 clone.querySelector('.post-price').textContent = `${post.price} ${post.currency || '$'}`;
                 clone.querySelector('.post-title').textContent = post.title;
                 clone.querySelector('.post-desc').textContent = post.description || '';
-
-                // أعداد التفاعلات
-                const likesCount = clone.querySelector('.likes-count');
-                likesCount.textContent = post.likes_count || 0;
-                
-                const likeBtn = clone.querySelector('.like-btn');
-                const isLiked = post.likes_users && currentUser && post.likes_users.includes(currentUser.id);
-                if (isLiked) {
-                    likeBtn.classList.add('text-red-500');
-                    likeBtn.querySelector('i').className = 'fa-solid fa-heart text-sm text-red-500';
-                }
-                likeBtn.onclick = () => handleLikePost(post.id, isLiked);
-
-                // زر المفضلة
-                const saveBtn = clone.querySelector('.save-btn');
-                const isSaved = savedPostIds.has(post.id);
-                if (isSaved) {
-                    saveBtn.classList.add('text-amber-500');
-                    saveBtn.querySelector('i').className = 'fa-solid fa-bookmark text-sm text-amber-500';
-                }
-                saveBtn.onclick = () => handleToggleSavePost(post.id);
-
-                // أزرار الاتصال والمحادثة
-                const commentBtn = clone.querySelector('.comment-btn');
-                commentBtn.onclick = () => openCommentsModal(post.id);
-
-                const whatsappBtn = clone.querySelector('.whatsapp-btn');
-                if (post.whatsapp) {
-                    whatsappBtn.href = `https://wa.me/${post.whatsapp.replace(/[^0-9]/g, '')}?text=${encodeURIComponent('السلام عليكم، بخصوص إعلانك على دراجتي: ' + post.title)}`;
-                    whatsappBtn.classList.remove('hidden');
-                }
 
                 feed.appendChild(clone);
             });
         }
 
-        // 11. أزرار تصفية المحافظة والفئات
         function selectCity(city) {
             currentCityFilter = city;
             document.getElementById('active-city-label').textContent = city === 'الكل' ? 'جميع المحافظات' : city;
-
-            document.querySelectorAll('.city-btn').forEach(btn => {
-                if (btn.textContent.includes(city)) {
-                    btn.className = 'city-btn active bg-brand-500 text-white px-3 py-1.5 rounded-xl whitespace-nowrap shadow-sm btn-tap';
-                } else {
-                    btn.className = 'city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap';
-                }
-            });
-
             applyFilters();
         }
 
         function filterByCategory(category) {
             currentCategoryFilter = category;
-            document.getElementById('selected-category-label').textContent = category === 'الكل' ? 'الفئات' : category;
-            toggleModal('categories-modal');
             applyFilters();
         }
 
         function filterPosts() {
-            const searchVal = document.getElementById('search-input').value;
-            const clearBtn = document.getElementById('clear-search-btn');
-            if (searchVal.length > 0) {
-                clearBtn.classList.remove('hidden');
-            } else {
-                clearBtn.classList.add('hidden');
-            }
             applyFilters();
         }
 
         function clearSearch() {
             document.getElementById('search-input').value = '';
-            document.getElementById('clear-search-btn').classList.add('hidden');
             applyFilters();
         }
 
@@ -1101,153 +510,18 @@
             currentCityFilter = 'الكل';
             currentCategoryFilter = 'الكل';
             document.getElementById('search-input').value = '';
-            document.getElementById('active-city-label').textContent = 'جميع المحافظات';
-            document.getElementById('selected-category-label').textContent = 'الفئات';
             applyFilters();
         }
 
-        // 12. دالة تنسيق الوقت العراقي البسيط (Time Format Helper)
         function formatTimeAgo(dateString) {
             if (!dateString) return 'الآن';
-            const date = new Date(dateString);
-            const now = new Date();
-            const diffSec = Math.floor((now - date) / 1000);
-
+            const diffSec = Math.floor((new Date() - new Date(dateString)) / 1000);
             if (diffSec < 60) return 'قبل لحظات';
             if (diffSec < 3600) return `قبل ${Math.floor(diffSec / 60)} دقيقة`;
             if (diffSec < 86400) return `قبل ${Math.floor(diffSec / 3600)} ساعة`;
             return `قبل ${Math.floor(diffSec / 86400)} يوم`;
         }
-                // 13. إضافة إعلان جديد إلى Supabase
-        async function handleCreatePost(e) {
-            e.preventDefault();
-            if (!currentUser) return alert('يرجى الانتظار حتى يتم تهيئة بيانات حسابك.');
 
-            const btn = document.getElementById('submit-post-btn');
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري النشر...';
-
-            const newPost = {
-                user_id: currentUser.id,
-                user_name: currentUser.name,
-                user_avatar: currentUser.avatar_url,
-                title: document.getElementById('post-title').value.trim(),
-                price: parseFloat(document.getElementById('post-price').value),
-                currency: document.getElementById('post-currency').value,
-                city: document.getElementById('post-city').value,
-                category: document.getElementById('post-category').value,
-                condition: document.getElementById('post-condition').value,
-                whatsapp: document.getElementById('post-whatsapp').value.trim(),
-                images: [document.getElementById('post-image').value.trim() || 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=600&q=80'],
-                description: document.getElementById('post-desc').value.trim(),
-                likes_count: 0,
-                likes_users: []
-            };
-
-            try {
-                const { data, error } = await supabaseClient
-                    .from('posts')
-                    .insert([newPost])
-                    .select();
-
-                if (error) throw error;
-
-                toggleModal('add-post-modal');
-                e.target.reset();
-                await fetchPosts();
-                alert('تم نشر إعلانك بنجاح!');
-            } catch (err) {
-                console.error('خطأ أثناء إضافة الإعلان:', err);
-                alert('حدث خطأ أثناء حفظ الإعلان، يرجى المحاولة لاحقاً.');
-            } finally {
-                btn.disabled = false;
-                btn.textContent = 'نشر الإعلان الآن';
-            }
-        }
-
-        // 14. التفاعل بالإعجاب (Like/Unlike)
-        async function handleLikePost(postId, isLiked) {
-            if (!currentUser) return;
-
-            const post = allPosts.find(p => p.id === postId);
-            if (!post) return;
-
-            let updatedLikes = post.likes_users || [];
-            if (isLiked) {
-                updatedLikes = updatedLikes.filter(id => id !== currentUser.id);
-            } else {
-                updatedLikes.push(currentUser.id);
-            }
-
-            const newCount = updatedLikes.length;
-
-            // تحديث الواجهة فورياً قبل رد السيرفر
-            post.likes_users = updatedLikes;
-            post.likes_count = newCount;
-            renderPostsFeed(filteredPosts);
-
-            try {
-                await supabaseClient
-                    .from('posts')
-                    .update({ likes_count: newCount, likes_users: updatedLikes })
-                    .eq('id', postId);
-            } catch (err) {
-                console.error('خطأ في الإعجاب:', err);
-            }
-        }
-
-        // 15. حفظ الإعلانات في قائمة المفضلة
-        async function handleToggleSavePost(postId) {
-            if (!currentUser) return;
-
-            if (savedPostIds.has(postId)) {
-                savedPostIds.delete(postId);
-            } else {
-                savedPostIds.add(postId);
-            }
-
-            renderPostsFeed(filteredPosts);
-
-            try {
-                await supabaseClient
-                    .from('saved_posts')
-                    .upsert({
-                        user_id: currentUser.id,
-                        post_id: postId,
-                        saved_at: new Date()
-                    });
-            } catch (err) {
-                console.error('خطأ أثناء الحفظ للمفضلة:', err);
-            }
-        }
-
-        async function fetchSavedPostIds() {
-            if (!currentUser) return;
-            try {
-                const { data } = await supabaseClient
-                    .from('saved_posts')
-                    .select('post_id')
-                    .eq('user_id', currentUser.id);
-
-                if (data) {
-                    savedPostIds = new Set(data.map(item => item.post_id));
-                }
-            } catch (err) {
-                console.error('خطأ في جلب المفضلة:', err);
-            }
-        }
-
-        // 16. إعداد تحديثات الوقت الفعلي (Realtime Subscriptions)
-        function setupRealtimeSubscriptions() {
-            supabaseClient
-                .channel('public:posts')
-                .on('postgres_changes', { event: '*', schema: 'public', table: 'posts' }, async () => {
-                    await fetchPosts();
-                })
-                .subscribe();
-        }
-
-        // 17. تحديث واجهة الحساب والبروفايل
         function updateProfileUI() {
             if (!currentUser) return;
             document.getElementById('profile-name').textContent = currentUser.name;
@@ -1258,622 +532,911 @@
 
         function renderProfileView() {
             updateProfileUI();
-            const container = document.getElementById('profile-posts-container');
-            if (!container) return;
-
-            let myPosts = [];
-            if (activeProfileTab === 'my-posts') {
-                myPosts = allPosts.filter(p => p.user_id === currentUser?.id);
-            } else {
-                myPosts = allPosts.filter(p => savedPostIds.has(p.id));
-            }
-
-            document.getElementById('stat-my-posts-count').textContent = allPosts.filter(p => p.user_id === currentUser?.id).length;
-            document.getElementById('stat-saved-count').textContent = savedPostIds.size;
-            document.getElementById('profile-items-count').textContent = `${myPosts.length} عنصر`;
-
-            if (myPosts.length === 0) {
-                container.innerHTML = `<div class="text-center py-8 text-gray-400 text-xs">لا توجد إعلانات لعرضها هنا.</div>`;
-                return;
-            }
-
-            container.innerHTML = myPosts.map(post => `
-                <div class="bg-white dark:bg-gray-800 p-3 rounded-2xl border border-gray-100 dark:border-gray-700/60 flex items-center justify-between text-xs">
-                    <div class="flex items-center gap-2">
-                        <img src="${(post.images && post.images[0]) || ''}" class="w-12 h-12 rounded-xl object-cover">
-                        <div>
-                            <h4 class="font-bold text-gray-800 dark:text-gray-100">${post.title}</h4>
-                            <span class="text-amber-500 font-bold">${post.price} ${post.currency || '$'}</span>
-                        </div>
-                    </div>
-                    ${post.user_id === currentUser?.id ? `
-                        <button onclick="confirmDeletePost('${post.id}')" class="text-red-500 hover:text-red-600 p-2 btn-tap">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
-                    ` : ''}
-                </div>
-            `).join('');
         }
 
-        function switchProfileTab(tab) {
-            activeProfileTab = tab;
-            const myBtn = document.getElementById('tab-btn-my-posts');
-            const savedBtn = document.getElementById('tab-btn-saved');
-
-            if (tab === 'my-posts') {
-                myBtn.className = 'flex-1 py-2 bg-brand-500 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 btn-tap shadow-sm transition';
-                savedBtn.className = 'flex-1 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 btn-tap transition';
-                document.getElementById('profile-tab-title').innerHTML = `<i class="fa-solid fa-list-ul text-brand-500"></i> الإعلانات الخاصة بي`;
-            } else {
-                savedBtn.className = 'flex-1 py-2 bg-brand-500 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 btn-tap shadow-sm transition';
-                myBtn.className = 'flex-1 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 btn-tap transition';
-                document.getElementById('profile-tab-title').innerHTML = `<i class="fa-solid fa-bookmark text-amber-500"></i> الإعلانات المفضلة`;
-            }
-
-            renderProfileView();
-        }
-
-        function confirmDeletePost(postId) {
-            document.getElementById('delete-target-post-id').value = postId;
-            toggleModal('delete-confirm-modal');
-        }
-
-        async function executeConfirmDelete() {
-            const postId = document.getElementById('delete-target-post-id').value;
-            if (!postId) return;
-
-            try {
-                await supabaseClient.from('posts').delete().eq('id', postId);
-                toggleModal('delete-confirm-modal');
-                await fetchPosts();
-                renderProfileView();
-            } catch (err) {
-                console.error('خطأ أثناء الحذف:', err);
-            }
-        }
-
-        function openCommentsModal(postId) {
-            document.getElementById('active-comment-post-id').value = postId;
-            toggleModal('comments-modal');
-        }
-
-        function openInboxModal() {
-            alert('خاصية المحادثات المباشرة قيد التحديث في الإصدار الحالي.');
-        }
-
-        function editProfileModal() {
-            const newName = prompt('أدخل الاسم الجديد:', currentUser?.name || '');
-            if (newName && currentUser) {
-                currentUser.name = newName;
-                supabaseClient.from('users').update({ name: newName }).eq('id', currentUser.id).then(() => {
-                    updateProfileUI();
-                });
-            }
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) modal.classList.toggle('hidden');
         }
     </script>
 </body>
 </html>
-                <!-- نافذة الفلترة المتقدمة والسعر (Advanced Filter Modal) -->
-    <div id="advanced-filter-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
-        <div class="bg-white dark:bg-gray-800 w-full max-w-sm rounded-t-2xl sm:rounded-2xl p-4 shadow-2xl space-y-4 slide-up border border-gray-100 dark:border-gray-700/60">
-            
-            <div class="flex justify-between items-center border-b dark:border-gray-700/60 pb-2">
-                <h3 class="font-black text-xs text-gray-800 dark:text-gray-100 flex items-center gap-1.5">
-                    <i class="fa-solid fa-sliders text-brand-500"></i> الفلترة المتقدمة للأسعار
-                </h3>
-                <button onclick="toggleModal('advanced-filter-modal')" class="text-lg font-bold text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 btn-tap">&times;</button>
+<!-- الواجهة الرئيسية -->
+    <main id="main-view" class="max-w-xl mx-auto px-3 pt-3 space-y-3">
+        <!-- شريط البحث والتصفية -->
+        <div class="bg-white dark:bg-gray-800 p-2.5 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700/60 flex items-center gap-2">
+            <div class="flex-1 bg-gray-100 dark:bg-gray-700/50 rounded-xl flex items-center px-3 py-1.5 border border-transparent focus-within:border-brand-500 transition">
+                <i class="fa-solid fa-magnifying-glass text-gray-400 text-xs ml-2"></i>
+                <input type="text" id="search-input" oninput="filterPosts()" placeholder="ابحث عن دايو، بطح، سكوتر، أو سعر..." class="w-full bg-transparent text-xs text-gray-800 dark:text-gray-100 outline-none">
+                <button onclick="clearSearch()" id="clear-search-btn" class="text-gray-400 text-xs hidden hover:text-gray-600 dark:hover:text-gray-200">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </button>
             </div>
+            <button onclick="toggleModal('categories-modal')" class="bg-gray-100 dark:bg-gray-700/50 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 btn-tap transition border border-gray-200/50 dark:border-gray-600/50">
+                <i class="fa-solid fa-sliders text-brand-500"></i>
+                <span id="selected-category-label">الفئات</span>
+            </button>
+        </div>
 
-            <!-- نطاق السعر -->
-            <div class="space-y-2 text-xs">
-                <label class="block font-bold text-gray-700 dark:text-gray-300">نطاق السعر (بالدولار $)</label>
-                <div class="grid grid-cols-2 gap-2">
-                    <div>
-                        <span class="text-[10px] text-gray-400 block mb-1">الحد الأدنى</span>
-                        <input type="number" id="filter-min-price" placeholder="0" class="w-full bg-gray-100 dark:bg-gray-700/50 dark:text-white px-3 py-1.5 rounded-xl border border-gray-200 dark:border-gray-600 outline-none">
+        <!-- شريط المحافظات -->
+        <div class="space-y-1.5">
+            <div class="flex items-center justify-between px-1">
+                <span class="text-[11px] font-bold text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                    <i class="fa-solid fa-location-dot text-red-500"></i> المحافظة:
+                </span>
+                <span id="active-city-label" class="text-[11px] font-black text-brand-500">جميع المحافظات</span>
+            </div>
+            
+            <div class="flex items-center gap-1.5 overflow-x-auto custom-scrollbar pb-1 text-xs font-semibold">
+                <button onclick="selectCity('الكل')" class="city-btn active bg-brand-500 text-white px-3 py-1.5 rounded-xl whitespace-nowrap shadow-sm btn-tap">الكل 🇮🇶</button>
+                <button onclick="selectCity('بغداد')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">بغداد</button>
+                <button onclick="selectCity('البصرة')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">البصرة</button>
+                <button onclick="selectCity('أربيل')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">أربيل</button>
+                <button onclick="selectCity('النجف')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">النجف</button>
+                <button onclick="selectCity('كربلاء')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">كربلاء</button>
+                <button onclick="selectCity('بابل')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">بابل</button>
+                <button onclick="selectCity('نينوى')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">نينوى</button>
+                <button onclick="selectCity('ذي قار')" class="city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap">ذي قار</button>
+            </div>
+        </div>
+
+        <!-- أزرار الوصول السريع للفئات -->
+        <div class="grid grid-cols-4 gap-2 pt-1">
+            <button onclick="filterByCategory('سكوتر')" class="bg-white dark:bg-gray-800 p-2.5 rounded-2xl border border-gray-100 dark:border-gray-700/60 shadow-sm flex flex-col items-center justify-center gap-1 btn-tap hover:border-brand-500 transition">
+                <div class="w-8 h-8 rounded-full bg-blue-50 dark:bg-blue-900/30 text-brand-500 flex items-center justify-center text-sm"><i class="fa-solid fa-charging-station"></i></div>
+                <span class="text-[10px] font-bold text-gray-700 dark:text-gray-300">سكوترات</span>
+            </button>
+            <button onclick="filterByCategory('دراجات بطح')" class="bg-white dark:bg-gray-800 p-2.5 rounded-2xl border border-gray-100 dark:border-gray-700/60 shadow-sm flex flex-col items-center justify-center gap-1 btn-tap hover:border-brand-500 transition">
+                <div class="w-8 h-8 rounded-full bg-red-50 dark:bg-red-900/30 text-red-500 flex items-center justify-center text-sm"><i class="fa-solid fa-gauge-high"></i></div>
+                <span class="text-[10px] font-bold text-gray-700 dark:text-gray-300">بطح (Sport)</span>
+            </button>
+            <button onclick="filterByCategory('دراجات شحن')" class="bg-white dark:bg-gray-800 p-2.5 rounded-2xl border border-gray-100 dark:border-gray-700/60 shadow-sm flex flex-col items-center justify-center gap-1 btn-tap hover:border-brand-500 transition">
+                <div class="w-8 h-8 rounded-full bg-emerald-50 dark:bg-emerald-900/30 text-emerald-500 flex items-center justify-center text-sm"><i class="fa-solid fa-bolt"></i></div>
+                <span class="text-[10px] font-bold text-gray-700 dark:text-gray-300">كهربائية</span>
+            </button>
+            <button onclick="filterByCategory('أدوات وتعديل')" class="bg-white dark:bg-gray-800 p-2.5 rounded-2xl border border-gray-100 dark:border-gray-700/60 shadow-sm flex flex-col items-center justify-center gap-1 btn-tap hover:border-brand-500 transition">
+                <div class="w-8 h-8 rounded-full bg-amber-50 dark:bg-amber-900/30 text-amber-500 flex items-center justify-center text-sm"><i class="fa-solid fa-wrench"></i></div>
+                <span class="text-[10px] font-bold text-gray-700 dark:text-gray-300">قطع غيار</span>
+            </button>
+        </div>
+
+        <!-- حاوية منشورات الإعلانات -->
+        <div id="posts-container" class="space-y-3 pt-2">
+            <!-- الهيكل المؤقت للهيكل التشغيلي Loading Skeleton -->
+            <div id="loading-skeleton" class="space-y-3">
+                <div class="bg-white dark:bg-gray-800 rounded-2xl p-3 shadow-sm border border-gray-100 dark:border-gray-700/60 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <div class="w-9 h-9 rounded-full skeleton-loader"></div>
+                            <div class="space-y-1">
+                                <div class="h-3 w-24 rounded skeleton-loader"></div>
+                                <div class="h-2 w-16 rounded skeleton-loader"></div>
+                            </div>
+                        </div>
+                        <div class="h-4 w-12 rounded skeleton-loader"></div>
                     </div>
-                    <div>
-                        <span class="text-[10px] text-gray-400 block mb-1">الحد الأقصى</span>
-                        <input type="number" id="filter-max-price" placeholder="10000" class="w-full bg-gray-100 dark:bg-gray-700/50 dark:text-white px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 outline-none">
+                    <div class="h-48 w-full rounded-xl skeleton-loader"></div>
+                    <div class="space-y-1.5">
+                        <div class="h-4 w-3/4 rounded skeleton-loader"></div>
+                        <div class="h-3 w-full rounded skeleton-loader"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- الترتيب -->
-            <div class="space-y-1 text-xs">
-                <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">ترتيب حسب</label>
-                <select id="filter-sort-by" class="w-full bg-gray-100 dark:bg-gray-700/50 dark:text-white px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 outline-none font-bold">
-                    <option value="newest">الأحدث أولاً</option>
-                    <option value="price-asc">السعر: من الأقل للأعلى</option>
-                    <option value="price-desc">السعر: من الأعلى للأقل</option>
-                    <option value="most-liked">الأكثر إعجاباً</option>
-                </select>
+            <!-- تغذية الإعلانات -->
+            <div id="posts-feed" class="space-y-3"></div>
+
+            <!-- تنبيه لا توجد نتائج -->
+            <div id="no-results" class="hidden text-center py-12 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700/60 shadow-sm space-y-2">
+                <div class="w-14 h-14 bg-blue-50 dark:bg-blue-900/30 text-brand-500 rounded-full flex items-center justify-center text-2xl mx-auto">
+                    <i class="fa-solid fa-motorcycle"></i>
+                </div>
+                <h3 class="font-black text-sm text-gray-800 dark:text-gray-100">لا توجد دراجات معروضة حالياً</h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400 max-w-xs mx-auto">جرب تغيير معايير البحث أو اختيار محافظة أخرى لعرض النتائج.</p>
+                <button onclick="resetFilters()" class="mt-2 bg-brand-500 text-white text-xs font-bold px-4 py-2 rounded-xl btn-tap">إعادة ضبط الفلاتر</button>
             </div>
-
-            <div class="flex gap-2 pt-2">
-                <button onclick="applyAdvancedFilter()" class="flex-1 bg-brand-500 hover:bg-brand-600 text-white font-bold py-2 rounded-xl text-xs btn-tap transition shadow-sm">
-                    تطبيق الفلترة
-                </button>
-                <button onclick="resetAdvancedFilter()" class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 font-bold px-4 py-2 rounded-xl text-xs btn-tap transition">
-                    إعادة ضبط
-                </button>
-            </div>
-
         </div>
-    </div>
+    </main>
 
-    <!-- إضافة كود الجافاسكريبت للفلترة المتقدمة -->
-    <script>
-        // 18. دالة الفلترة المتقدمة والترتيب
-        function applyAdvancedFilter() {
-            const minPrice = parseFloat(document.getElementById('filter-min-price').value) || 0;
-            const maxPrice = parseFloat(document.getElementById('filter-max-price').value) || Infinity;
-            const sortBy = document.getElementById('filter-sort-by').value;
-
-            // فلترة حسب السعر
-            let result = allPosts.filter(post => {
-                const price = parseFloat(post.price) || 0;
-                return price >= minPrice && price <= maxPrice;
-            });
-
-            // فرز النتائج
-            if (sortBy === 'price-asc') {
-                result.sort((a, b) => a.price - b.price);
-            } else if (sortBy === 'price-desc') {
-                result.sort((a, b) => b.price - a.price);
-            } else if (sortBy === 'most-liked') {
-                result.sort((a, b) => (b.likes_count || 0) - (a.likes_count || 0));
-            } else {
-                result.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-            }
-
-            filteredPosts = result;
-            renderPostsFeed(filteredPosts);
-            toggleModal('advanced-filter-modal');
-        }
-
-        function resetAdvancedFilter() {
-            document.getElementById('filter-min-price').value = '';
-            document.getElementById('filter-max-price').value = '';
-            document.getElementById('filter-sort-by').value = 'newest';
-            applyFilters();
-            toggleModal('advanced-filter-modal');
-        }
-    </script>
-    <!-- نافذة معاينة الصور المكبرة (Image Lightbox Modal) -->
-    <div id="image-viewer-modal" class="fixed inset-0 bg-black/90 z-50 hidden flex flex-col items-center justify-between p-4 backdrop-blur-sm">
-        <div class="w-full flex justify-end">
-            <button onclick="toggleModal('image-viewer-modal')" class="text-white text-2xl p-2 font-bold btn-tap hover:opacity-80 transition">&times;</button>
-        </div>
-
-        <div class="flex-1 flex items-center justify-center w-full max-w-lg overflow-hidden">
-            <img id="modal-expanded-image" src="" class="max-h-full max-w-full object-contain rounded-xl shadow-2xl transition-transform duration-300">
-        </div>
-
-        <div class="w-full text-center py-2">
-            <p id="image-viewer-title" class="text-white text-xs font-bold line-clamp-1 opacity-80"></p>
-        </div>
-    </div>
-
-    <!-- كود التحكم بالمعاينة والمشاركة -->
-    <script>
-        // 19. فتح صورة الدراجة بالحجم الكامل
-        function openImageViewer(imageUrl, title = '') {
-            const modalImg = document.getElementById('modal-expanded-image');
-            const modalTitle = document.getElementById('image-viewer-title');
-            
-            if (modalImg) modalImg.src = imageUrl;
-            if (modalTitle) modalTitle.textContent = title;
-            
-            toggleModal('image-viewer-modal');
-        }
-
-        // 20. مشاركة رابط أو تفاصيل الإعلان
-        async function sharePost(title, price, currency) {
-            const shareData = {
-                title: 'تطبيق دراجتي',
-                text: `شوف هالدراجة على تطبيق دراجتي: ${title} بسعر ${price} ${currency}`,
-                url: window.location.href
-            };
-
-            if (navigator.share) {
-                try {
-                    await navigator.share(shareData);
-                } catch (err) {
-                    console.log('تم إلغاء المشاركة');
-                }
-            } else {
-                // نسخ النص للحافظة في حال عدم دعم Share API
-                navigator.clipboard.writeText(`${shareData.text} - ${shareData.url}`);
-                alert('تم نسخ تفاصيل الإعلان للحافظة!');
-            }
-        }
-    </script>
-    <!-- نافذة الإبلاغ عن منشور مخالف (Report Modal) -->
-    <div id="report-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-gray-800 w-full max-w-xs rounded-2xl p-4 shadow-2xl space-y-3 border border-gray-100 dark:border-gray-700/60 slide-up">
-            <input type="hidden" id="report-target-post-id">
-            
-            <div class="flex justify-between items-center border-b dark:border-gray-700/60 pb-2">
-                <h3 class="font-black text-xs text-gray-800 dark:text-gray-100 flex items-center gap-1.5">
-                    <i class="fa-solid fa-triangle-exclamation text-amber-500"></i> الإبلاغ عن منشور مخالف
-                </h3>
-                <button onclick="toggleModal('report-modal')" class="text-base font-bold text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 btn-tap">&times;</button>
-            </div>
-
-            <div class="space-y-2 text-xs">
-                <label class="block font-bold text-gray-700 dark:text-gray-300">سبب البلاغ:</label>
-                <select id="report-reason" class="w-full bg-gray-100 dark:bg-gray-700/50 dark:text-white px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-600 outline-none">
-                    <option value="احتيال أو سعر غير منطقي">احتيال أو سعر غير منطقي</option>
-                    <option value="صورة غير ملائمة أو وهمية">صورة غير ملائمة أو وهمية</option>
-                    <option value="إعلان مكرر">إعلان مكرر</option>
-                    <option value="دراجة مسروقة أو بدون أوراق">مشكلة في الملكية/الأوراق</option>
-                    <option value="آخر">سبب آخر</option>
-                </select>
-            </div>
-
-            <button onclick="submitReport()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-2 rounded-xl text-xs btn-tap transition shadow-sm">
-                إرسال البلاغ
-            </button>
-        </div>
-    </div>
-
-    <!-- كود التعامل مع البلاغات وحالة الشبكة -->
-    <script>
-        // 21. فتح نافذة البلاغ
-        function openReportModal(postId) {
-            document.getElementById('report-target-post-id').value = postId;
-            toggleModal('report-modal');
-        }
-
-        // 22. إرسال البلاغ إلى قاعدة بيانات Supabase
-        async function submitReport() {
-            const postId = document.getElementById('report-target-post-id').value;
-            const reason = document.getElementById('report-reason').value;
-
-            if (!currentUser || !postId) return;
-
-            try {
-                const { error } = await supabaseClient
-                    .from('reports')
-                    .insert([{
-                        reporter_id: currentUser.id,
-                        post_id: parseInt(postId),
-                        reason: reason,
-                        created_at: new Date()
-                    }]);
-
-                if (error) throw error;
-
-                toggleModal('report-modal');
-                alert('تم إرسال بلاغك بنجاح وسيتولى المشرفون مراجعته.');
-            } catch (err) {
-                console.error('خطأ أثناء إرسال البلاغ:', err);
-                alert('تعذر إرسال البلاغ، حاول لاحقاً.');
-            }
-        }
-
-        // 23. مراقبة حالة اتصال الشبكة (Online/Offline Listener)
-        window.addEventListener('online', () => {
-            console.log('تم إعادة الاتصال بالشبكة');
-            fetchPosts();
-        });
-
-        window.addEventListener('offline', () => {
-            alert('تنبيه: أنت غير متصل بالإنترنت حالياً، قد لا تظهر أحدث البيانات.');
-        });
-    </script>
-    <!-- حاوية التنبيهات العائمة (Toast Notifications Container) -->
-    <div id="toast-container" class="fixed top-16 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 w-11/12 max-w-xs pointer-events-none"></div>
-
-    <!-- نافذة لوحة تحكم المشرف (Admin Dashboard Modal) -->
-    <div id="admin-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-gray-800 w-full max-w-md rounded-2xl p-4 shadow-2xl space-y-3 border border-gray-100 dark:border-gray-700/60 slide-up max-h-[85vh] flex flex-col">
-            
-            <div class="flex justify-between items-center border-b dark:border-gray-700/60 pb-2">
-                <h3 class="font-black text-xs text-gray-800 dark:text-gray-100 flex items-center gap-1.5">
-                    <i class="fa-solid fa-user-shield text-brand-500"></i> لوحة إدارة المنصة للبلاغات
-                </h3>
-                <button onclick="toggleModal('admin-modal')" class="text-base font-bold text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 btn-tap">&times;</button>
-            </div>
-
-            <!-- قائمة البلاغات الواردة -->
-            <div id="admin-reports-list" class="flex-1 overflow-y-auto space-y-2 text-xs custom-scrollbar">
-                <!-- يتم التعبئة ديناميكياً -->
-            </div>
-
-            <button onclick="fetchAdminReports()" class="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-700 dark:text-gray-200 font-bold py-2 rounded-xl text-xs btn-tap transition">
-                <i class="fa-solid fa-rotate-right ml-1"></i> تحديث قائمة البلاغات
-            </button>
-        </div>
-    </div>
-
-    <!-- كود نظام التنبيهات وإدارة المشرفين -->
-    <script>
-        // 24. نظام التنبيهات العائمة المتقدم (Toast System)
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toast-container');
-            if (!container) return;
-
-            const toast = document.createElement('div');
-            
-            // تحديد ألوان وأيقونات التنبيه
-            let bgClass = 'bg-gray-800 text-white';
-            let icon = 'fa-circle-info text-brand-500';
-
-            if (type === 'success') {
-                bgClass = 'bg-emerald-600 text-white';
-                icon = 'fa-circle-check text-white';
-            } else if (type === 'error') {
-                bgClass = 'bg-red-600 text-white';
-                icon = 'fa-circle-xmark text-white';
-            } else if (type === 'warning') {
-                bgClass = 'bg-amber-500 text-white';
-                icon = 'fa-triangle-exclamation text-white';
-            }
-
-            toast.className = `${bgClass} px-3.5 py-2.5 rounded-xl shadow-xl flex items-center gap-2.5 text-xs font-bold pointer-events-auto transform transition-all duration-300 opacity-0 translate-y-[-10px]`;
-            toast.innerHTML = `
-                <i class="fa-solid ${icon} text-sm"></i>
-                <span class="flex-1">${message}</span>
-            `;
-
-            container.appendChild(toast);
-
-            // تأثير الظهور
-            requestAnimationFrame(() => {
-                toast.classList.remove('opacity-0', 'translate-y-[-10px]');
-            });
-
-            // إخفاء التنبيه تلقائياً بعد 3 ثوانٍ
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-[-10px]');
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-
-        // 25. جلب بلاغات الإعلانات للمشرفين
-        async function fetchAdminReports() {
-            const list = document.getElementById('admin-reports-list');
-            if (!list) return;
-
-            list.innerHTML = `<div class="text-center py-4 text-gray-400">جاري جلب البلاغات...</div>`;
-
-            try {
-                const { data: reports, error } = await supabaseClient
-                    .from('reports')
-                    .select('*, posts(title, user_name)')
-                    .order('created_at', { ascending: false });
-
-                if (error) throw error;
-
-                if (!reports || reports.length === 0) {
-                    list.innerHTML = `<div class="text-center py-6 text-gray-400">لا توجد بلاغات قائمة حالياً.</div>`;
-                    return;
-                }
-
-                list.innerHTML = reports.map(rep => `
-                    <div class="bg-gray-50 dark:bg-gray-700/40 p-2.5 rounded-xl border border-gray-200 dark:border-gray-600 space-y-1.5">
-                        <div class="flex justify-between items-start">
-                            <span class="font-bold text-red-500">${rep.reason}</span>
-                            <span class="text-[9px] text-gray-400">${formatTimeAgo(rep.created_at)}</span>
-                        </div>
-                        <p class="text-[11px] text-gray-600 dark:text-gray-300">الإعلان: <span class="font-bold">${rep.posts?.title || 'إعلان محذوف'}</span></p>
-                        <div class="flex gap-2 pt-1">
-                            <button onclick="confirmDeletePost('${rep.post_id}')" class="bg-red-500 text-white px-2.5 py-1 rounded-lg text-[10px] font-bold btn-tap">حذف الإعلان</button>
-                            <button onclick="dismissReport('${rep.id}')" class="bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-200 px-2.5 py-1 rounded-lg text-[10px] font-bold btn-tap">تجاهل</button>
-                        </div>
+    <!-- قالب بطاقة الإعلان Template -->
+    <template id="post-card-template">
+        <article class="post-card bg-white dark:bg-gray-800 rounded-2xl p-3 shadow-sm border border-gray-100 dark:border-gray-700/60 space-y-2.5 transition hover:shadow-md relative overflow-hidden">
+            <div class="flex items-center justify-between text-xs">
+                <div class="flex items-center gap-2">
+                    <img class="user-avatar w-8 h-8 rounded-full border dark:border-gray-600 object-cover" src="" alt="المستخدم">
+                    <div>
+                        <span class="user-name font-bold block text-gray-800 dark:text-gray-100 leading-tight"></span>
+                        <span class="post-time text-[9px] text-gray-400 flex items-center gap-1">
+                            <i class="fa-solid fa-location-dot text-red-500"></i>
+                            <span class="post-city"></span> • <span class="time-ago"></span>
+                        </span>
                     </div>
-                `).join('');
-
-            } catch (err) {
-                console.error('خطأ في جلب البلاغات:', err);
-                list.innerHTML = `<div class="text-center py-4 text-red-500">حدث خطأ أثناء تحميل البيانات.</div>`;
-            }
-        }
-
-        // 26. إغلاق البلاغ
-        async function dismissReport(reportId) {
-            try {
-                await supabaseClient.from('reports').delete().eq('id', reportId);
-                showToast('تم تجاهل البلاغ بنجاح', 'success');
-                fetchAdminReports();
-            } catch (err) {
-                showToast('تعذر حذف البلاغ', 'error');
-            }
-        }
-    </script>
-    <!-- نافذة المشاركة السريعة المتقدمة (Social Share Modal) -->
-    <div id="share-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
-        <div class="bg-white dark:bg-gray-800 w-full max-w-xs rounded-t-2xl sm:rounded-2xl p-4 shadow-2xl space-y-3 slide-up border border-gray-100 dark:border-gray-700/60">
-            <input type="hidden" id="share-post-id">
-            <input type="hidden" id="share-post-title">
-            <input type="hidden" id="share-post-price">
-
-            <div class="flex justify-between items-center border-b dark:border-gray-700/60 pb-2">
-                <h3 class="font-black text-xs text-gray-800 dark:text-gray-100 flex items-center gap-1.5">
-                    <i class="fa-solid fa-share-nodes text-brand-500"></i> مشاركة الإعلان
-                </h3>
-                <button onclick="toggleModal('share-modal')" class="text-base font-bold text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 btn-tap">&times;</button>
+                </div>
+                <div class="flex items-center gap-1">
+                    <span class="post-condition text-[10px] font-bold px-2 py-0.5 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"></span>
+                    <button class="post-menu-btn text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 p-1 btn-tap">
+                        <i class="fa-solid fa-ellipsis-vertical text-xs"></i>
+                    </button>
+                </div>
             </div>
 
-            <div class="grid grid-cols-3 gap-2 py-2 text-center text-xs">
-                <!-- واتساب -->
-                <button onclick="shareToPlatform('whatsapp')" class="p-3 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 rounded-2xl flex flex-col items-center gap-1.5 btn-tap border border-emerald-100 dark:border-emerald-800">
-                    <i class="fa-brands fa-whatsapp text-2xl"></i>
-                    <span class="font-bold text-[10px]">واتساب</span>
-                </button>
-
-                <!-- تليجرام -->
-                <button onclick="shareToPlatform('telegram')" class="p-3 bg-sky-50 dark:bg-sky-900/30 text-sky-500 rounded-2xl flex flex-col items-center gap-1.5 btn-tap border border-sky-100 dark:border-sky-800">
-                    <i class="fa-brands fa-telegram text-2xl"></i>
-                    <span class="font-bold text-[10px]">تليجرام</span>
-                </button>
-
-                <!-- فيسبوك -->
-                <button onclick="shareToPlatform('facebook')" class="p-3 bg-blue-50 dark:bg-blue-900/30 text-blue-600 rounded-2xl flex flex-col items-center gap-1.5 btn-tap border border-blue-100 dark:border-blue-800">
-                    <i class="fa-brands fa-facebook text-2xl"></i>
-                    <span class="font-bold text-[10px]">فيسبوك</span>
-                </button>
+            <div class="post-image-container relative rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-700/50 aspect-video flex items-center justify-center cursor-pointer">
+                <img class="post-image w-full h-full object-cover rounded-xl transition duration-300 group-hover:scale-105" src="" alt="صورة الدراجة">
+                <span class="post-price absolute bottom-2 right-2 bg-black/75 text-amber-400 font-black text-xs px-2.5 py-1 rounded-lg backdrop-blur-sm border border-white/10"></span>
+                <span class="images-count-badge absolute top-2 left-2 bg-black/60 text-white font-bold text-[9px] px-2 py-0.5 rounded-full backdrop-blur-sm hidden">
+                    <i class="fa-solid fa-camera ml-0.5"></i> <span class="count-num">1</span>
+                </span>
             </div>
 
-            <button onclick="copyPostLink()" class="w-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-700 dark:text-gray-200 font-bold py-2 rounded-xl text-xs btn-tap transition flex items-center justify-center gap-1">
-                <i class="fa-regular fa-copy"></i>
-                <span>نسخ رابط الإعلان</span>
+            <div class="space-y-1 cursor-pointer">
+                <h3 class="post-title font-black text-sm text-gray-800 dark:text-gray-100 line-clamp-1"></h3>
+                <p class="post-desc text-xs text-gray-600 dark:text-gray-300 line-clamp-2 leading-relaxed"></p>
+            </div>
+
+            <div class="flex items-center justify-between border-t dark:border-gray-700/60 pt-2 text-xs">
+                <div class="flex items-center gap-3">
+                    <button class="like-btn flex items-center gap-1 text-gray-500 dark:text-gray-400 btn-tap">
+                        <i class="fa-regular fa-heart text-sm"></i>
+                        <span class="likes-count text-[11px] font-bold">0</span>
+                    </button>
+                    <button class="comment-btn flex items-center gap-1 text-gray-500 dark:text-gray-400 btn-tap">
+                        <i class="fa-regular fa-comment text-sm"></i>
+                        <span class="comments-count text-[11px] font-bold">0</span>
+                    </button>
+                    <button class="save-btn text-gray-500 dark:text-gray-400 btn-tap">
+                        <i class="fa-regular fa-bookmark text-sm"></i>
+                    </button>
+                </div>
+                <div class="flex items-center gap-1.5">
+                    <a class="whatsapp-btn hidden bg-emerald-500 hover:bg-emerald-600 text-white px-2.5 py-1 rounded-xl font-bold text-[10px] flex items-center gap-1 btn-tap shadow-sm" href="" target="_blank">
+                        <i class="fa-brands fa-whatsapp text-xs"></i> واتساب
+                    </a>
+                    <a class="call-btn hidden bg-brand-500 hover:bg-brand-600 text-white px-2.5 py-1 rounded-xl font-bold text-[10px] flex items-center gap-1 btn-tap shadow-sm" href="">
+                        <i class="fa-solid fa-phone text-xs"></i> اتصال
+                    </a>
+                </div>
+            </div>
+        </article>
+    </template>
+
+    <!-- شريط الملاحة السفلي -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700/60 z-40 shadow-lg">
+        <div class="max-w-xl mx-auto flex items-center justify-around h-16 px-2">
+            <button onclick="navigateTo('main-view')" id="nav-home-btn" class="nav-btn text-brand-500 flex flex-col items-center justify-center gap-1 w-16 btn-tap">
+                <i class="fa-solid fa-house text-lg"></i>
+                <span class="text-[10px] font-bold">الرئيسية</span>
             </button>
+            <button onclick="filterByCategory('سكوتر')" class="nav-btn text-gray-400 dark:text-gray-500 flex flex-col items-center justify-center gap-1 w-16 btn-tap hover:text-brand-500">
+                <i class="fa-solid fa-charging-station text-lg"></i>
+                <span class="text-[10px] font-bold">سكوترات</span>
+            </button>
+            <button onclick="openAddPostModal()" class="flex flex-col items-center justify-center -mt-5 btn-tap">
+                <div class="w-12 h-12 bg-emerald-500 text-white rounded-full flex items-center justify-center text-xl shadow-lg border-4 border-white dark:border-gray-800">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+                <span class="text-[9px] font-bold text-gray-600 dark:text-gray-300 mt-0.5">أعرض إعلان</span>
+            </button>
+            <button onclick="openInboxModal()" class="nav-btn text-gray-400 dark:text-gray-500 flex flex-col items-center justify-center gap-1 w-16 btn-tap hover:text-brand-500">
+                <i class="fa-solid fa-comments text-lg"></i>
+                <span class="text-[10px] font-bold">الرسائل</span>
+            </button>
+            <button onclick="navigateTo('profile-view')" id="nav-profile-btn" class="nav-btn text-gray-400 dark:text-gray-500 flex flex-col items-center justify-center gap-1 w-16 btn-tap hover:text-brand-500">
+                <i class="fa-solid fa-user text-lg"></i>
+                <span class="text-[10px] font-bold">حسابي</span>
+            </button>
+        </div>
+    </nav>
+    <!-- واجهة الملف الشخصي الكاملة -->
+    <main id="profile-view" class="max-w-xl mx-auto px-3 pt-3 space-y-3 hidden">
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700/60 space-y-4">
+            <div id="user-info-card" class="flex items-center justify-between border-b dark:border-gray-700/60 pb-3">
+                <div class="flex items-center gap-3">
+                    <img id="profile-avatar" src="" class="w-12 h-12 rounded-full border-2 border-brand-500 p-0.5 object-cover bg-gray-50 dark:bg-gray-700">
+                    <div>
+                        <h3 id="profile-name" class="font-black text-sm text-gray-800 dark:text-gray-100">مستخدم دراجتي</h3>
+                        <span id="profile-phone" class="text-xs text-gray-500 dark:text-gray-400 block font-semibold">بغداد</span>
+                        <span id="profile-device-id" class="text-[9px] text-gray-400 block font-mono">ID: --</span>
+                    </div>
+                </div>
+                <button onclick="openEditProfileModal()" class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-700 dark:text-gray-200 text-xs font-bold px-3 py-1.5 rounded-xl btn-tap flex items-center gap-1">
+                    <i class="fa-solid fa-pen-to-square"></i> تعديل
+                </button>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2 text-center">
+                <div class="bg-gray-50 dark:bg-gray-700/40 p-2.5 rounded-xl border border-gray-100 dark:border-gray-700/40">
+                    <span id="stat-my-posts-count" class="block font-black text-brand-500 text-base leading-tight">0</span>
+                    <span class="text-[10px] font-bold text-gray-500 dark:text-gray-400">إعلاناتي</span>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-700/40 p-2.5 rounded-xl border border-gray-100 dark:border-gray-700/40">
+                    <span id="stat-saved-count" class="block font-black text-amber-500 text-base leading-tight">0</span>
+                    <span class="text-[10px] font-bold text-gray-500 dark:text-gray-400">المفضلة</span>
+                </div>
+                <div class="bg-gray-50 dark:bg-gray-700/40 p-2.5 rounded-xl border border-gray-100 dark:border-gray-700/40">
+                    <span id="stat-views-count" class="block font-black text-emerald-500 text-base leading-tight">0</span>
+                    <span class="text-[10px] font-bold text-gray-500 dark:text-gray-400">المشاهدات</span>
+                </div>
+            </div>
+
+            <div class="flex gap-2 pt-1">
+                <button onclick="switchProfileTab('my-posts')" id="tab-btn-my-posts" class="flex-1 py-2 bg-brand-500 text-white rounded-xl font-bold text-xs btn-tap transition">إعلاناتي المعروضة</button>
+                <button onclick="switchProfileTab('saved-posts')" id="tab-btn-saved" class="flex-1 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-bold text-xs btn-tap transition">المفضلة</button>
+            </div>
+        </div>
+
+        <div id="profile-posts-container" class="space-y-3"></div>
+    </main>
+
+    <!-- مودال إضافة إعلان جديد Modal -->
+    <div id="add-post-modal" class="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-lg rounded-t-3xl sm:rounded-2xl max-h-[90vh] overflow-y-auto slide-up p-4 space-y-4">
+            <div class="flex items-center justify-between border-b dark:border-gray-700 pb-3">
+                <h3 class="font-black text-base text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                    <i class="fa-solid fa-plus-circle text-emerald-500"></i> إضافة إعلان دراجة
+                </h3>
+                <button onclick="toggleModal('add-post-modal')" class="text-gray-400 hover:text-gray-600 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form id="add-post-form" onsubmit="handlePostSubmit(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">عنوان الإعلان *</label>
+                    <input type="text" id="post-title-input" required placeholder="مثال: دايو 2022 نظيفة مكفولة" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl p-2.5 outline-none focus:border-brand-500 text-gray-800 dark:text-gray-100">
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">الفئة *</label>
+                        <select id="post-category-input" required class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl p-2.5 outline-none text-gray-800 dark:text-gray-100">
+                            <option value="سكوتر">سكوتر</option>
+                            <option value="دراجات بطح">دراجات بطح (Sport)</option>
+                            <option value="دراجات شحن">دراجات شحن (كهربائية)</option>
+                            <option value="دراجات عادية">دراجات عادية / تفليق</option>
+                            <option value="أدوات وتعديل">قطع غيار وتعديل</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">الحالة *</label>
+                        <select id="post-condition-input" required class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl p-2.5 outline-none text-gray-800 dark:text-gray-100">
+                            <option value="جديد">جديد بالكرتون</option>
+                            <option value="مستعمل">مستعمل - بحالة ممتازة</option>
+                            <option value="مستعمل متوسط">مستعمل - بحالة متوسطة</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="col-span-2">
+                        <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">السعر *</label>
+                        <input type="number" id="post-price-input" required placeholder="السعر الرقمي" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl p-2.5 outline-none focus:border-brand-500 text-gray-800 dark:text-gray-100">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">العملة</label>
+                        <select id="post-currency-input" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl p-2.5 outline-none text-gray-800 dark:text-gray-100">
+                            <option value="$">دولار ($)</option>
+                            <option value="د.ع">عراقي (د.ع)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">المحافظة *</label>
+                        <select id="post-city-input" required class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl p-2.5 outline-none text-gray-800 dark:text-gray-100">
+                            <option value="بغداد">بغداد</option>
+                            <option value="البصرة">البصرة</option>
+                            <option value="أربيل">أربيل</option>
+                            <option value="النجف">النجف</option>
+                            <option value="كربلاء">كربلاء</option>
+                            <option value="بابل">بابل</option>
+                            <option value="نينوى">نينوى</option>
+                            <option value="ذي قار">ذي قار</option>
+                            <option value="السليمانية">السليمانية</option>
+                            <option value="الانبار">الأنبار</option>
+                            <option value="ديالى">ديالى</option>
+                            <option value="كركوك">كركوك</option>
+                            <option value="ميسان">ميسان</option>
+                            <option value="المثنى">المثنى</option>
+                            <option value="القادسية">القادسية</option>
+                            <option value="واسط">واسط</option>
+                            <option value="دهوك">دهوك</option>
+                            <option value="صلاح الدين">صلاح الدين</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">رقم الهاتف/واتساب *</label>
+                        <input type="tel" id="post-phone-input" required placeholder="07XXXXXXXXX" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl p-2.5 outline-none focus:border-brand-500 text-gray-800 dark:text-gray-100">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">رابط صورة الدراجة (أو رفع)</label>
+                    <input type="url" id="post-image-url-input" placeholder="https://example.com/bike.jpg" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl p-2.5 outline-none focus:border-brand-500 text-gray-800 dark:text-gray-100">
+                </div>
+
+                <div>
+                    <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">وصف الدراجة والتفاصيل</label>
+                    <textarea id="post-desc-input" rows="3" placeholder="اكتب حالة المحرك، الأوراق، الموديل، السعر النهائي..." class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl p-2.5 outline-none focus:border-brand-500 text-gray-800 dark:text-gray-100"></textarea>
+                </div>
+
+                <button type="submit" id="submit-post-btn" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-black py-3 rounded-xl shadow-md btn-tap text-sm">
+                    نشر الإعلان الآن 🚀
+                </button>
+            </form>
         </div>
     </div>
 
-    <!-- كود البحث الصوتي والمشاركة على المنصات -->
+    <!-- مودال الفئات Categories Modal -->
+    <div id="categories-modal" class="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-sm rounded-t-3xl sm:rounded-2xl slide-up p-4 space-y-3">
+            <div class="flex items-center justify-between border-b dark:border-gray-700 pb-2">
+                <h3 class="font-black text-sm text-gray-800 dark:text-gray-100">اختر الفئة</h3>
+                <button onclick="toggleModal('categories-modal')" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="space-y-1 text-xs">
+                <button onclick="selectCategory('الكل')" class="w-full text-right p-2.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl font-bold flex items-center justify-between">
+                    <span>الجميع</span>
+                    <i class="fa-solid fa-chevron-left text-gray-400 text-[10px]"></i>
+                </button>
+                <button onclick="selectCategory('سكوتر')" class="w-full text-right p-2.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl font-bold flex items-center justify-between">
+                    <span>سكوترات</span>
+                    <i class="fa-solid fa-chevron-left text-gray-400 text-[10px]"></i>
+                </button>
+                <button onclick="selectCategory('دراجات بطح')" class="w-full text-right p-2.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl font-bold flex items-center justify-between">
+                    <span>دراجات بطح (Sport)</span>
+                    <i class="fa-solid fa-chevron-left text-gray-400 text-[10px]"></i>
+                </button>
+                <button onclick="selectCategory('دراجات شحن')" class="w-full text-right p-2.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl font-bold flex items-center justify-between">
+                    <span>دراجات شحن (كهربائية)</span>
+                    <i class="fa-solid fa-chevron-left text-gray-400 text-[10px]"></i>
+                </button>
+                <button onclick="selectCategory('أدوات وتعديل')" class="w-full text-right p-2.5 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl font-bold flex items-center justify-between">
+                    <span>قطع غيار وتعديل</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال تعديل الملف الشخصي Edit Profile Modal -->
+    <div id="edit-profile-modal" class="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-sm rounded-t-3xl sm:rounded-2xl slide-up p-4 space-y-3">
+            <div class="flex items-center justify-between border-b dark:border-gray-700 pb-2">
+                <h3 class="font-black text-sm text-gray-800 dark:text-gray-100">تعديل حسابي</h3>
+                <button onclick="toggleModal('edit-profile-modal')" class="text-gray-400"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="edit-profile-form" onsubmit="handleProfileUpdate(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">الاسم / اسم المحل</label>
+                    <input type="text" id="edit-name-input" required class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl p-2.5 outline-none text-gray-800 dark:text-gray-100">
+                </div>
+                <div>
+                    <label class="block font-bold text-gray-700 dark:text-gray-300 mb-1">المحافظة</label>
+                    <select id="edit-city-input" class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-xl p-2.5 outline-none text-gray-800 dark:text-gray-100">
+                        <option value="بغداد">بغداد</option>
+                        <option value="البصرة">البصرة</option>
+                        <option value="أربيل">أربيل</option>
+                        <option value="النجف">النجف</option>
+                        <option value="كربلاء">كربلاء</option>
+                        <option value="بابل">بابل</option>
+                    </select>
+                </div>
+                <button type="submit" class="w-full bg-brand-500 hover:bg-brand-600 text-white font-bold py-2.5 rounded-xl btn-tap">حفظ التغييرات</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- مودال الإشعارات Notifications Modal -->
+    <div id="notifications-modal" class="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm hidden flex items-start justify-center pt-14 p-3">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-md rounded-2xl p-4 shadow-xl space-y-3">
+            <div class="flex items-center justify-between border-b dark:border-gray-700 pb-2">
+                <h3 class="font-black text-sm text-gray-800 dark:text-gray-100">الإشعارات والتنبيهات</h3>
+                <button onclick="toggleModal('notifications-modal')" class="text-gray-400"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="text-center py-6 text-gray-400 space-y-1">
+                <i class="fa-solid fa-bell-slash text-2xl"></i>
+                <p class="text-xs">لا توجد إشعارات جديدة حالياً</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- مودال الرسائل Inbox Modal -->
+    <div id="inbox-modal" class="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm hidden flex items-end sm:items-center justify-center p-0 sm:p-4">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-md rounded-t-3xl sm:rounded-2xl h-[70vh] slide-up p-4 flex flex-col justify-between">
+            <div class="flex items-center justify-between border-b dark:border-gray-700 pb-2">
+                <h3 class="font-black text-sm text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                    <i class="fa-solid fa-comments text-brand-500"></i> الرسائل المباشرة
+                </h3>
+                <button onclick="toggleModal('inbox-modal')" class="text-gray-400"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="flex-1 flex flex-col items-center justify-center text-gray-400 space-y-2">
+                <i class="fa-regular fa-paper-plane text-3xl"></i>
+                <p class="text-xs">لا توجد محادثات نشطة حالياً</p>
+            </div>
+        </div>
+    </div>
+    <!-- برمجة تطبيق دراجتي بالكامل (JavaScript Core Functions) -->
     <script>
-        // 27. فتح نافذة المشاركة
-        function openShareModal(postId, title, price) {
-            document.getElementById('share-post-id').value = postId;
-            document.getElementById('share-post-title').value = title;
-            document.getElementById('share-post-price').value = price;
-            toggleModal('share-modal');
+        // --- 1. التهيئة والمتغيرات الأساسية ---
+        const SUPABASE_URL = 'https://YOUR_SUPABASE_PROJECT_URL.supabase.co';
+        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+        
+        let supabase = null;
+        if (typeof window.supabase !== 'undefined' && SUPABASE_URL !== 'https://YOUR_SUPABASE_PROJECT_URL.supabase.co') {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         }
 
-        // 28. المشاركة المباشرة عبر تطبيقات التواصل
-        function shareToPlatform(platform) {
-            const title = document.getElementById('share-post-title').value;
-            const price = document.getElementById('share-post-price').value;
-            const text = encodeURIComponent(`شاهد دراجتي على المنصة: ${title} بسعر ${price}\nرابط التطبيق: ${window.location.href}`);
-
-            let url = '';
-            if (platform === 'whatsapp') {
-                url = `https://api.whatsapp.com/send?text=${text}`;
-            } else if (platform === 'telegram') {
-                url = `https://t.me/share/url?url=${encodeURIComponent(window.location.href)}&text=${text}`;
-            } else if (platform === 'facebook') {
-                url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}`;
-            }
-
-            window.open(url, '_blank');
-            toggleModal('share-modal');
-        }
-
-        // 29. نسخ الرابط
-        function copyPostLink() {
-            navigator.clipboard.writeText(window.location.href);
-            showToast('تم نسخ رابط الإعلان بنجاح!', 'success');
-            toggleModal('share-modal');
-        }
-
-        // 30. نظام البحث الصوتي الذكي (Voice Search Engine)
-        function startVoiceSearch() {
-            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-                showToast('متصفحك لا يدعم البحث الصوتي', 'warning');
-                return;
-            }
-
-            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-            const recognition = new SpeechRecognition();
-
-            recognition.lang = 'ar-IQ'; // لهجة عراقية / عربية
-            recognition.continuous = false;
-            recognition.interimResults = false;
-
-            showToast('جاري الاستماع... اتكلم الآن', 'info');
-
-            recognition.onresult = (event) => {
-                const transcript = event.results[0][0].transcript;
-                const searchInput = document.getElementById('search-input');
-                if (searchInput) {
-                    searchInput.value = transcript;
-                    filterPosts();
-                    showToast(`بحث عن: "${transcript}"`, 'success');
-                }
-            };
-
-            recognition.onerror = () => {
-                showToast('تعذر التعرف على الصوت، حاول مرة أخرى', 'error');
-            };
-
-            recognition.start();
-        }
-    </script>
-    <!-- زر الجي بي إس والتحديد التلقائي للموقع -->
-    <script>
-        // 31. تحديد المحافظة تلقائياً عبر GPS المتصفح
-        function detectUserLocation() {
-            if (!navigator.geolocation) {
-                showToast('خاصية تحديد الموقع غير مدعومة في متصفحك', 'warning');
-                return;
-            }
-
-            showToast('جاري تحديد موقعك الجغرافي...', 'info');
-
-            navigator.geolocation.getCurrentPosition(
-                async (position) => {
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
-
-                    try {
-                        // استخدام خدمة العنونة العكسية الخفيفة لتحديد المحافظة العراقية
-                        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=ar`);
-                        const data = await response.json();
-                        
-                        const address = data.address || {};
-                        const state = address.state || address.governorate || address.city || '';
-
-                        // مطابقة المحافظة مع القائمة المتاحة
-                        const iraqiCities = ['بغداد', 'البصرة', 'أربيل', 'النجف', 'كربلاء', 'بابل', 'نينوى', 'ذي قار'];
-                        const matchedCity = iraqiCities.find(c => state.includes(c));
-
-                        if (matchedCity) {
-                            selectCity(matchedCity);
-                            showToast(`تم تحديد موقعك تلقائياً: ${matchedCity}`, 'success');
-                        } else {
-                            showToast('تعذر تحديد المحافظة العراقية بدقة، يرجى الاختيار يدويًا', 'warning');
-                        }
-                    } catch (err) {
-                        showToast('حدث خطأ أثناء جلب تفاصيل الموقع', 'error');
-                    }
-                },
-                (error) => {
-                    showToast('يرجى السماح بصلاحية الموقع لتحديد المحافظة تلقائياً', 'warning');
-                },
-                { timeout: 10000 }
-            );
-        }
-
-        // 32. نظام التخزين المؤقت المحلي (Offline Local Caching)
-        function cachePostsLocally(posts) {
-            try {
-                localStorage.setItem('darajati_cached_posts', JSON.stringify(posts));
-            } catch (e) {
-                console.error('خطأ في حفظ الكاش المحلي:', e);
-            }
-        }
-
-        function getCachedPosts() {
-            try {
-                const cached = localStorage.getItem('darajati_cached_posts');
-                return cached ? JSON.parse(cached) : [];
-            } catch (e) {
-                return [];
-            }
-        }
-
-        // 33. تحسين دالة الجلب لدعم التخزين المحلي فور الانقطاع
-        const originalFetchPosts = fetchPosts;
-        fetchPosts = async function() {
-            if (!navigator.onLine) {
-                const cached = getCachedPosts();
-                if (cached.length > 0) {
-                    allPosts = cached;
-                    applyFilters();
-                    showToast('تم تحميل البيانات المحفوظة أوفلاين', 'info');
-                    return;
-                }
-            }
-            
-            await originalFetchPosts();
-            if (allPosts && allPosts.length > 0) {
-                cachePostsLocally(allPosts);
-            }
+        // حالة التطبيق المحلية (State)
+        let appState = {
+            currentUser: {
+                id: localStorage.getItem('drajati_user_id') || 'usr_' + Math.random().toString(36).substring(2, 9),
+                name: localStorage.getItem('drajati_user_name') || 'عاشق الدراجات',
+                city: localStorage.getItem('drajati_user_city') || 'بغداد',
+                avatar: 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'
+            },
+            posts: [],
+            savedPosts: JSON.parse(localStorage.getItem('drajati_saved_posts') || '[]'),
+            myLikes: JSON.parse(localStorage.getItem('drajati_my_likes') || '[]'),
+            activeCity: 'الكل',
+            activeCategory: 'الكل',
+            searchQuery: '',
+            currentTab: 'my-posts'
         };
+
+        // حفظ بيانات المستخدم في LocalStorage
+        localStorage.setItem('drajati_user_id', appState.currentUser.id);
+
+        // --- 2. أحداث التحميل الأولية (Initialization) ---
+        document.addEventListener('DOMContentLoaded', () => {
+            initApp();
+        });
+
+        function initApp() {
+            updateProfileUI();
+            checkThemePreference();
+            loadPosts();
+        }
+
+        // --- 3. إدارة الوضع الداكن (Dark Mode) ---
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        function checkThemePreference() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        // --- 4. التناقل بين الشاشات (Navigation) ---
+        function navigateTo(viewId) {
+            document.getElementById('main-view').classList.add('hidden');
+            document.getElementById('profile-view').classList.add('hidden');
+            
+            document.getElementById(viewId).classList.remove('hidden');
+
+            const homeBtn = document.getElementById('nav-home-btn');
+            const profileBtn = document.getElementById('nav-profile-btn');
+
+            if (viewId === 'main-view') {
+                homeBtn.className = 'nav-btn text-brand-500 flex flex-col items-center justify-center gap-1 w-16 btn-tap';
+                profileBtn.className = 'nav-btn text-gray-400 dark:text-gray-500 flex flex-col items-center justify-center gap-1 w-16 btn-tap hover:text-brand-500';
+            } else if (viewId === 'profile-view') {
+                profileBtn.className = 'nav-btn text-brand-500 flex flex-col items-center justify-center gap-1 w-16 btn-tap';
+                homeBtn.className = 'nav-btn text-gray-400 dark:text-gray-500 flex flex-col items-center justify-center gap-1 w-16 btn-tap hover:text-brand-500';
+                renderProfilePosts();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // --- 5. جلب وعرض الإعلانات (Fetch & Render Posts) ---
+        async function loadPosts() {
+            const skeleton = document.getElementById('loading-skeleton');
+            const feed = document.getElementById('posts-feed');
+            const noResults = document.getElementById('no-results');
+
+            if (skeleton) skeleton.classList.remove('hidden');
+            feed.innerHTML = '';
+            noResults.classList.add('hidden');
+
+            // محاولة الجلب من Supabase إذا كان مهيئاً، وإلا استخدام البيانات المحفوظة محلياً/التجريبية
+            if (supabase) {
+                try {
+                    let { data, error } = await supabase.from('posts').select('*').order('created_at', { ascending: false });
+                    if (!error && data && data.length > 0) {
+                        appState.posts = data;
+                    } else {
+                        appState.posts = getLocalOrDemoPosts();
+                    }
+                } catch (e) {
+                    appState.posts = getLocalOrDemoPosts();
+                }
+            } else {
+                appState.posts = getLocalOrDemoPosts();
+            }
+
+            if (skeleton) skeleton.classList.add('hidden');
+            filterPosts();
+        }
+
+        function getLocalOrDemoPosts() {
+            const stored = localStorage.getItem('drajati_local_posts');
+            if (stored) {
+                return JSON.parse(stored);
+            }
+            // إعلانات افتراضية تجريبية
+            const demoPosts = [
+                {
+                    id: 'p1',
+                    user_id: 'usr_demo1',
+                    user_name: 'علي الكرخي',
+                    user_avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100',
+                    title: 'سكوتر دايو 2023 نظيف جداً',
+                    category: 'سكوتر',
+                    condition: 'مستعمل',
+                    price: '850',
+                    currency: '$',
+                    city: 'بغداد',
+                    phone: '07700000000',
+                    image_url: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600',
+                    description: 'سكوتر دايو محرك مكفول، أوراق كاملة، ماشية 4000 كم فقط. الموقع بغداد الكرادة.',
+                    likes_count: 12,
+                    comments_count: 3,
+                    created_at: new Date(Date.now() - 3600000 * 2).toISOString()
+                },
+                {
+                    id: 'p2',
+                    user_id: 'usr_demo2',
+                    user_name: 'معرض البصرة للدراجات',
+                    user_avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=100',
+                    title: 'بطح كاواساكي 630cc موديل 2021',
+                    category: 'دراجات بطح',
+                    condition: 'جديد',
+                    price: '4500',
+                    currency: '$',
+                    city: 'البصرة',
+                    phone: '07800000000',
+                    image_url: 'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?w=600',
+                    description: 'دراجة بطح كاواساكي بحالة الشركة، بدون أي حادث. جاهزة للتسليم فوراً.',
+                    likes_count: 29,
+                    comments_count: 8,
+                    created_at: new Date(Date.now() - 3600000 * 12).toISOString()
+                }
+            ];
+            localStorage.setItem('drajati_local_posts', JSON.stringify(demoPosts));
+            return demoPosts;
+        }
+
+        // --- 6. الفلترة والبحث ---
+        function filterPosts() {
+            const feed = document.getElementById('posts-feed');
+            const noResults = document.getElementById('no-results');
+            const searchInput = document.getElementById('search-input');
+            const clearBtn = document.getElementById('clear-search-btn');
+
+            appState.searchQuery = searchInput ? searchInput.value.trim().toLowerCase() : '';
+
+            if (clearBtn) {
+                if (appState.searchQuery.length > 0) clearBtn.classList.remove('hidden');
+                else clearBtn.classList.add('hidden');
+            }
+
+            let filtered = appState.posts.filter(post => {
+                const matchCity = (appState.activeCity === 'الكل') || (post.city === appState.activeCity);
+                const matchCat = (appState.activeCategory === 'الكل') || (post.category === appState.activeCategory);
+                const matchQuery = !appState.searchQuery || 
+                    post.title.toLowerCase().includes(appState.searchQuery) ||
+                    post.description.toLowerCase().includes(appState.searchQuery) ||
+                    post.price.toString().includes(appState.searchQuery);
+
+                return matchCity && matchCat && matchQuery;
+            });
+
+            feed.innerHTML = '';
+            if (filtered.length === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                filtered.forEach(post => {
+                    const card = createPostCardElement(post);
+                    feed.appendChild(card);
+                });
+            }
+        }
+
+        function selectCity(cityName) {
+            appState.activeCity = cityName;
+            document.getElementById('active-city-label').textContent = cityName === 'الكل' ? 'جميع المحافظات' : cityName;
+            
+            document.querySelectorAll('.city-btn').forEach(btn => {
+                if (btn.textContent.includes(cityName)) {
+                    btn.className = 'city-btn active bg-brand-500 text-white px-3 py-1.5 rounded-xl whitespace-nowrap shadow-sm btn-tap';
+                } else {
+                    btn.className = 'city-btn bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 px-3 py-1.5 rounded-xl whitespace-nowrap border dark:border-gray-700 btn-tap';
+                }
+            });
+            filterPosts();
+        }
+
+        function filterByCategory(catName) {
+            appState.activeCategory = catName;
+            document.getElementById('selected-category-label').textContent = catName === 'الكل' ? 'الفئات' : catName;
+            filterPosts();
+        }
+
+        function selectCategory(catName) {
+            filterByCategory(catName);
+            toggleModal('categories-modal');
+        }
+
+        function clearSearch() {
+            document.getElementById('search-input').value = '';
+            filterPosts();
+        }
+
+        function resetFilters() {
+            appState.activeCity = 'الكل';
+            appState.activeCategory = 'الكل';
+            document.getElementById('search-input').value = '';
+            document.getElementById('active-city-label').textContent = 'جميع المحافظات';
+            document.getElementById('selected-category-label').textContent = 'الفئات';
+            selectCity('الكل');
+        }
+
+        // --- 7. إنشاء بطاقة الإعلان من قالب Template ---
+        function createPostCardElement(post) {
+            const template = document.getElementById('post-card-template');
+            const clone = template.content.cloneNode(true);
+
+            const avatar = clone.querySelector('.user-avatar');
+            avatar.src = post.user_avatar || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png';
+            
+            clone.querySelector('.user-name').textContent = post.user_name || 'مستخدم دراجتي';
+            clone.querySelector('.post-city').textContent = post.city || 'العراق';
+            clone.querySelector('.time-ago').textContent = formatTimeAgo(post.created_at);
+            clone.querySelector('.post-condition').textContent = post.condition || 'مستعمل';
+
+            const img = clone.querySelector('.post-image');
+            img.src = post.image_url || 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600';
+
+            clone.querySelector('.post-price').textContent = `${post.price} ${post.currency || '$'}`;
+            clone.querySelector('.post-title').textContent = post.title;
+            clone.querySelector('.post-desc').textContent = post.description;
+
+            // أزرار التواصل
+            const waBtn = clone.querySelector('.whatsapp-btn');
+            const callBtn = clone.querySelector('.call-btn');
+            
+            if (post.phone) {
+                let formattedPhone = post.phone.startsWith('0') ? '964' + post.phone.substring(1) : post.phone;
+                waBtn.href = `https://wa.me/${formattedPhone}?text=${encodeURIComponent('السلام عليكم، بخصوص إعلان الدراجة: ' + post.title)}`;
+                waBtn.classList.remove('hidden');
+
+                callBtn.href = `tel:${post.phone}`;
+                callBtn.classList.remove('hidden');
+            }
+
+            // الإعجاب والمفضلة
+            const likeBtn = clone.querySelector('.like-btn');
+            const likesCountSpan = clone.querySelector('.likes-count');
+            likesCountSpan.textContent = post.likes_count || 0;
+
+            if (appState.myLikes.includes(post.id)) {
+                likeBtn.classList.add('text-red-500');
+                likeBtn.querySelector('i').className = 'fa-solid fa-heart text-sm text-red-500';
+            }
+
+            likeBtn.onclick = (e) => {
+                e.stopPropagation();
+                toggleLike(post.id, likesCountSpan, likeBtn);
+            };
+
+            const saveBtn = clone.querySelector('.save-btn');
+            if (appState.savedPosts.includes(post.id)) {
+                saveBtn.classList.add('text-amber-500');
+                saveBtn.querySelector('i').className = 'fa-solid fa-bookmark text-sm text-amber-500';
+            }
+
+            saveBtn.onclick = (e) => {
+                e.stopPropagation();
+                toggleSave(post.id, saveBtn);
+            };
+
+            return clone;
+        }
+
+        // --- 8. التفاعلات (إعجاب، حفظ، إضافة إعلان) ---
+        function toggleLike(postId, countElement, btnElement) {
+            const idx = appState.myLikes.indexOf(postId);
+            let post = appState.posts.find(p => p.id === postId);
+
+            if (idx === -1) {
+                appState.myLikes.push(postId);
+                if (post) post.likes_count = (post.likes_count || 0) + 1;
+                btnElement.classList.add('text-red-500');
+                btnElement.querySelector('i').className = 'fa-solid fa-heart text-sm text-red-500';
+            } else {
+                appState.myLikes.splice(idx, 1);
+                if (post) post.likes_count = Math.max(0, (post.likes_count || 1) - 1);
+                btnElement.classList.remove('text-red-500');
+                btnElement.querySelector('i').className = 'fa-regular fa-heart text-sm';
+            }
+
+            if (post && countElement) countElement.textContent = post.likes_count;
+            localStorage.setItem('drajati_my_likes', JSON.stringify(appState.myLikes));
+        }
+
+        function toggleSave(postId, btnElement) {
+            const idx = appState.savedPosts.indexOf(postId);
+            if (idx === -1) {
+                appState.savedPosts.push(postId);
+                btnElement.classList.add('text-amber-500');
+                btnElement.querySelector('i').className = 'fa-solid fa-bookmark text-sm text-amber-500';
+            } else {
+                appState.savedPosts.splice(idx, 1);
+                btnElement.classList.remove('text-amber-500');
+                btnElement.querySelector('i').className = 'fa-regular fa-bookmark text-sm';
+            }
+            localStorage.setItem('drajati_saved_posts', JSON.stringify(appState.savedPosts));
+            updateProfileUI();
+        }
+
+        function openAddPostModal() {
+            toggleModal('add-post-modal');
+        }
+
+        async function handlePostSubmit(e) {
+            e.preventDefault();
+            const submitBtn = document.getElementById('submit-post-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'جاري نشر إعلانك...';
+
+            const newPost = {
+                id: 'post_' + Date.now(),
+                user_id: appState.currentUser.id,
+                user_name: appState.currentUser.name,
+                user_avatar: appState.currentUser.avatar,
+                title: document.getElementById('post-title-input').value.trim(),
+                category: document.getElementById('post-category-input').value,
+                condition: document.getElementById('post-condition-input').value,
+                price: document.getElementById('post-price-input').value,
+                currency: document.getElementById('post-currency-input').value,
+                city: document.getElementById('post-city-input').value,
+                phone: document.getElementById('post-phone-input').value.trim(),
+                image_url: document.getElementById('post-image-url-input').value.trim() || 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=600',
+                description: document.getElementById('post-desc-input').value.trim(),
+                likes_count: 0,
+                comments_count: 0,
+                created_at: new Date().toISOString()
+            };
+
+            // رفع الكود أو حفظه محلياً
+            if (supabase) {
+                try {
+                    await supabase.from('posts').insert([newPost]);
+                } catch (err) {
+                    console.log('حفظ محلي عند تعذر الاتصال بالسيرفر');
+                }
+            }
+
+            appState.posts.unshift(newPost);
+            let localPosts = JSON.parse(localStorage.getItem('drajati_local_posts') || '[]');
+            localPosts.unshift(newPost);
+            localStorage.setItem('drajati_local_posts', JSON.stringify(localPosts));
+
+            document.getElementById('add-post-form').reset();
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'نشر الإعلان الآن 🚀';
+            toggleModal('add-post-modal');
+            filterPosts();
+            updateProfileUI();
+        }
+
+        // --- 9. الملف الشخصي وتحديث بيانات المستخدم ---
+        function updateProfileUI() {
+            document.getElementById('profile-name').textContent = appState.currentUser.name;
+            document.getElementById('profile-phone').textContent = appState.currentUser.city;
+            document.getElementById('profile-device-id').textContent = 'ID: ' + appState.currentUser.id.substring(0, 10);
+            document.getElementById('profile-avatar').src = appState.currentUser.avatar;
+
+            const myPosts = appState.posts.filter(p => p.user_id === appState.currentUser.id);
+            document.getElementById('stat-my-posts-count').textContent = myPosts.length;
+            document.getElementById('stat-saved-count').textContent = appState.savedPosts.length;
+        }
+
+        function openEditProfileModal() {
+            document.getElementById('edit-name-input').value = appState.currentUser.name;
+            document.getElementById('edit-city-input').value = appState.currentUser.city;
+            toggleModal('edit-profile-modal');
+        }
+
+        function handleProfileUpdate(e) {
+            e.preventDefault();
+            appState.currentUser.name = document.getElementById('edit-name-input').value.trim();
+            appState.currentUser.city = document.getElementById('edit-city-input').value;
+
+            localStorage.setItem('drajati_user_name', appState.currentUser.name);
+            localStorage.setItem('drajati_user_city', appState.currentUser.city);
+
+            updateProfileUI();
+            toggleModal('edit-profile-modal');
+        }
+
+        function switchProfileTab(tab) {
+            appState.currentTab = tab;
+            const btnMy = document.getElementById('tab-btn-my-posts');
+            const btnSaved = document.getElementById('tab-btn-saved');
+
+            if (tab === 'my-posts') {
+                btnMy.className = 'flex-1 py-2 bg-brand-500 text-white rounded-xl font-bold text-xs btn-tap transition';
+                btnSaved.className = 'flex-1 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-bold text-xs btn-tap transition';
+            } else {
+                btnSaved.className = 'flex-1 py-2 bg-brand-500 text-white rounded-xl font-bold text-xs btn-tap transition';
+                btnMy.className = 'flex-1 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-bold text-xs btn-tap transition';
+            }
+            renderProfilePosts();
+        }
+
+        function renderProfilePosts() {
+            const container = document.getElementById('profile-posts-container');
+            container.innerHTML = '';
+
+            let list = [];
+            if (appState.currentTab === 'my-posts') {
+                list = appState.posts.filter(p => p.user_id === appState.currentUser.id);
+            } else {
+                list = appState.posts.filter(p => appState.savedPosts.includes(p.id));
+            }
+
+            if (list.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700/60">
+                        <p class="text-xs text-gray-500 dark:text-gray-400 font-bold">لا توجد إعلانات لعرضها هنا</p>
+                    </div>`;
+                return;
+            }
+
+            list.forEach(post => {
+                const card = createPostCardElement(post);
+                container.appendChild(card);
+            });
+        }
+
+        function openInboxModal() {
+            toggleModal('inbox-modal');
+        }
+
+        // --- 10. أدوات المساعدة (Helpers) ---
+        function formatTimeAgo(isoString) {
+            if (!isoString) return 'قبل قليل';
+            const date = new Date(isoString);
+            const now = new Date();
+            const diffSec = Math.floor((now - date) / 1000);
+
+            if (diffSec < 60) return 'قبل قليل';
+            if (diffSec < 3600) return `قبل ${Math.floor(diffSec / 60)} دقيقة`;
+            if (diffSec < 86400) return `قبل ${Math.floor(diffSec / 3600)} ساعة`;
+            return `قبل ${Math.floor(diffSec / 86400)} يوم`;
+        }
     </script>
 </body>
 </html>
