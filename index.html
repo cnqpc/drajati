@@ -4,10 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>دراجتي - المنصة الأولى للدراجات في العراق</title>
-    <!-- Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
             --primary: #FF5722;
@@ -20,7 +19,6 @@
             --border: #E0E0E0;
             --shadow: 0 4px 12px rgba(0,0,0,0.08);
             --radius: 12px;
-            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         body.dark-mode {
@@ -32,961 +30,255 @@
             --shadow: 0 4px 12px rgba(0,0,0,0.4);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Tajawal', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); padding-bottom: 80px; }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            padding-bottom: 80px;
-            transition: var(--transition);
-        }
+        .header { position: sticky; top: 0; background: var(--surface); box-shadow: var(--shadow); z-index: 1000; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; }
+        .logo-container { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .logo-container i { font-size: 24px; color: var(--primary); }
+        .logo-container h1 { font-size: 20px; font-weight: 800; }
+        
+        .btn-add { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 20px; font-weight: bold; cursor: pointer; }
+        
+        .search-filter-section { padding: 16px; background: var(--surface); margin-bottom: 12px; box-shadow: var(--shadow); }
+        .search-box input { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text); }
+        .filters-container { display: flex; gap: 8px; margin-top: 10px; }
+        .filter-select { padding: 8px; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); color: var(--text); flex: 1; }
 
-        /* Header */
-        .header {
-            position: sticky;
-            top: 0;
-            background: var(--surface);
-            box-shadow: var(--shadow);
-            z-index: 1000;
-            padding: 12px 16px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+        .main-container { max-width: 800px; margin: 0 auto; padding: 0 16px; }
+        .posts-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-        }
+        .card { background: var(--surface); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--border); }
+        .card-header { padding: 12px; display: flex; align-items: center; justify-content: space-between; }
+        .user-info { display: flex; align-items: center; gap: 10px; }
+        .user-avatar { width: 40px; height: 40px; border-radius: 50%; }
+        .card-img-container { width: 100%; height: 250px; background: #000; }
+        .card-img-container img { width: 100%; height: 100%; object-fit: cover; }
+        .card-body { padding: 12px; }
+        .card-title { font-size: 16px; font-weight: bold; }
+        .card-price { font-size: 18px; font-weight: 800; color: var(--primary); margin: 4px 0; }
+        .card-desc { font-size: 13px; color: var(--text-light); margin-bottom: 10px; }
 
-        .logo-container i {
-            font-size: 24px;
-            color: var(--primary);
-        }
+        .card-actions { display: flex; gap: 12px; border-top: 1px solid var(--border); padding-top: 8px; }
+        .action-btn { background: none; border: none; color: var(--text-light); cursor: pointer; display: flex; align-items: center; gap: 4px; }
 
-        .logo-container h1 {
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--text);
-        }
-
-        .header-actions {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .btn-icon {
-            background: none;
-            border: none;
-            color: var(--text);
-            font-size: 18px;
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-        }
-
-        .btn-icon:hover {
-            background: rgba(0,0,0,0.05);
-        }
-
-        .btn-add {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .btn-add:hover {
-            background: var(--primary-hover);
-        }
-
-        /* Search & Filters */
-        .search-filter-section {
-            padding: 16px;
-            background: var(--surface);
-            margin-bottom: 12px;
-            box-shadow: var(--shadow);
-        }
-
-        .search-box {
-            position: relative;
-            margin-bottom: 12px;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 12px 40px 12px 16px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            background: var(--bg);
-            color: var(--text);
-            font-size: 14px;
-            outline: none;
-        }
-
-        .search-box i {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-light);
-        }
-
-        .filters-container {
-            display: flex;
-            gap: 8px;
-            overflow-x: auto;
-            padding-bottom: 4px;
-            scrollbar-width: none;
-        }
-
-        .filters-container::-webkit-scrollbar {
-            display: none;
-        }
-
-        .filter-select {
-            padding: 8px 12px;
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            background: var(--surface);
-            color: var(--text);
-            font-size: 13px;
-            outline: none;
-            white-space: nowrap;
-        }
-
-        /* Ticker / Marquee */
-        .featured-ticker {
-            background: var(--primary);
-            color: white;
-            padding: 8px 0;
-            overflow: hidden;
-            white-space: nowrap;
-            margin-bottom: 16px;
-        }
-
-        .ticker-content {
-            display: inline-block;
-            animation: marquee 25s linear infinite;
-        }
-
-        @keyframes marquee {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-
-        .ticker-item {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-left: 24px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-        }
-
-        /* Container & Cards */
-        .main-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 16px;
-        }
-
-        .posts-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
-        }
-
-        .posts-grid.grid-view {
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-        }
-
-        .card {
-            background: var(--surface);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            transition: var(--transition);
-        }
-
-        .card-header {
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .user-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary);
-        }
-
-        .user-details h4 {
-            font-size: 14px;
-            margin-bottom: 2px;
-        }
-
-        .user-details span {
-            font-size: 11px;
-            color: var(--text-light);
-        }
-
-        .card-img-container {
-            width: 100%;
-            height: 250px;
-            position: relative;
-            background: #000;
-        }
-
-        .card-img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .card-badge {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(0,0,0,0.7);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            backdrop-filter: blur(4px);
-        }
-
-        .card-body {
-            padding: 12px;
-        }
-
-        .card-title {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 6px;
-        }
-
-        .card-price {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
-
-        .card-desc {
-            font-size: 13px;
-            color: var(--text-light);
-            margin-bottom: 12px;
-            line-height: 1.4;
-        }
-
-        .card-actions {
-            display: flex;
-            justify-content: space-between;
-            border-top: 1px solid var(--border);
-            padding-top: 8px;
-        }
-
-        .action-btn {
-            background: none;
-            border: none;
-            color: var(--text-light);
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-            padding: 6px 10px;
-            border-radius: 6px;
-            transition: var(--transition);
-        }
-
-        .action-btn:hover {
-            background: rgba(0,0,0,0.05);
-            color: var(--primary);
-        }
-
-        .action-btn.liked {
-            color: #E91E63;
-        }
-
-        .action-btn.saved {
-            color: var(--primary);
-        }
-
-        /* Modals & Screens */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.6);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            padding: 16px;
-            backdrop-filter: blur(4px);
-        }
-
-        .modal.active {
-            display: flex;
-        }
-
-        .modal-content {
-            background: var(--surface);
-            border-radius: var(--radius);
-            width: 100%;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-            padding: 20px;
-            position: relative;
-            box-shadow: var(--shadow);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 10px;
-        }
-
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 20px;
-            color: var(--text-light);
-            cursor: pointer;
-        }
-
-        /* Forms */
-        .form-group {
-            margin-bottom: 14px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            margin-bottom: 6px;
-            font-weight: 500;
-        }
-
-        .form-group input, .form-group select, .form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background: var(--bg);
-            color: var(--text);
-            font-size: 14px;
-            outline: none;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            height: 80px;
-        }
-
-        .btn-submit {
-            width: 100%;
-            padding: 12px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 15px;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .btn-submit:hover {
-            background: var(--primary-hover);
-        }
-
-        /* Bottom Nav */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: var(--surface);
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-            z-index: 1000;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            color: var(--text-light);
-            text-decoration: none;
-            font-size: 11px;
-            cursor: pointer;
-            background: none;
-            border: none;
-        }
-
-        .nav-item.active {
-            color: var(--primary);
-        }
-
-        /* Comments Section */
-        .comments-list {
-            max-height: 200px;
-            overflow-y: auto;
-            margin-bottom: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .comment-item {
-            background: var(--bg);
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 12px;
-        }
-
-        .comment-item strong {
-            display: block;
-            margin-bottom: 2px;
-            color: var(--text);
-        }
-
-        .comment-input-group {
-            display: flex;
-            gap: 8px;
-        }
-
-        .comment-input-group input {
-            flex: 1;
-            padding: 8px 12px;
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            background: var(--bg);
-            color: var(--text);
-            font-size: 13px;
-        }
-
-        .loading-spinner {
-            text-align: center;
-            padding: 20px;
-            color: var(--text-light);
-        }
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 2000; padding: 16px; }
+        .modal.active { display: flex; }
+        .modal-content { background: var(--surface); border-radius: var(--radius); width: 100%; max-width: 500px; padding: 20px; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { display: block; font-size: 13px; margin-bottom: 4px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--text); }
+        .btn-submit { width: 100%; padding: 12px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <!-- Header -->
     <header class="header">
-        <div class="logo-container" onclick="showSection('home')">
+        <div class="logo-container">
             <i class="fa-solid fa-motorcycle"></i>
             <h1>دراجتي</h1>
         </div>
-        <div class="header-actions">
-            <button class="btn-icon" id="gridToggleBtn" title="تغيير العرض"><i class="fa-solid fa-border-all"></i></button>
-            <button class="btn-icon" id="settingsBtn" onclick="openModal('settingsModal')" title="الإعدادات"><i class="fa-solid fa-gear"></i></button>
-            <button class="btn-add" onclick="openModal('addPostModal')"><i class="fa-solid fa-plus"></i> أضف إعلان</button>
-        </div>
+        <button class="btn-add" onclick="openModal('addPostModal')"><i class="fa-solid fa-plus"></i> أضف إعلان</button>
     </header>
 
-    <!-- Main Section -->
-    <section id="homeSection">
-        <!-- Search & Filters -->
-        <div class="search-filter-section">
-            <div class="search-box">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" placeholder="ابحث عن دراجة، نوع، أو مواصفات...">
-            </div>
-            <div class="filters-container">
-                <select id="categoryFilter" class="filter-select">
-                    <option value="">جميع الفئات</option>
-                    <option value="نارية">دراجات نارية</option>
-                    <option value="هوائية">دراجات هوائية</option>
-                    <option value="شحن">دراجات شحن (كهربائية)</option>
-                </select>
-                <select id="cityFilter" class="filter-select">
-                    <option value="">جميع المحافظات</option>
-                    <option value="بغداد">بغداد</option>
-                    <option value="البصرة">البصرة</option>
-                    <option value="النجف">النجف</option>
-                    <option value="كربلاء">كربلاء</option>
-                    <option value="أربيل">أربيل</option>
-                    <option value="بابل">بابل</option>
-                </select>
-            </div>
+    <div class="search-filter-section">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="ابحث عن دراجة..." oninput="fetchPosts()">
         </div>
+        <div class="filters-container">
+            <select id="categoryFilter" class="filter-select" onchange="fetchPosts()">
+                <option value="">جميع الفئات</option>
+                <option value="نارية">دراجات نارية</option>
+                <option value="هوائية">دراجات هوائية</option>
+                <option value="شحن">دراجات شحن</option>
+            </select>
+            <select id="cityFilter" class="filter-select" onchange="fetchPosts()">
+                <option value="">جميع المحافظات</option>
+                <option value="بغداد">بغداد</option>
+                <option value="البصرة">البصرة</option>
+                <option value="النجف">النجف</option>
+                <option value="كربلاء">كربلاء</option>
+                <option value="أربيل">أربيل</option>
+            </select>
+        </div>
+    </div>
 
-        <!-- Featured Ticker -->
-        <div class="featured-ticker">
-            <div class="ticker-content" id="tickerContent">
-                <span>جاري تحميل الإعلانات...</span>
-            </div>
+    <div class="main-container">
+        <div class="posts-grid" id="postsContainer">
+            <p style="text-align: center; padding: 20px;">جاري تحميل الإعلانات من Supabase...</p>
         </div>
+    </div>
 
-        <!-- Main Container -->
-        <div class="main-container">
-            <div class="posts-grid" id="postsContainer">
-                <div class="loading-spinner"><i class="fa-solid fa-spinner fa-spin fa-2x"></i><p>جاري اتصالك بقاعدة بيانات Firebase...</p></div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Saved Posts Section -->
-    <section id="savedSection" style="display: none;">
-        <div class="main-container" style="margin-top: 20px;">
-            <h2 style="margin-bottom: 16px; font-size: 18px;">الإعلانات المحفوظة</h2>
-            <div class="posts-grid" id="savedPostsContainer">
-                <!-- Saved Posts -->
-            </div>
-        </div>
-    </section>
-
-    <!-- My Profile Section -->
-    <section id="profileSection" style="display: none;">
-        <div class="main-container" style="margin-top: 20px;">
-            <div class="card" style="padding: 20px; text-align: center; margin-bottom: 20px;">
-                <img id="myAvatar" src="https://api.dicebear.com/7.x/avataaars/svg?seed=User" style="width: 80px; height: 80px; border-radius: 50%; margin-bottom: 10px; object-fit: cover;">
-                <h3 id="myName">مستخدم دراجتي</h3>
-                <p id="myPhone" style="color: var(--text-light); font-size: 13px;">جاري تحميل البيانات...</p>
-                <p id="myCity" style="color: var(--text-light); font-size: 13px;">المحافظة</p>
-                <button class="btn-add" style="margin: 12px auto 0;" onclick="openModal('editProfileModal')">تعديل الملف الشخصي</button>
-            </div>
-            <h3 style="margin-bottom: 12px; font-size: 16px;">إعلاناتي المرفوعة</h3>
-            <div class="posts-grid" id="myPostsContainer">
-                <!-- My Posts -->
-            </div>
-        </div>
-    </section>
-    <!-- Add Post Modal -->
+    <!-- Modal Add Post -->
     <div class="modal" id="addPostModal">
         <div class="modal-content">
-            <div class="modal-header">
+            <div style="display:flex; justify-content:space-between; margin-bottom:12px;">
                 <h3>إضافة إعلان جديد</h3>
-                <button class="close-btn" onclick="closeModal('addPostModal')">&times;</button>
+                <button onclick="closeModal('addPostModal')" style="background:none; border:none; font-size:18px;">&times;</button>
             </div>
             <form id="addPostForm" onsubmit="handleAddPost(event)">
                 <div class="form-group">
                     <label>عنوان الإعلان</label>
-                    <input type="text" id="postTitle" placeholder="مثال: دراجة هوندا 2022 ممتازة" required maxlength="40">
+                    <input type="text" id="postTitle" required>
                 </div>
                 <div class="form-group">
                     <label>الفئة</label>
-                    <select id="postCategory" required>
+                    <select id="postCategory">
                         <option value="نارية">دراجة نارية</option>
                         <option value="هوائية">دراجة هوائية</option>
-                        <option value="شحن">دراجة شحن (كهربائية)</option>
+                        <option value="شحن">دراجة شحن</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>المحافظة</label>
-                    <select id="postCity" required>
+                    <select id="postCity">
                         <option value="بغداد">بغداد</option>
                         <option value="البصرة">البصرة</option>
                         <option value="النجف">النجف</option>
                         <option value="كربلاء">كربلاء</option>
                         <option value="أربيل">أربيل</option>
-                        <option value="بابل">بابل</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>السعر (بالدينار العراقي)</label>
-                    <input type="number" id="postPrice" placeholder="مثال: 850000" required max="999999999">
+                    <label>السعر (د.ع)</label>
+                    <input type="number" id="postPrice" required>
                 </div>
                 <div class="form-group">
-                    <label>رابط الصورة</label>
-                    <input type="url" id="postImg" placeholder="ضع رابط صورة الدراجة هنا" required>
+                    <label>اختر صورة من الهاتف</label>
+                    <input type="file" id="postImgFile" accept="image/*" required>
                 </div>
                 <div class="form-group">
-                    <label>الوصف التفصيلي</label>
-                    <textarea id="postDesc" placeholder="اكتب تفاصيل الدراجة والمواصفات وحالتها..." required maxlength="1000"></textarea>
+                    <label>الوصف</label>
+                    <textarea id="postDesc" required></textarea>
                 </div>
-                <button type="submit" class="btn-submit" id="submitBtn">نشر الإعلان</button>
+                <button type="submit" class="btn-submit" id="submitBtn">نشر الآن</button>
             </form>
         </div>
     </div>
 
-    <!-- Settings Modal -->
-    <div class="modal" id="settingsModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>الإعدادات</h3>
-                <button class="close-btn" onclick="closeModal('settingsModal')">&times;</button>
-            </div>
-            <div class="form-group" style="display: flex; justify-content: space-between; align-items: center;">
-                <label style="margin: 0;">الوضع الداكن (Dark Mode)</label>
-                <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()" style="width: auto;">
-            </div>
-        </div>
-    </div>
+    <script>
+        const SUPABASE_URL = "https://lurzvtbvsglxswoiftao.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_DDnpGIIa1_yMCTGPZjhQJA_oMg48DGt";
+        const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    <!-- Edit Profile Modal -->
-    <div class="modal" id="editProfileModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>تعديل الملف الشخصي</h3>
-                <button class="close-btn" onclick="closeModal('editProfileModal')">&times;</button>
-            </div>
-            <form onsubmit="handleEditProfile(event)">
-                <div class="form-group">
-                    <label>الاسم الكامل</label>
-                    <input type="text" id="editName" required>
-                </div>
-                <div class="form-group">
-                    <label>رقم الهاتف</label>
-                    <input type="text" id="editPhone" required>
-                </div>
-                <div class="form-group">
-                    <label>المحافظة</label>
-                    <select id="editCity" required>
-                        <option value="بغداد">بغداد</option>
-                        <option value="البصرة">البصرة</option>
-                        <option value="النجف">النجف</option>
-                        <option value="كربلاء">كربلاء</option>
-                        <option value="أربيل">أربيل</option>
-                        <option value="بابل">بابل</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn-submit">حفظ التغييرات</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Bottom Navigation -->
-    <nav class="bottom-nav">
-        <button class="nav-item active" onclick="showSection('home', this)">
-            <i class="fa-solid fa-house"></i>
-            <span>الرئيسية</span>
-        </button>
-        <button class="nav-item" onclick="showSection('saved', this)">
-            <i class="fa-solid fa-bookmark"></i>
-            <span>المحفوظات</span>
-        </button>
-        <button class="nav-item" onclick="showSection('profile', this)">
-            <i class="fa-solid fa-user"></i>
-            <span>حسابي</span>
-        </button>
-    </nav>
-
-    <!-- Firebase SDK Modules -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getDatabase, ref, push, onValue, update, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
-        // إعدادات Firebase الخاصة بك
-        const firebaseConfig = {
-            apiKey: "AIzaSyAAO0YTpGGwCxcsKFCK8Q2MW9ziMfIsQfE",
-            authDomain: "drajati-729b6.firebaseapp.com",
-            projectId: "drajati-729b6",
-            storageBucket: "drajati-729b6.firebasestorage.app",
-            messagingSenderId: "48542110376",
-            appId: "1:48542110376:web:26be814a4f30df777c289d",
-            databaseURL: "https://drajati-729b6-default-rtdb.firebaseio.com"
+        let currentUser = {
+            name: "مستخدم دراجتي",
+            avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=" + Math.random()
         };
 
-        // تهيئة Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+        async function fetchPosts() {
+            const search = document.getElementById('searchInput').value;
+            const category = document.getElementById('categoryFilter').value;
+            const city = document.getElementById('cityFilter').value;
 
-        // معرف المستخدم المحلي
-        let userId = localStorage.getItem('drajati_uid') || 'user_' + Math.random().toString(36).substr(2, 9);
-        localStorage.setItem('drajati_uid', userId);
+            let query = db.from('posts').select('*').order('created_at', { ascending: false });
 
-        let currentUser = JSON.parse(localStorage.getItem('drajati_user')) || {
-            id: userId,
-            name: "مستخدم " + userId.substr(5, 4),
-            phone: "07700000000",
-            city: "بغداد",
-            avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=" + userId
-        };
+            if (category) query = query.eq('category', category);
+            if (city) query = query.eq('city', city);
+            if (search) query = query.ilike('title', `%${search}%`);
 
-        let allPosts = [];
-
-        // الاستماع المباشر للتغيرات في Firebase Realtime Database
-        const postsRef = ref(db, 'posts');
-        onValue(postsRef, (snapshot) => {
-            const data = snapshot.val();
-            allPosts = [];
-            if (data) {
-                Object.keys(data).forEach(key => {
-                    allPosts.push({ id: key, ...data[key] });
-                });
-                allPosts.reverse(); // عرض الأحدث أولاً
-            }
-            renderTicker();
-            renderPosts(allPosts);
-        });
-
-        // جعل الدوال متاحة عالمياً للاستخدام في HTML
-        window.handleAddPost = async function(e) {
-            e.preventDefault();
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.innerText = "جاري النشر...";
-
-            const newPost = {
-                userId: currentUser.id,
-                user: currentUser.name,
-                avatar: currentUser.avatar,
-                title: document.getElementById('postTitle').value,
-                category: document.getElementById('postCategory').value,
-                city: document.getElementById('postCity').value,
-                price: parseInt(document.getElementById('postPrice').value),
-                img: document.getElementById('postImg').value,
-                desc: document.getElementById('postDesc').value,
-                likes: 0,
-                likedBy: {},
-                createdAt: Date.now(),
-                comments: []
-            };
-
-            try {
-                await push(ref(db, 'posts'), newPost);
-                closeModal('addPostModal');
-                document.getElementById('addPostForm').reset();
-            } catch (err) {
-                alert("حدث خطأ أثناء النشر: " + err.message);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.innerText = "نشر الإعلان";
-            }
-        };
-
-        window.toggleLike = function(postId) {
-            const post = allPosts.find(p => p.id === postId);
-            if (!post) return;
-
-            const likedBy = post.likedBy || {};
-            const isLiked = likedBy[currentUser.id];
-
-            if (isLiked) {
-                delete likedBy[currentUser.id];
-                post.likes = Math.max(0, (post.likes || 1) - 1);
-            } else {
-                likedBy[currentUser.id] = true;
-                post.likes = (post.likes || 0) + 1;
-            }
-
-            update(ref(db, `posts/${postId}`), {
-                likes: post.likes,
-                likedBy: likedBy
-            });
-        };
-
-        window.addComment = function(postId) {
-            const input = document.getElementById(`comment-input-${postId}`);
-            const text = input.value.trim();
-            if (!text) return;
-
-            const post = allPosts.find(p => p.id === postId);
-            const comments = post.comments || [];
-            comments.push({
-                userName: currentUser.name,
-                text: text,
-                createdAt: Date.now()
-            });
-
-            update(ref(db, `posts/${postId}`), { comments: comments });
-            input.value = '';
-        };
-
-        window.handleEditProfile = function(e) {
-            e.preventDefault();
-            currentUser.name = document.getElementById('editName').value;
-            currentUser.phone = document.getElementById('editPhone').value;
-            currentUser.city = document.getElementById('editCity').value;
-            
-            localStorage.setItem('drajati_user', JSON.stringify(currentUser));
-            renderProfile();
-            closeModal('editProfileModal');
-        };
-
-        function renderProfile() {
-            document.getElementById('myName').innerText = currentUser.name;
-            document.getElementById('myPhone').innerText = currentUser.phone;
-            document.getElementById('myCity').innerText = currentUser.city;
-            document.getElementById('myAvatar').src = currentUser.avatar;
-
-            document.getElementById('editName').value = currentUser.name;
-            document.getElementById('editPhone').value = currentUser.phone;
-            document.getElementById('editCity').value = currentUser.city;
+            const { data, error } = await query;
+            if (error) console.error(error);
+            else renderPosts(data || []);
         }
 
-        function renderTicker() {
-            const ticker = document.getElementById('tickerContent');
-            if (allPosts.length === 0) {
-                ticker.innerHTML = '<span>لا توجد إعلانات حالياً</span>';
-                return;
-            }
-            ticker.innerHTML = allPosts.map(p => `
-                <span class="ticker-item" onclick="filterByTitle('${p.title}')">
-                    <i class="fa-solid fa-star"></i> ${p.title} - ${p.price.toLocaleString()} د.ع (${p.city})
-                </span>
-            `).join('');
-        }
-
-        function renderPosts(postsArray) {
+        function renderPosts(posts) {
             const container = document.getElementById('postsContainer');
-            if (postsArray.length === 0) {
-                container.innerHTML = '<p style="text-align:center; padding: 20px; color: var(--text-light);">لا توجد إعلانات مطابقة.</p>';
+            if (posts.length === 0) {
+                container.innerHTML = '<p style="text-align:center;">لا توجد إعلانات حالياً.</p>';
                 return;
             }
 
-            container.innerHTML = postsArray.map(post => {
-                const isLiked = post.likedBy && post.likedBy[currentUser.id];
-                const comments = post.comments || [];
-                return `
-                <div class="card" id="post-${post.id}">
+            container.innerHTML = posts.map(post => `
+                <div class="card">
                     <div class="card-header">
                         <div class="user-info">
-                            <img src="${post.avatar || 'https://via.placeholder.com/40'}" class="user-avatar" alt="User">
-                            <div class="user-details">
-                                <h4>${post.user || 'مستخدم'}</h4>
-                                <span><i class="fa-solid fa-location-dot"></i> ${post.city}</span>
+                            <img src="${post.user_avatar}" class="user-avatar">
+                            <div>
+                                <h4>${post.user_name}</h4>
+                                <span style="font-size:11px; color:gray;">${post.city}</span>
                             </div>
                         </div>
-                        <span class="card-badge">${post.category}</span>
+                        <span style="font-size:11px; background:#eee; padding:2px 8px; border-radius:4px;">${post.category}</span>
                     </div>
                     <div class="card-img-container">
-                        <img src="${post.img}" alt="${post.title}" onerror="this.src='https://via.placeholder.com/400x250?text=No+Image'">
+                        <img src="${post.img_url}" alt="Post Image">
                     </div>
                     <div class="card-body">
                         <div class="card-title">${post.title}</div>
                         <div class="card-price">${parseInt(post.price).toLocaleString()} د.ع</div>
-                        <div class="card-desc">${post.desc}</div>
-                        
+                        <div class="card-desc">${post.description}</div>
                         <div class="card-actions">
-                            <button class="action-btn ${isLiked ? 'liked' : ''}" onclick="window.toggleLike('${post.id}')">
-                                <i class="fa-${isLiked ? 'solid' : 'regular'} fa-heart"></i>
-                                <span>${post.likes || 0}</span>
+                            <button class="action-btn" onclick="toggleLike(${post.id}, ${post.likes})">
+                                <i class="fa-regular fa-heart"></i> ${post.likes || 0}
                             </button>
-                            <button class="action-btn" onclick="window.toggleCommentsSection('${post.id}')">
-                                <i class="fa-regular fa-comment"></i>
-                                <span>${comments.length}</span>
-                            </button>
-                            <button class="action-btn" onclick="window.sharePost('${post.title}')">
-                                <i class="fa-solid fa-share-nodes"></i>
-                            </button>
-                        </div>
-
-                        <!-- Comment Section -->
-                        <div id="comments-section-${post.id}" style="display: none; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border);">
-                            <div class="comments-list">
-                                ${comments.map(c => `
-                                    <div class="comment-item">
-                                        <strong>${c.userName}</strong>
-                                        ${c.text}
-                                    </div>
-                                `).join('')}
-                            </div>
-                            <div class="comment-input-group">
-                                <input type="text" id="comment-input-${post.id}" placeholder="اكتب تعليقاً...">
-                                <button class="btn-add" style="padding: 6px 12px;" onclick="window.addComment('${post.id}')">إرسال</button>
-                            </div>
                         </div>
                     </div>
                 </div>
-            `}).join('');
+            `).join('');
         }
 
-        // Global Utility Functions
-        window.openModal = id => document.getElementById(id).classList.add('active');
-        window.closeModal = id => document.getElementById(id).classList.remove('active');
-        window.toggleDarkMode = () => document.body.classList.toggle('dark-mode');
-        window.toggleCommentsSection = id => {
-            const el = document.getElementById(`comments-section-${id}`);
-            el.style.display = el.style.display === 'none' ? 'block' : 'none';
-        };
-        window.sharePost = title => {
-            if (navigator.share) {
-                navigator.share({ title: title, url: window.location.href });
-            } else {
-                alert(`تم تجهيز مشاركة الإعلان: ${title}`);
+        async function handleAddPost(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerText = "جاري رفع الصورة والإعلان...";
+
+            try {
+                const fileInput = document.getElementById('postImgFile');
+                const file = fileInput.files[0];
+                const fileName = `${Date.now()}_${file.name}`;
+
+                // 1. رفع الصورة إلى Supabase Storage
+                const { data: imgData, error: imgError } = await db.storage
+                    .from('post-images')
+                    .upload(fileName, file);
+
+                if (imgError) throw imgError;
+
+                // الحصول على رابط الصورة
+                const { data: publicUrlData } = db.storage.from('post-images').getPublicUrl(fileName);
+                const imgUrl = publicUrlData.publicUrl;
+
+                // 2. إدخال بيانات الإعلان في الجدول
+                const { error } = await db.from('posts').insert([{
+                    user_name: currentUser.name,
+                    user_avatar: currentUser.avatar,
+                    title: document.getElementById('postTitle').value,
+                    category: document.getElementById('postCategory').value,
+                    city: document.getElementById('postCity').value,
+                    price: parseFloat(document.getElementById('postPrice').value),
+                    img_url: imgUrl,
+                    description: document.getElementById('postDesc').value
+                }]);
+
+                if (error) throw error;
+
+                closeModal('addPostModal');
+                document.getElementById('addPostForm').reset();
+                fetchPosts();
+            } catch (err) {
+                alert("حدث خطأ: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "نشر الآن";
             }
-        };
-        window.showSection = (section, btn) => {
-            document.getElementById('homeSection').style.display = 'none';
-            document.getElementById('savedSection').style.display = 'none';
-            document.getElementById('profileSection').style.display = 'none';
+        }
 
-            if (section === 'home') document.getElementById('homeSection').style.display = 'block';
-            if (section === 'saved') document.getElementById('savedSection').style.display = 'block';
-            if (section === 'profile') {
-                document.getElementById('profileSection').style.display = 'block';
-                renderProfile();
-            }
+        async function toggleLike(id, currentLikes) {
+            await db.from('posts').update({ likes: (currentLikes || 0) + 1 }).eq('id', id);
+            fetchPosts();
+        }
 
-            if (btn) {
-                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-                btn.classList.add('active');
-            }
-        };
+        function openModal(id) { document.getElementById(id).classList.add('active'); }
+        function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-        // Filtering
-        const applyFilters = () => {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const cat = document.getElementById('categoryFilter').value;
-            const city = document.getElementById('cityFilter').value;
+        // الاستماع الفوري للتحديثات (Realtime)
+        db.channel('posts_channel').on('postgres_changes', { event: '*', schema: 'public', table: 'posts' }, () => {
+            fetchPosts();
+        }).subscribe();
 
-            const filtered = allPosts.filter(p => {
-                const matchesSearch = (p.title || '').toLowerCase().includes(query) || (p.desc || '').toLowerCase().includes(query);
-                const matchesCat = cat === "" || p.category === cat;
-                const matchesCity = city === "" || p.city === city;
-                return matchesSearch && matchesCat && matchesCity;
-            });
-
-            renderPosts(filtered);
-        };
-
-        document.getElementById('searchInput').addEventListener('input', applyFilters);
-        document.getElementById('categoryFilter').addEventListener('change', applyFilters);
-        document.getElementById('cityFilter').addEventListener('change', applyFilters);
-        document.getElementById('gridToggleBtn').addEventListener('click', () => {
-            document.getElementById('postsContainer').classList.toggle('grid-view');
-        });
-
-        renderProfile();
+        fetchPosts();
     </script>
 </body>
 </html>
