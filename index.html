@@ -673,8 +673,25 @@
     <!-- البرمجة السلوكية للربط مع قاعدة البيانات والتحكم بالنظام -->
     <script>
         // 1. إعدادات وقيم الاتصال بقاعدة البيانات (Supabase Configuration)
-        const SUPABASE_URL = "https://lurzvtbvsglxswoiftao.supabase.co";
-        const SUPABASE_ANON_KEY = "sb_publishable_DDnpGIIa1_yMCTGPZjhQJA_oMg48DGt";
+        <script>
+    // 1. إعدادات وقيم الاتصال بقاعدة البيانات الخاصة بك
+    const SUPABASE_URL = "https://lurzvtbvsglxswoiftao.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx1cnp2dGJ2c2dseHN3b2lmdGFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgyMzUzNjcsImV4cCI6MjEwMzgxMTM2N30.JrbwksyvYCF_3uSdrRFEtEMTt9CQLa0vGguCv9GHnB8";
+    
+    // تهيئة عميل Supabase بأمان
+    var supabaseClient = null;
+    
+    try {
+        if (typeof supabase !== 'undefined') {
+            supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log("تم الاتصال بـ Supabase بنجاح!");
+        } else {
+            console.error("مكتبة Supabase غير محملة في الصفحة!");
+        }
+    } catch (err) {
+        console.error("خطأ أثناء التهيئة:", err);
+    }
+</script>
         
         // تهيئة عميل Supabase
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
