@@ -765,6 +765,135 @@
 
             document.getElementById(viewId).classList.remove('hidden');
 
+<!-- شريط الملاحة السفلي (Bottom Navigation Bar) -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700/60 z-40 shadow-lg">
+        <div class="max-w-xl mx-auto flex items-center justify-around h-16 px-2">
+            
+            <button onclick="navigateTo('main-view')" id="nav-home-btn" class="nav-btn text-brand-500 flex flex-col items-center justify-center gap-1 w-16 btn-tap">
+                <i class="fa-solid fa-house text-lg"></i>
+                <span class="text-[10px] font-bold">الرئيسية</span>
+            </button>
+
+            <button onclick="filterByCategory('سكوتر')" class="nav-btn text-gray-400 dark:text-gray-500 flex flex-col items-center justify-center gap-1 w-16 btn-tap hover:text-brand-500">
+                <i class="fa-solid fa-charging-station text-lg"></i>
+                <span class="text-[10px] font-bold">سكوترات</span>
+            </button>
+
+            <button onclick="openAddPostModal()" class="flex flex-col items-center justify-center -mt-5 btn-tap">
+                <div class="w-12 h-12 bg-emerald-500 text-white rounded-full flex items-center justify-center text-xl shadow-lg border-4 border-white dark:border-gray-800">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+                <span class="text-[9px] font-bold text-gray-600 dark:text-gray-300 mt-0.5">أعرض إعلان</span>
+            </button>
+
+            <button onclick="openInboxModal()" class="nav-btn text-gray-400 dark:text-gray-500 flex flex-col items-center justify-center gap-1 w-16 btn-tap hover:text-brand-500">
+                <i class="fa-solid fa-comments text-lg"></i>
+                <span class="text-[10px] font-bold">الرسائل</span>
+            </button>
+
+            <button onclick="navigateTo('profile-view')" id="nav-profile-btn" class="nav-btn text-gray-400 dark:text-gray-500 flex flex-col items-center justify-center gap-1 w-16 btn-tap hover:text-brand-500">
+                <i class="fa-solid fa-user text-lg"></i>
+                <span class="text-[10px] font-bold">حسابي</span>
+            </button>
+
+        </div>
+    </nav>
+
+    <!-- البرمجة السلوكية للربط مع قاعدة البيانات والتحكم بالنظام -->
+    <script>
+        // 1. إعدادات وقيم الاتصال بقاعدة البيانات الخاصة بمشروعك (Supabase Configuration)
+        const SUPABASE_URL = "https://lurzvtbvsglxswoiftao.supabase.co";
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imx1cnp2dGJ2c2dseHN3b2lmdGFvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgyMzUzNjcsImV4cCI6MjEwMzgxMTM2N30.JrbwksyvYCF_3uSdrRFEtEMTt9CQLa0vGguCv9GHnB8";
+        
+        // تهيئة عميل Supabase
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // 2. حالة التطبيق والمستخدم الحالية (Global App State)
+        let currentUser = null;
+        let allPosts = [];
+        let filteredPosts = [];
+        let currentCityFilter = 'الكل';
+        let currentCategoryFilter = 'الكل';
+        let activeProfileTab = 'my-posts';
+        let savedPostIds = new Set();
+
+        // 3. المحرك الرئيسي عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', async () => {
+            initTheme();
+            await initAppUser();
+            await fetchPosts();
+            setupRealtimeSubscriptions();
+        });
+
+        // 4. نظام التعرف التلقائي على الجهاز والهوية الفريدة (Device ID Identifier)
+        async function initAppUser() {
+            let deviceId = localStorage.getItem('darajati_device_id');
+            if (!deviceId) {
+                deviceId = 'DEV_' + Math.random().toString(36).substring(2, 9) + '_' + Date.now();
+                localStorage.setItem('darajati_device_id', deviceId);
+            }
+
+            try {
+                // التحقق من وجود المستخدم في الجدول عبر معرف الجهاز
+                let { data: user, error } = await supabaseClient
+                    .from('users')
+                    .select('*')
+                    .eq('device_id', deviceId)
+                    .maybeSingle();
+
+                if (!user) {
+                    // إنشاء حساب تلقائي مجهول سريع للمستخدم الجديد
+                    const newUserData = {
+                        id: crypto.randomUUID ? crypto.randomUUID() : undefined,
+                        device_id: deviceId,
+                        name: 'عضو دراجتي ' + Math.floor(1000 + Math.random() * 9000),
+                        city: 'بغداد',
+                        avatar_url: `https://api.dicebear.com/7.x/bottts/svg?seed=${deviceId}`
+                    };
+
+                    const { data: createdUser, err: createErr } = await supabaseClient
+                        .from('users')
+                        .insert([newUserData])
+                        .select()
+                        .single();
+
+                    if (!createErr && createdUser) {
+                        currentUser = createdUser;
+                    }
+                } else {
+                    currentUser = user;
+                }
+
+                updateProfileUI();
+                await fetchSavedPostIds();
+
+            } catch (err) {
+                console.error("خطأ أثناء التهيئة التلقائية للمستخدم:", err);
+            }
+        }
+
+        // 5. إدارة المظهر الداكن والفيزيائي (Dark Mode Engine)
+        function initTheme() {
+            const isDark = localStorage.getItem('darajati_theme') === 'dark';
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
+        function toggleDarkMode() {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darajati_theme', isDark ? 'dark' : 'light');
+        }
+
+        // 6. نظام التنقل بين الشاشات الرئيسية
+        function navigateTo(viewId) {
+            document.getElementById('main-view').classList.add('hidden');
+            document.getElementById('profile-view').classList.add('hidden');
+
+            document.getElementById(viewId).classList.remove('hidden');
+
             // تحديث ألوان شريط الملاحة السفلي
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('text-brand-500');
