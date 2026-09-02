@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" class="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,14 +8,18 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+        }
+    </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     
     <style>
         body { 
             font-family: 'Cairo', system-ui, -apple-system, sans-serif; 
-            background-color: #f0f2f5;
-            min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         .btn-tap { transition: transform 0.15s ease, opacity 0.15s ease; }
         .btn-tap:active { transform: scale(0.92); }
@@ -35,23 +39,27 @@
         }
         .animate-swing { animation: swing 0.4s ease-in-out; }
 
+        /* حركية خاصة وأنيقة لأيقونة الإعدادات عند النقر */
+        @keyframes gearSpinPulse {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.25); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+        .settings-gear-anim { animation: gearSpinPulse 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
         .slide-up { animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1); }
         @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         
         /* كبسولات التفاعل */
         .interaction-capsule {
-            background-color: #f0f2f5;
             transition: all 0.2s ease;
-        }
-        .interaction-capsule:hover {
-            background-color: #e4e6eb;
         }
     </style>
 </head>
-<body class="text-gray-800 pb-12">
+<body class="bg-[#f0f2f5] dark:bg-gray-900 text-gray-800 dark:text-gray-100 min-h-screen pb-12">
 
     <!-- الهيدر العلوي -->
-    <header class="bg-[#1877f2] text-white sticky top-0 z-40 shadow-md">
+    <header class="bg-[#1877f2] dark:bg-gray-800 text-white sticky top-0 z-40 shadow-md">
         <div class="max-w-xl mx-auto px-3 h-14 flex items-center justify-between">
             <div class="flex items-center space-x-2 space-x-reverse cursor-pointer" onclick="showMainView()">
                 <div class="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center text-white text-base shadow">
@@ -66,22 +74,22 @@
                     <span>إعلان جديد</span>
                 </button>
 
-                <button onclick="showProfileView()" class="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white text-sm btn-tap" title="الملف الشخصي والمحفوظات">
+                <button onclick="showProfileView()" class="w-8 h-8 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white text-sm btn-tap" title="الملف الشخصي">
                     <i class="fa-solid fa-user"></i>
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- الرئيسية -->
+    <!-- واجهة الصفحة الرئيسية -->
     <main id="main-view" class="max-w-xl mx-auto pt-3 px-2">
         <!-- البحث والفلاتر -->
-        <div class="mb-3 flex gap-2 text-xs bg-white p-2 rounded-xl shadow-sm border border-gray-200">
+        <div class="mb-3 flex gap-2 text-xs bg-white dark:bg-gray-800 p-2 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
             <div class="relative flex-1">
                 <i class="fa-solid fa-magnifying-glass absolute right-2.5 top-2.5 text-gray-400"></i>
-                <input type="text" id="search-input" onkeyup="filterPosts()" placeholder="ابحث عن دراجة..." class="w-full bg-gray-100 pl-2 pr-8 py-1.5 rounded-lg outline-none focus:bg-white focus:ring-1 focus:ring-blue-500">
+                <input type="text" id="search-input" onkeyup="filterPosts()" placeholder="ابحث عن دراجة..." class="w-full bg-gray-100 dark:bg-gray-700 dark:text-white pl-2 pr-8 py-1.5 rounded-lg outline-none focus:bg-white dark:focus:bg-gray-600 focus:ring-1 focus:ring-blue-500">
             </div>
-            <button onclick="toggleModal('categories-modal')" class="bg-gray-100 border rounded-lg px-2.5 py-1.5 font-bold text-gray-700 flex items-center gap-1 btn-tap">
+            <button onclick="toggleModal('categories-modal')" class="bg-gray-100 dark:bg-gray-700 border dark:border-gray-600 rounded-lg px-2.5 py-1.5 font-bold text-gray-700 dark:text-gray-200 flex items-center gap-1 btn-tap">
                 <span id="selected-category-label">الكل</span>
                 <i class="fa-solid fa-chevron-down text-[10px]"></i>
             </button>
@@ -89,61 +97,118 @@
 
         <!-- قائمة المنشورات -->
         <div id="posts-container">
-            <div class="text-center py-8 text-gray-500 text-xs">
+            <div class="text-center py-8 text-gray-500 dark:text-gray-400 text-xs">
                 <i class="fa-solid fa-spinner fa-spin text-blue-500 text-xl mb-2"></i>
                 <p>جاري تحميل المنشورات...</p>
             </div>
         </div>
     </main>
 
-    <!-- واجهة الملف الشخصي / المحفوظات -->
+    <!-- واجهة الملف الشخصي -->
     <main id="profile-view" class="max-w-xl mx-auto pt-3 px-2 hidden">
-        <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 mb-4">
-            <div class="flex items-center justify-between border-b pb-3 mb-3">
+        <div class="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 mb-4">
+            <div class="flex items-center justify-between border-b dark:border-gray-700 pb-3 mb-3">
                 <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-xl font-bold">
+                    <div class="w-12 h-12 bg-blue-100 dark:bg-gray-700 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center text-xl font-bold">
                         <i class="fa-solid fa-user"></i>
                     </div>
                     <div>
-                        <h3 class="font-black text-sm text-gray-800">حسابي الشخصي</h3>
-                        <p class="text-[11px] text-gray-500">المعرف: <span id="user-id-display" class="font-mono"></span></p>
+                        <h3 class="font-black text-sm text-gray-800 dark:text-gray-100">حسابي الشخصي</h3>
+                        <p class="text-[11px] text-gray-500 dark:text-gray-400">المعرف: <span id="user-id-display" class="font-mono"></span></p>
                     </div>
                 </div>
-                <button onclick="showMainView()" class="text-xs bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-lg font-bold">العودة للرئيسية</button>
+
+                <!-- زر الإعدادات مع تأثير حركة الترس المتميز -->
+                <button id="settings-btn" onclick="openSettingsModal()" class="w-10 h-10 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-full flex items-center justify-center text-gray-700 dark:text-gray-200 text-lg btn-tap shadow-sm" title="الإعدادات">
+                    <i id="settings-icon" class="fa-solid fa-gear"></i>
+                </button>
             </div>
             
             <div class="flex gap-2">
-                <button onclick="switchProfileTab('saved')" id="tab-saved-btn" class="flex-1 py-2 bg-blue-50 text-blue-600 rounded-lg font-bold text-xs flex items-center justify-center gap-2 border border-blue-200">
-                    <i class="fa-solid fa-bookmark"></i> المحفوظات
+                <!-- زر فتح النافذة المنبثقة للمحفوظات -->
+                <button onclick="openSavedPostsModal()" class="flex-1 py-2.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg font-bold text-xs flex items-center justify-center gap-2 border border-blue-200 dark:border-blue-800 btn-tap">
+                    <i class="fa-solid fa-bookmark"></i> عرض المحفوظات
+                </button>
+                
+                <button onclick="showMainView()" class="px-4 py-2.5 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg font-bold text-xs btn-tap">
+                    الرئيسية
                 </button>
             </div>
         </div>
-
-        <div id="saved-posts-container">
-            <!-- يتم تحميل المنشورات المحفوظة هنا -->
-        </div>
     </main>
+
+    <!-- نافذة الإعدادات (Settings Modal) -->
+    <div id="settings-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-sm rounded-2xl p-4 shadow-2xl space-y-4 slide-up border dark:border-gray-700">
+            <div class="flex justify-between items-center border-b dark:border-gray-700 pb-2">
+                <h3 class="font-black text-sm text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                    <i class="fa-solid fa-gear text-blue-500"></i> الإعدادات
+                </h3>
+                <button onclick="toggleModal('settings-modal')" class="text-lg font-bold text-gray-400">&times;</button>
+            </div>
+
+            <div class="space-y-3 text-xs">
+                <!-- خيار الدارك مود -->
+                <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-xl border dark:border-gray-700">
+                    <div class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-moon text-indigo-500 text-base"></i>
+                        <span class="font-bold text-gray-700 dark:text-gray-200">الوضع الداكن (Dark Mode)</span>
+                    </div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="dark-mode-toggle" onchange="toggleDarkMode()" class="sr-only peer">
+                        <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none rounded-full peer dark:bg-gray-600 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    </label>
+                </div>
+
+                <!-- خيار تواصل ويانا -->
+                <button onclick="contactUsMail()" class="w-full flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 hover:bg-blue-50 dark:hover:bg-gray-700 rounded-xl border dark:border-gray-700 text-gray-700 dark:text-gray-200 font-bold transition">
+                    <div class="flex items-center gap-2.5">
+                        <i class="fa-solid fa-envelope-open-text text-emerald-500 text-base"></i>
+                        <span>تواصل ويانا</span>
+                    </div>
+                    <i class="fa-solid fa-chevron-left text-gray-400 text-xs"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- النافذة المنبثقة للـ المحفوظات (Saved Posts Modal) -->
+    <div id="saved-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-md rounded-2xl p-4 shadow-2xl space-y-3 slide-up max-h-[80vh] flex flex-col border dark:border-gray-700">
+            <div class="flex justify-between items-center border-b dark:border-gray-700 pb-2 flex-shrink-0">
+                <h3 class="font-black text-xs text-gray-800 dark:text-gray-100 flex items-center gap-2">
+                    <i class="fa-solid fa-bookmark text-blue-500"></i> العناصر المحفوظة
+                </h3>
+                <button onclick="toggleModal('saved-modal')" class="text-base font-bold text-gray-400">&times;</button>
+            </div>
+
+            <!-- قائمة العناصر المنبثقة بشكل صغير ومصغر للصورة مع اسم المنشور والناشر -->
+            <div id="saved-modal-list" class="flex-1 overflow-y-auto space-y-2 py-1 text-xs">
+                <!-- جلب العناصر المحفوظة بالسكربت -->
+            </div>
+        </div>
+    </div>
 
     <!-- نافذة إضافة إعلان -->
     <div id="add-post-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
-        <div class="bg-white w-full max-w-lg rounded-2xl p-4 shadow-2xl space-y-3 slide-up max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center border-b pb-2">
-                <h3 class="font-black text-sm text-gray-800">نشر إعلان جديد</h3>
+        <div class="bg-white dark:bg-gray-800 w-full max-w-lg rounded-2xl p-4 shadow-2xl space-y-3 slide-up max-h-[90vh] overflow-y-auto border dark:border-gray-700">
+            <div class="flex justify-between items-center border-b dark:border-gray-700 pb-2">
+                <h3 class="font-black text-sm text-gray-800 dark:text-gray-100">نشر إعلان جديد</h3>
                 <button onclick="toggleModal('add-post-modal')" class="text-lg font-bold text-gray-400">&times;</button>
             </div>
             <form id="add-post-form" onsubmit="handleCreatePost(event)" class="space-y-3 text-xs">
                 <div>
-                    <label class="font-bold text-gray-700 block mb-1">عنوان الإعلان</label>
-                    <input type="text" id="post-title" required placeholder="سكوتر ياماها 2022" class="w-full bg-gray-50 border rounded-lg p-2 outline-none focus:border-blue-500">
+                    <label class="font-bold text-gray-700 dark:text-gray-300 block mb-1">عنوان الإعلان</label>
+                    <input type="text" id="post-title" required placeholder="سكوتر ياماها 2022" class="w-full bg-gray-50 dark:bg-gray-700 dark:text-white border dark:border-gray-600 rounded-lg p-2 outline-none focus:border-blue-500">
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="font-bold text-gray-700 block mb-1">السعر</label>
-                        <input type="text" id="post-price" required placeholder="$850" class="w-full bg-gray-50 border rounded-lg p-2 outline-none focus:border-blue-500">
+                        <label class="font-bold text-gray-700 dark:text-gray-300 block mb-1">السعر</label>
+                        <input type="text" id="post-price" required placeholder="$850" class="w-full bg-gray-50 dark:bg-gray-700 dark:text-white border dark:border-gray-600 rounded-lg p-2 outline-none focus:border-blue-500">
                     </div>
                     <div>
-                        <label class="font-bold text-gray-700 block mb-1">الفئة</label>
-                        <select id="post-category" required class="w-full bg-gray-50 border rounded-lg p-2 outline-none focus:border-blue-500">
+                        <label class="font-bold text-gray-700 dark:text-gray-300 block mb-1">الفئة</label>
+                        <select id="post-category" required class="w-full bg-gray-50 dark:bg-gray-700 dark:text-white border dark:border-gray-600 rounded-lg p-2 outline-none focus:border-blue-500">
                             <option value="دراجات نارية">دراجات نارية</option>
                             <option value="دراجات هوائية">دراجات هوائية</option>
                             <option value="دراجات الشحن">دراجات الشحن</option>
@@ -152,8 +217,8 @@
                 </div>
                 <div class="grid grid-cols-2 gap-2">
                     <div>
-                        <label class="font-bold text-gray-700 block mb-1">المحافظة</label>
-                        <select id="post-city" required class="w-full bg-gray-50 border rounded-lg p-2 outline-none focus:border-blue-500">
+                        <label class="font-bold text-gray-700 dark:text-gray-300 block mb-1">المحافظة</label>
+                        <select id="post-city" required class="w-full bg-gray-50 dark:bg-gray-700 dark:text-white border dark:border-gray-600 rounded-lg p-2 outline-none focus:border-blue-500">
                             <option value="بغداد">بغداد</option>
                             <option value="البصرة">البصرة</option>
                             <option value="أربيل">أربيل</option>
@@ -162,17 +227,17 @@
                         </select>
                     </div>
                     <div>
-                        <label class="font-bold text-gray-700 block mb-1">رقم الواتساب</label>
-                        <input type="tel" id="post-phone" required placeholder="07700000000" class="w-full bg-gray-50 border rounded-lg p-2 outline-none focus:border-blue-500">
+                        <label class="font-bold text-gray-700 dark:text-gray-300 block mb-1">رقم الواتساب</label>
+                        <input type="tel" id="post-phone" required placeholder="07700000000" class="w-full bg-gray-50 dark:bg-gray-700 dark:text-white border dark:border-gray-600 rounded-lg p-2 outline-none focus:border-blue-500">
                     </div>
                 </div>
                 <div>
-                    <label class="font-bold text-gray-700 block mb-1">تفاصيل الدراجة</label>
-                    <textarea id="post-desc" rows="2" required placeholder="تفاصيل المحرك والحالة..." class="w-full bg-gray-50 border rounded-lg p-2 outline-none focus:border-blue-500"></textarea>
+                    <label class="font-bold text-gray-700 dark:text-gray-300 block mb-1">تفاصيل الدراجة</label>
+                    <textarea id="post-desc" rows="2" required placeholder="تفاصيل المحرك والحالة..." class="w-full bg-gray-50 dark:bg-gray-700 dark:text-white border dark:border-gray-600 rounded-lg p-2 outline-none focus:border-blue-500"></textarea>
                 </div>
                 <div>
-                    <label class="font-bold text-gray-700 block mb-1">الصورة</label>
-                    <input type="file" id="post-images" accept="image/*" onchange="previewAndCompressImages(event)" class="w-full bg-gray-50 border rounded-lg p-1 text-xs">
+                    <label class="font-bold text-gray-700 dark:text-gray-300 block mb-1">الصورة (بدقة عالية وواضحة جداً)</label>
+                    <input type="file" id="post-images" accept="image/*" onchange="previewAndCompressImages(event)" class="w-full bg-gray-50 dark:bg-gray-700 dark:text-white border dark:border-gray-600 rounded-lg p-1 text-xs">
                     <div id="images-preview" class="flex gap-2 mt-2"></div>
                 </div>
                 <button type="submit" id="submit-post-btn" class="w-full bg-blue-600 text-white font-bold py-2.5 rounded-xl btn-tap">نشر الآن</button>
@@ -182,9 +247,9 @@
 
     <!-- نافذة التعليقات -->
     <div id="comments-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-end sm:items-center justify-center p-0 sm:p-3">
-        <div class="bg-white w-full max-w-lg rounded-t-2xl sm:rounded-2xl p-4 shadow-2xl space-y-3 slide-up h-[75vh] flex flex-col">
-            <div class="flex justify-between items-center border-b pb-2 flex-shrink-0">
-                <h3 class="font-black text-xs text-gray-800 flex items-center gap-1.5">
+        <div class="bg-white dark:bg-gray-800 w-full max-w-lg rounded-t-2xl sm:rounded-2xl p-4 shadow-2xl space-y-3 slide-up h-[75vh] flex flex-col border dark:border-gray-700">
+            <div class="flex justify-between items-center border-b dark:border-gray-700 pb-2 flex-shrink-0">
+                <h3 class="font-black text-xs text-gray-800 dark:text-gray-100 flex items-center gap-1.5">
                     <i class="fa-regular fa-comment text-blue-500"></i> التعليقات
                 </h3>
                 <button onclick="toggleModal('comments-modal')" class="text-base font-bold text-gray-400">&times;</button>
@@ -194,9 +259,9 @@
                 <!-- تحميل التعليقات -->
             </div>
 
-            <form onsubmit="handleAddComment(event)" class="flex gap-2 pt-2 border-t flex-shrink-0">
+            <form onsubmit="handleAddComment(event)" class="flex gap-2 pt-2 border-t dark:border-gray-700 flex-shrink-0">
                 <input type="hidden" id="active-post-id">
-                <input type="text" id="comment-input" required placeholder="اكتب تعليقاً..." class="flex-1 bg-gray-100 border rounded-full px-4 py-2 text-xs outline-none focus:bg-white focus:border-blue-500">
+                <input type="text" id="comment-input" required placeholder="اكتب تعليقاً..." class="flex-1 bg-gray-100 dark:bg-gray-700 dark:text-white border dark:border-gray-600 rounded-full px-4 py-2 text-xs outline-none focus:bg-white dark:focus:bg-gray-600 focus:border-blue-500">
                 <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-full font-bold text-xs btn-tap flex items-center justify-center">
                     <i class="fa-solid fa-paper-plane"></i>
                 </button>
@@ -206,25 +271,24 @@
 
     <!-- الفئات -->
     <div id="categories-modal" class="fixed inset-0 bg-black/60 z-50 hidden flex items-center justify-center p-3">
-        <div class="bg-white w-full max-w-xs rounded-xl p-3.5 shadow-2xl space-y-2 slide-up text-xs font-bold">
-            <div class="flex justify-between items-center border-b pb-2">
-                <h3>اختر الفئة</h3>
-                <button onclick="toggleModal('categories-modal')" class="text-base">&times;</button>
+        <div class="bg-white dark:bg-gray-800 w-full max-w-xs rounded-xl p-3.5 shadow-2xl space-y-2 slide-up text-xs font-bold border dark:border-gray-700">
+            <div class="flex justify-between items-center border-b dark:border-gray-700 pb-2">
+                <h3 class="dark:text-white">اختر الفئة</h3>
+                <button onclick="toggleModal('categories-modal')" class="text-base dark:text-gray-400">&times;</button>
             </div>
-            <button onclick="selectCategory('الكل')" class="w-full p-2 bg-gray-50 hover:bg-blue-50 rounded-lg text-right">الكل</button>
-            <button onclick="selectCategory('دراجات نارية')" class="w-full p-2 bg-gray-50 hover:bg-blue-50 rounded-lg text-right">دراجات نارية</button>
-            <button onclick="selectCategory('دراجات هوائية')" class="w-full p-2 bg-gray-50 hover:bg-blue-50 rounded-lg text-right">دراجات هوائية</button>
-            <button onclick="selectCategory('دراجات الشحن')" class="w-full p-2 bg-gray-50 hover:bg-blue-50 rounded-lg text-right">دراجات الشحن</button>
+            <button onclick="selectCategory('الكل')" class="w-full p-2 bg-gray-50 dark:bg-gray-700 dark:text-white hover:bg-blue-50 dark:hover:bg-gray-600 rounded-lg text-right">الكل</button>
+            <button onclick="selectCategory('دراجات نارية')" class="w-full p-2 bg-gray-50 dark:bg-gray-700 dark:text-white hover:bg-blue-50 dark:hover:bg-gray-600 rounded-lg text-right">دراجات نارية</button>
+            <button onclick="selectCategory('دراجات هوائية')" class="w-full p-2 bg-gray-50 dark:bg-gray-700 dark:text-white hover:bg-blue-50 dark:hover:bg-gray-600 rounded-lg text-right">دراجات هوائية</button>
+            <button onclick="selectCategory('دراجات الشحن')" class="w-full p-2 bg-gray-50 dark:bg-gray-700 dark:text-white hover:bg-blue-50 dark:hover:bg-gray-600 rounded-lg text-right">دراجات الشحن</button>
         </div>
     </div>
 
-    <!-- سكريبت التشغيل المكتمل -->
     <script>
         const SUPABASE_URL = "https://lurzvtbvsglxswoiftao.supabase.co"; 
         const SUPABASE_ANON_KEY = "sb_publishable_DDnpGIIa1_yMCTGPZjhQJA_oMg48DGt"; 
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // إنشاء هويّة للمستخدم الحالي في المتصفح لتحديد الملكية والمحفوظات
+        // إنشاء أو جلب هوية المستخدم
         let CURRENT_USER_ID = localStorage.getItem('my_app_user_id');
         if (!CURRENT_USER_ID) {
             CURRENT_USER_ID = 'user_' + Math.random().toString(36).substr(2, 9);
@@ -238,11 +302,18 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('user-id-display').innerText = CURRENT_USER_ID;
+            
+            // تهيئة حالة الدارك مود المسجلة سابقاً
+            if (localStorage.getItem('theme') === 'dark') {
+                document.documentElement.classList.add('dark');
+                document.getElementById('dark-mode-toggle').checked = true;
+            }
+
             fetchSavedPostsIds();
             loadPostsFromSupabase();
         });
 
-        // توليد تأثيرات صوتية تفاعلية لطيفة وبسيطة باستخدام Web Audio API
+        // تأثيرات الصوت
         function playAudioEffect(type) {
             try {
                 const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -276,7 +347,7 @@
                     osc.start();
                     osc.stop(ctx.currentTime + 0.18);
                 }
-            } catch(e) { console.log('Audio error:', e); }
+            } catch(e) {}
         }
 
         function toggleModal(id) {
@@ -291,10 +362,40 @@
             if(menu) menu.classList.toggle('hidden');
         }
 
+        // فتح واجهة الإعدادات مع تشغيل الحركة المميزة للترس
+        function openSettingsModal() {
+            const gearIcon = document.getElementById('settings-icon');
+            gearIcon.classList.add('settings-gear-anim');
+            setTimeout(() => {
+                gearIcon.classList.remove('settings-gear-anim');
+            }, 600);
+
+            toggleModal('settings-modal');
+        }
+
+        // تحويل الوضع الداكن (Dark Mode)
+        function toggleDarkMode() {
+            const isDark = document.getElementById('dark-mode-toggle').checked;
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // تواصل معنا المباشر إلى الجيميل
+        function contactUsMail() {
+            const myEmail = "1212OPOZZZ@gmail.com";
+            const subject = encodeURIComponent("استفسار / تواصل من تطبيق دراجتي");
+            const body = encodeURIComponent("مرحباً، أود التواصل معكم بشأن:");
+            window.location.href = `mailto:${myEmail}?subject=${subject}&body=${body}`;
+        }
+
         function showProfileView() {
             document.getElementById('main-view').classList.add('hidden');
             document.getElementById('profile-view').classList.remove('hidden');
-            loadSavedPosts();
         }
 
         function showMainView() {
@@ -325,7 +426,6 @@
             renderPosts(allPostsData);
         }
 
-        // جلب معرفات العناصر المحفوظة
         async function fetchSavedPostsIds() {
             const { data } = await supabaseClient
                 .from('saved_posts')
@@ -337,7 +437,7 @@
             }
         }
 
-        // عرض المنشورات بتصميم الفيسبوك المربع
+        // عرض المنشورات وتحديد صاحب المنشور لظهور زر الحذف
         function renderPosts(posts) {
             const container = document.getElementById('posts-container');
             
@@ -363,37 +463,37 @@
                 const isSaved = savedPostsSet.has(post.id);
 
                 return `
-                <div class="bg-white mb-4 shadow-sm border-y sm:border sm:rounded-xl overflow-hidden">
-                    <!-- الهيدر العلوي للمنشور (اسم المعلن + ثلاث نقاط جهة اليسار) -->
+                <div class="bg-white dark:bg-gray-800 mb-4 shadow-sm border-y sm:border sm:rounded-xl overflow-hidden border-gray-200 dark:border-gray-700">
+                    <!-- الهيدر العلوي للمنشور (اسم الناشر والخيارات) -->
                     <div class="p-3 flex justify-between items-center relative">
                         <div class="flex items-center gap-2">
-                            <div class="w-9 h-9 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-full flex items-center justify-center text-white text-xs font-bold">
+                            <div class="w-9 h-9 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-full flex items-center justify-center text-white text-xs font-bold shadow">
                                 <i class="fa-solid fa-motorcycle"></i>
                             </div>
                             <div>
-                                <h4 class="font-bold text-xs text-gray-900 leading-tight">${post.title}</h4>
-                                <div class="flex items-center gap-2 text-[10px] text-gray-500 mt-0.5">
-                                    <span class="text-blue-600 font-semibold">${post.city}</span>
+                                <h4 class="font-bold text-xs text-gray-900 dark:text-gray-100 leading-tight">${post.title}</h4>
+                                <div class="flex items-center gap-2 text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">
+                                    <span class="text-blue-600 dark:text-blue-400 font-semibold">${post.city}</span>
                                     <span>•</span>
                                     <span>${post.category}</span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- الثلاث نقاط أقصى اليسار -->
+                        <!-- الثلاث نقاط في أعلى المنشور على اليسار -->
                         <div class="relative">
-                            <button onclick="toggleMenu('menu-${post.id}')" class="w-8 h-8 hover:bg-gray-100 rounded-full flex items-center justify-center text-gray-500 btn-tap">
+                            <button onclick="toggleMenu('menu-${post.id}')" class="w-8 h-8 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full flex items-center justify-center text-gray-500 dark:text-gray-400 btn-tap">
                                 <i class="fa-solid fa-ellipsis-vertical"></i>
                             </button>
 
-                            <!-- قائمة الخيارات -->
-                            <div id="menu-${post.id}" class="hidden absolute left-0 top-9 bg-white border border-gray-100 shadow-xl rounded-xl py-1 w-32 z-30 text-xs">
+                            <!-- قائمة النقاط الثلاث -->
+                            <div id="menu-${post.id}" class="hidden absolute left-0 top-9 bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow-xl rounded-xl py-1 w-32 z-30 text-xs">
                                 ${isOwner ? `
-                                    <button onclick="deletePost(${post.id})" class="w-full px-3 py-2 text-right text-red-600 hover:bg-red-50 font-bold flex items-center gap-2">
+                                    <button onclick="deletePost(${post.id})" class="w-full px-3 py-2 text-right text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 font-bold flex items-center gap-2">
                                         <i class="fa-regular fa-trash-can"></i> حذف
                                     </button>
                                 ` : `
-                                    <button onclick="reportPost(${post.id}, '${post.title}')" class="w-full px-3 py-2 text-right text-amber-600 hover:bg-amber-50 font-bold flex items-center gap-2">
+                                    <button onclick="reportPost(${post.id}, '${post.title}')" class="w-full px-3 py-2 text-right text-amber-600 dark:text-amber-400 hover:bg-amber-50 dark:hover:bg-amber-900/20 font-bold flex items-center gap-2">
                                         <i class="fa-regular fa-flag"></i> إبلاغ
                                     </button>
                                 `}
@@ -402,55 +502,90 @@
                     </div>
 
                     <!-- التفاصيل والسعر -->
-                    <div class="px-3 pb-2 text-xs text-gray-700 space-y-1">
-                        <p class="font-black text-emerald-600 text-sm">${post.price}</p>
-                        <p class="leading-relaxed text-gray-600">${post.description || ''}</p>
+                    <div class="px-3 pb-2 text-xs text-gray-700 dark:text-gray-300 space-y-1">
+                        <p class="font-black text-emerald-600 dark:text-emerald-400 text-sm">${post.price}</p>
+                        <p class="leading-relaxed">${post.description || ''}</p>
                     </div>
 
-                    <!-- الصورة بمقاس مربع عالي الدقة (كفيسبوك) -->
+                    <!-- الصورة بجودة عالية ونقية جداً مع مقاس مربع -->
                     ${(post.images && post.images[0]) ? `
-                        <div class="w-full aspect-square bg-gray-100 overflow-hidden">
-                            <img src="${post.images[0]}" class="w-full h-full object-cover">
+                        <div class="w-full aspect-square bg-gray-900 overflow-hidden flex items-center justify-center">
+                            <img src="${post.images[0]}" class="w-full h-full object-contain bg-black/40">
                         </div>
                     ` : ''}
 
-                    <!-- أزرار التفاعل والسعر داخل كبسولات -->
-                    <div class="p-2.5 flex items-center justify-between border-t border-gray-100 text-xs">
-                        <!-- كبسولات التفاعل الأربعة -->
+                    <!-- أزرار التفاعل داخل الكبسولات -->
+                    <div class="p-2.5 flex items-center justify-between border-t border-gray-100 dark:border-gray-700 text-xs">
                         <div class="flex items-center gap-1.5">
-                            <!-- كبسولة الاعجاب -->
-                            <button onclick="handleLike(${post.id}, this)" class="interaction-capsule px-3 py-1.5 rounded-full flex items-center gap-1.5 btn-tap font-bold ${isLiked ? 'text-red-500 bg-red-50' : 'text-gray-600'}">
+                            <!-- كبسولة الإعجاب -->
+                            <button onclick="handleLike(${post.id}, this)" class="interaction-capsule bg-gray-100 dark:bg-gray-700 px-3 py-1.5 rounded-full flex items-center gap-1.5 btn-tap font-bold ${isLiked ? 'text-red-500 bg-red-50 dark:bg-red-950/40' : 'text-gray-600 dark:text-gray-300'}">
                                 <i class="${isLiked ? 'fa-solid' : 'fa-regular'} fa-heart icon-heart text-sm"></i>
                                 <span class="like-count">${post.likes_count || 0}</span>
                             </button>
 
                             <!-- كبسولة التعليقات -->
-                            <button onclick="openCommentsModal(${post.id}, this)" class="interaction-capsule px-3 py-1.5 rounded-full flex items-center gap-1.5 text-gray-600 btn-tap font-bold">
+                            <button onclick="openCommentsModal(${post.id}, this)" class="interaction-capsule bg-gray-100 dark:bg-gray-700 px-3 py-1.5 rounded-full flex items-center gap-1.5 text-gray-600 dark:text-gray-300 btn-tap font-bold">
                                 <i class="fa-regular fa-comment icon-comment text-sm"></i>
                                 <span>تعليق</span>
                             </button>
 
                             <!-- كبسولة المشاركة -->
-                            <button onclick="sharePost('${post.title}', ${post.id})" class="interaction-capsule px-3 py-1.5 rounded-full flex items-center gap-1.5 text-gray-600 btn-tap font-bold">
+                            <button onclick="sharePost('${post.title}', ${post.id})" class="interaction-capsule bg-gray-100 dark:bg-gray-700 px-3 py-1.5 rounded-full flex items-center gap-1.5 text-gray-600 dark:text-gray-300 btn-tap font-bold">
                                 <i class="fa-solid fa-share-nodes text-sm"></i>
                                 <span>مشاركة</span>
                             </button>
                         </div>
 
-                        <!-- كبسولة الحفظ بعيدة أقصى اليسار -->
-                        <button onclick="toggleSavePost(${post.id}, this)" class="interaction-capsule p-2 rounded-full text-gray-600 hover:text-blue-600 btn-tap ${isSaved ? 'text-blue-600 bg-blue-50' : ''}" title="حفظ المنشور">
+                        <!-- كبسولة الحفظ بعيدة جهة اليسار -->
+                        <button onclick="toggleSavePost(${post.id}, this)" class="interaction-capsule bg-gray-100 dark:bg-gray-700 p-2 rounded-full text-gray-600 dark:text-gray-300 btn-tap ${isSaved ? 'text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/40' : ''}" title="حفظ المنشور">
                             <i class="${isSaved ? 'fa-solid' : 'fa-regular'} fa-bookmark icon-bookmark text-sm"></i>
                         </button>
                     </div>
 
-                    <!-- فاصل رمادي فاتح بسيط بين المنشورات -->
-                    <div class="h-2 bg-gray-200/60 w-full"></div>
+                    <!-- خط رمادي فاتح فاصل بين المنشورات -->
+                    <div class="h-2 bg-gray-200/70 dark:bg-gray-900 w-full"></div>
                 </div>
                 `;
             }).join('');
         }
 
-        // التفاعل مع زر الإعجاب
+        // فتح النافذة المنبثقة القافزة للمحفوظات
+        async function openSavedPostsModal() {
+            playAudioEffect('save');
+            toggleModal('saved-modal');
+            const listEl = document.getElementById('saved-modal-list');
+            listEl.innerHTML = `<p class="text-center text-gray-400 py-4">جاري تحميل المحفوظات...</p>`;
+
+            const { data, error } = await supabaseClient
+                .from('saved_posts')
+                .select('post_id, posts(*)')
+                .eq('user_id', CURRENT_USER_ID);
+
+            if (error || !data || data.length === 0) {
+                listEl.innerHTML = `<p class="text-center text-gray-400 py-6">لا توجد إعلانات محفوظة لديك حالياً.</p>`;
+                return;
+            }
+
+            const savedPosts = data.map(d => d.posts).filter(Boolean);
+            
+            listEl.innerHTML = savedPosts.map(post => `
+                <div class="bg-gray-50 dark:bg-gray-700/60 p-2.5 rounded-xl border dark:border-gray-600 flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-2.5 overflow-hidden">
+                        <img src="${(post.images && post.images[0]) ? post.images[0] : 'https://via.placeholder.com/80'}" class="w-12 h-12 object-cover rounded-lg flex-shrink-0 border dark:border-gray-600">
+                        <div class="truncate">
+                            <h4 class="font-bold text-xs text-gray-800 dark:text-gray-100 truncate">${post.title}</h4>
+                            <p class="text-[10px] text-gray-500 dark:text-gray-400">الناشر: <span class="font-semibold text-blue-600 dark:text-blue-400">${post.city}</span></p>
+                            <p class="text-[11px] font-black text-emerald-600 dark:text-emerald-400">${post.price}</p>
+                        </div>
+                    </div>
+                    <a href="https://wa.me/${post.phone}" target="_blank" class="bg-emerald-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 flex-shrink-0 btn-tap">
+                        <i class="fa-brands fa-whatsapp"></i> تواصل
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        // تفاعلات الأعجابات
         async function handleLike(postId, btnEl) {
             playAudioEffect('like');
             const icon = btnEl.querySelector('.icon-heart');
@@ -469,14 +604,14 @@
             if (userIndex === -1) {
                 likesList.push(CURRENT_USER_ID);
                 currentLikes += 1;
-                btnEl.classList.add('text-red-500', 'bg-red-50');
-                btnEl.classList.remove('text-gray-600');
+                btnEl.classList.add('text-red-500', 'bg-red-50', 'dark:bg-red-950/40');
+                btnEl.classList.remove('text-gray-600', 'dark:text-gray-300');
                 icon.classList.replace('fa-regular', 'fa-solid');
             } else {
                 likesList.splice(userIndex, 1);
                 currentLikes = Math.max(0, currentLikes - 1);
-                btnEl.classList.remove('text-red-500', 'bg-red-50');
-                btnEl.classList.add('text-gray-600');
+                btnEl.classList.remove('text-red-500', 'bg-red-50', 'dark:bg-red-950/40');
+                btnEl.classList.add('text-gray-600', 'dark:text-gray-300');
                 icon.classList.replace('fa-solid', 'fa-regular');
             }
 
@@ -490,14 +625,14 @@
             }).eq('id', postId);
         }
 
-        // الحفظ في البروفايل
+        // حفظ المنشور
         async function toggleSavePost(postId, btnEl) {
             playAudioEffect('save');
             const icon = btnEl.querySelector('.icon-bookmark');
 
             if (savedPostsSet.has(postId)) {
                 savedPostsSet.delete(postId);
-                btnEl.classList.remove('text-blue-600', 'bg-blue-50');
+                btnEl.classList.remove('text-blue-600', 'dark:text-blue-400', 'bg-blue-50', 'dark:bg-blue-900/40');
                 icon.classList.replace('fa-solid', 'fa-regular');
 
                 await supabaseClient.from('saved_posts')
@@ -506,7 +641,7 @@
                     .eq('post_id', postId);
             } else {
                 savedPostsSet.add(postId);
-                btnEl.classList.add('text-blue-600', 'bg-blue-50');
+                btnEl.classList.add('text-blue-600', 'dark:text-blue-400', 'bg-blue-50', 'dark:bg-blue-900/40');
                 icon.classList.replace('fa-regular', 'fa-solid');
 
                 await supabaseClient.from('saved_posts').insert([{
@@ -516,40 +651,7 @@
             }
         }
 
-        // تحميل المنشورات المحفوظة
-        async function loadSavedPosts() {
-            const container = document.getElementById('saved-posts-container');
-            container.innerHTML = `<div class="text-center py-6 text-xs text-gray-500">جاري تحميل المحفوظات...</div>`;
-
-            const { data } = await supabaseClient
-                .from('saved_posts')
-                .select('post_id, posts(*)')
-                .eq('user_id', CURRENT_USER_ID);
-
-            if(!data || data.length === 0) {
-                container.innerHTML = `<div class="text-center py-8 text-gray-400 text-xs">لا توجد عناصر محفوظة لديك</div>`;
-                return;
-            }
-
-            const savedPosts = data.map(d => d.posts).filter(Boolean);
-            renderPostsCustom(savedPosts, container);
-        }
-
-        function renderPostsCustom(posts, container) {
-            container.innerHTML = posts.map(post => `
-                <div class="bg-white p-3 rounded-xl border mb-3 flex gap-3 items-center">
-                    <img src="${(post.images && post.images[0]) ? post.images[0] : 'https://via.placeholder.com/100'}" class="w-16 h-16 object-cover rounded-lg">
-                    <div class="flex-1">
-                        <h4 class="font-bold text-xs">${post.title}</h4>
-                        <p class="text-emerald-600 font-bold text-xs">${post.price}</p>
-                        <p class="text-[10px] text-gray-400">${post.city}</p>
-                    </div>
-                    <a href="https://wa.me/${post.phone}" target="_blank" class="bg-emerald-500 text-white p-2 rounded-lg text-xs"><i class="fa-brands fa-whatsapp"></i></a>
-                </div>
-            `).join('');
-        }
-
-        // فتح التعليقات
+        // التعليقات
         async function openCommentsModal(postId, btnEl) {
             playAudioEffect('comment');
             const icon = btnEl.querySelector('.icon-comment');
@@ -579,8 +681,8 @@
             }
 
             listEl.innerHTML = comments.map(c => `
-                <div class="bg-gray-50 p-2.5 rounded-xl border border-gray-100">
-                    <p class="text-gray-800 font-medium">${c.text}</p>
+                <div class="bg-gray-50 dark:bg-gray-700/50 p-2.5 rounded-xl border border-gray-100 dark:border-gray-600">
+                    <p class="text-gray-800 dark:text-gray-200 font-medium">${c.text}</p>
                 </div>
             `).join('');
         }
@@ -599,14 +701,14 @@
 
         // حذف المنشور
         async function deletePost(postId) {
-            if(!confirm("هل أنت تأكد من إزالة المنشور؟")) return;
+            if(!confirm("هل أنت تأكد من إزالة هذا المنشور؟")) return;
             
             await supabaseClient.from('posts').delete().eq('id', postId);
             allPostsData = allPostsData.filter(p => p.id !== postId);
             renderPosts(allPostsData);
         }
 
-        // الإبلاغ وتلقائياً توجيه الجيميل
+        // الإبلاغ المباشر
         function reportPost(postId, title) {
             const myEmail = "1212OPOZZZ@gmail.com";
             const subject = encodeURIComponent(`إبلاغ عن منشور برقم: ${postId}`);
@@ -630,7 +732,7 @@
             }
         }
 
-        // ضغط وتخزين الصور
+        // معالجة الصور بدقة عالية ونقاء كامل ($1200 \times 1200$)
         async function previewAndCompressImages(event) {
             const file = event.target.files[0];
             if(!file) return;
@@ -640,13 +742,18 @@
                 const img = new Image();
                 img.onload = function() {
                     const canvas = document.createElement('canvas');
-                    canvas.width = 600;
-                    canvas.height = 600;
+                    // رفع الجودة والأبعاد لضمان الوضوح العالي للصورة
+                    canvas.width = 1200;
+                    canvas.height = 1200;
                     const ctx = canvas.getContext('2d');
-                    ctx.drawImage(img, 0, 0, 600, 600);
-                    compressedImagesBase64 = [canvas.toDataURL('image/jpeg', 0.7)];
                     
-                    document.getElementById('images-preview').innerHTML = `<img src="${compressedImagesBase64[0]}" class="w-16 h-16 object-cover rounded-lg border">`;
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+                    
+                    ctx.drawImage(img, 0, 0, 1200, 1200);
+                    compressedImagesBase64 = [canvas.toDataURL('image/jpeg', 0.92)];
+                    
+                    document.getElementById('images-preview').innerHTML = `<img src="${compressedImagesBase64[0]}" class="w-20 h-20 object-cover rounded-lg border dark:border-gray-600">`;
                 };
                 img.src = e.target.result;
             };
