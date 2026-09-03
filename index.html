@@ -338,7 +338,7 @@
 
     <!-- Core Interactive Logic Script (Connecting Supabase Real-time Engine) -->
     <script>
-        let currentPosts = [];
+       currentPosts = [];
         let activePostForChat = null;
 
         // Modal Controllers
@@ -2019,3 +2019,25 @@
                 }
             }
         </script>
+// دالة التنقل بين التبويبات
+function switchTab(tabName) {
+    console.log('التنقل إلى:', tabName);
+    // أضف إخفاء/إظهار الأقسام حسب اسم التبويب
+}
+
+// دالة إرسال التعليق
+async function submitComment(postId) {
+    const input = document.getElementById(`comment-input-${postId}`);
+    if (!input || !input.value.trim()) return;
+    
+    try {
+        const { error } = await db.from('comments').insert([
+            { post_id: postId, comment_text: input.value.trim() }
+        ]);
+        if (error) throw error;
+        input.value = '';
+        alert('تم إضافة التعليق!');
+    } catch (e) {
+        console.error('خطأ في إضافة التعليق:', e.message);
+    }
+}
